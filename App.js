@@ -5,6 +5,7 @@ import GoalItem from './components/GoalItem';
 import GoalInput from './components/GoalInput';
 import Header from './components/Header'
 <<<<<<< HEAD
+<<<<<<< HEAD
 import LogIn from './pages/LogIn'
 import Loans from './pages/Loans'
 import ApiKeys from './Constants/ApiKeys'
@@ -52,6 +53,9 @@ export default function App(){
 
 =======
 
+=======
+
+>>>>>>> parent of 9f5d05c1... Installed firebase and the api keys on App.js
 export default function App() {
 
   
@@ -114,6 +118,9 @@ export default function App() {
     </View >
    
   )
+<<<<<<< HEAD
+>>>>>>> parent of 9f5d05c1... Installed firebase and the api keys on App.js
+=======
 >>>>>>> parent of 9f5d05c1... Installed firebase and the api keys on App.js
 }
 
