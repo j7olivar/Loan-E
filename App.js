@@ -53,22 +53,6 @@ export default function App(){
         
         <GoalInput visible={isAddMode}
         addGoalHandler={addGoalHandler} 
-<<<<<<< Updated upstream
-        onCancel={cancelGoalAdditionHandler}/>
-  
-        <FlatList 
-          keyExtractor={(item, index) => item.id}
-          data={courseGoals}
-          renderItem={itemData => (
-          <GoalItem
-            onDelete={removeGoalHandler.bind(this, itemData.item.id)} 
-            title={itemData.item.value}
-            subInterest={itemData.item.interest}
-            subPaid={itemData.item.paidOff}
-            subYears={itemData.item.years}
-          />)}/>
-        <Button title="Add New Loan" onPress={() => setIsAddMode(true)}/>
-=======
         onCancel={cancelGoalAdditionHandler}
       />
 
@@ -86,7 +70,6 @@ export default function App(){
       />
       <Button title="Add New Loan" onPress={() => setIsAddMode(true)}/>
       <StatusBar style="auto"></StatusBar>
->>>>>>> Stashed changes
       </View>
     </View >)
 }
