@@ -4,6 +4,7 @@ import { StyleSheet, Text, View, TextInput, Button, Modal, ScrollView, FlatList 
 import GoalItem from './components/GoalItem';
 import GoalInput from './components/GoalInput';
 import Header from './components/Header'
+<<<<<<< HEAD
 import LogIn from './pages/LogIn'
 import Loans from './pages/Loans'
 import ApiKeys from './Constants/ApiKeys'
@@ -49,6 +50,71 @@ export default function App(){
     
   ) 
 
+=======
+
+export default function App() {
+
+  
+  const [courseGoals, setCourseGoals] = useState([])
+  const[isAddMode, setIsAddMode] = useState(false);
+ 
+  const addGoalHandler = (goalTitle, interestRate, years, paidOff) => {
+    //setCourseGoals([...courseGoals, enteredGoal])
+    setCourseGoals(prevGoals => [
+      ...courseGoals,
+       {id: Math.random().toString(), 
+          value: goalTitle, 
+          interest: interestRate,
+          years: years,
+          paidOff: paidOff 
+        }
+      ])
+    
+    setIsAddMode(false)
+  }
+
+  const cancelGoalAdditionHandler = () =>{
+    setIsAddMode(false);
+
+  }
+
+  const removeGoalHandler = goalId => {
+        setCourseGoals(currentGoals=>{
+            return currentGoals.filter(goal => goal.id !== goalId)
+        })}
+
+  return (
+
+    <View style={styles.screen} >
+
+        <Header title="Student Loan Calculator"/>
+    
+      <View style= {{padding:20}}> 
+      <Text style = {styles.title}> LOANS: </Text>
+      
+      <GoalInput visible={isAddMode}
+        addGoalHandler={addGoalHandler} 
+        onCancel={cancelGoalAdditionHandler}
+      />
+
+      <FlatList 
+        keyExtractor={(item, index) => item.id}
+        data={courseGoals}
+        renderItem={itemData => (
+        <GoalItem
+          onDelete={removeGoalHandler.bind(this, itemData.item.id)} 
+          title={itemData.item.value}
+          subInterest={itemData.item.interest}
+          subPaid={itemData.item.paidOff}
+          subYears={itemData.item.years}
+          />)}
+      />
+      <Button title="Add New Loan" onPress={() => setIsAddMode(true)}/>
+      </View>
+    </View >
+   
+  )
+>>>>>>> parent of 9f5d05c1... Installed firebase and the api keys on App.js
 }
 
 const styles = StyleSheet.create({
