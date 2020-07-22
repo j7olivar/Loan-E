@@ -1,73 +1,77 @@
-import { StatusBar } from 'expo-status-bar';
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Button, Modal, ScrollView, FlatList } from 'react-native';
-import GoalItem from './components/GoalItem';
-import GoalInput from './components/GoalInput';
-import Header from './components/Header'
-//import ApiKeys from './Constants/ApiKeys'
-import * as firebase from 'firebase'
+import 'react-native-gesture-handler'
+import React, { useState, useEffect, useContext } from 'react';
+import {NavigationContainer} from '@react-navigation/native'
+import {createStackNavigator} from '@react-navigation/stack'
+import {Login,Loans,Signup} from './Screens'
+import {decode,encode} from 'base-64' 
+import { StyleSheet, Text, View} from 'react-native';
+import {firebase} from './Constants/ApiKeys'
+
+if (!global.btoa){global.btoa=encode}
+if(!global.atob){global.atob=decode}
+
+const Stack = createStackNavigator()
 
 export default function App() {
-
+  const [loading, setLoading]=useState(true)
+  const [user, setUser] = useState(null)
   
-  const [courseGoals, setCourseGoals] = useState([])
-  const[isAddMode, setIsAddMode] = useState(false);
- 
-  const addGoalHandler = (goalTitle, interestRate, years, paidOff) => {
-    //setCourseGoals([...courseGoals, enteredGoal])
-    setCourseGoals(prevGoals => [
-      ...courseGoals,
-       {id: Math.random().toString(), 
-          value: goalTitle, 
-          interest: interestRate,
-          years: years,
-          paidOff: paidOff 
-        }
-      ])
-    
-    setIsAddMode(false)
-  }
+  
+  useEffect(() => {
 
-  const cancelGoalAdditionHandler = () =>{
-    setIsAddMode(false);
+    const usersRef = firebase.firestore().collection('users');
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        usersRef
+          .doc(user.uid)
+          .get()
+          .then((document) => {
+            const userData = document.data()
+            console.log(loading)
+            setLoading(false)
+            console.log(loading)
+            setUser(userData)
+            console.log(userData)
 
-  }
-
-  const removeGoalHandler = goalId => {
-        setCourseGoals(currentGoals=>{
-            return currentGoals.filter(goal => goal.id !== goalId)
-        })}
+          })
+          .catch((error) => {
+            setLoading(false)
+          });
+      } else {
+        setLoading(false)
+      }
+    });
+  }, []);
 
   return (
-
-    <View style={styles.screen} >
-
-        <Header title="Student Loan Calculator"/>
-    
-      <View style= {{padding:20}}> 
-      <Text style = {styles.title}> LOANS: </Text>
-      
-      <GoalInput visible={isAddMode}
-        addGoalHandler={addGoalHandler} 
-        onCancel={cancelGoalAdditionHandler}
-      />
-
-      <FlatList 
-        keyExtractor={(item, index) => item.id}
-        data={courseGoals}
-        renderItem={itemData => (
-        <GoalItem
-          onDelete={removeGoalHandler.bind(this, itemData.item.id)} 
-          title={itemData.item.value}
-          subInterest={itemData.item.interest}
-          subPaid={itemData.item.paidOff}
-          subYears={itemData.item.years}
-          />)}
-      />
-      <Button title="Add New Loan" onPress={() => setIsAddMode(true)}/>
-      </View>
-    </View >
-   
+      <NavigationContainer>
+      <Stack.Navigator>
+        {user ? (
+          <Stack.Screen name="Loans" >
+            {props => <Loans {...props} extraData={user} />}
+          </Stack.Screen>
+        ) : (
+          <>
+            <Stack.Screen 
+            name="Login" 
+            options={{
+              headerStyle:{backgroundColor:'#060320',},
+              headerTintColor: 'white',
+              headerTitleStyle: {fontWeight: 'bold',}
+            }}
+            component={Login} 
+            />
+            <Stack.Screen name="Signup" 
+            options={{
+              headerStyle:{backgroundColor:'#060320',},
+              headerTintColor: 'white',
+              headerTitleStyle: {fontWeight: 'bold',}
+            }}
+            component={Signup} />
+          </>
+        )}
+      </Stack.Navigator>
+    </NavigationContainer>
   )
 }
 const styles = StyleSheet.create({
