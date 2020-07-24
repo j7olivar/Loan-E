@@ -30,7 +30,7 @@ export default function Login({navigation}) {
                         const user = firestoreDocument.data()
                         console.log("this is where the error occurs")
                         navigation.navigate('Home', {user:user})
-                        navigation.reset({index:0, routes:[{name:'Home'}]})
+                        //navigation.reset({index:0, routes:[{name:'Home'}]})
                     })
                     .catch(error => {
                         alert(error)

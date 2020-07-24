@@ -40,7 +40,7 @@ export default function Signup({navigation}){
                     //if successful we go homescreen
                     .then(() => {
                         navigation.navigate("Home", {user:data})
-                        navigation.reset({index:0, routes:[{name:'Home'}]})
+                        //navigation.reset({index:0, routes:[{name:'Home'}]})
                     })
                     .catch((error) => {
                         alert(error)
