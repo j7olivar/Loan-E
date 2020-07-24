@@ -4,9 +4,7 @@ import {TouchableOpacity} from 'react-native'
 import { StyleSheet, Text, View, TextInput, Button, Modal, ScrollView, FlatList } from 'react-native';
 import GoalItem from './../../components/GoalItem';
 import GoalInput from './../../components/GoalInput';
-import Header from './../../components/Header'
 import {firebase} from './../../Constants/ApiKeys'
-import {NavigationActions} from '@react-navigation'
 
 
 export default function Loans(props) {
@@ -35,9 +33,9 @@ export default function Loans(props) {
       .then(() => {
         //console.log('pressed it')
         props.navigation.navigate('Login',)
-        props.extraData[1](null)
+        //props.extraData[1](null)
         //console.log(props.extraData[1](null))
-        //props.navigation.reset({index:0, routes:[{name:'Login'}]})
+        props.navigation.reset({index:0, routes:[{name:'Login'}]})
       })
       .catch(error => {
         alert(error)
