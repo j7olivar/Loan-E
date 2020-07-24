@@ -41,12 +41,8 @@ export default function Signup({navigation}){
                     .then(() => {
 <<<<<<< HEAD
 <<<<<<< HEAD
-<<<<<<< HEAD
                         navigation.navigate("Home", {user:data})
                         //navigation.reset({index:0, routes:[{name:'Home'}]})
-=======
-                        navigation.navigate("Loans", {user:data})
->>>>>>> parent of d164016a... before meeting #2
 =======
                         navigation.navigate("Loans", {user:data})
 >>>>>>> parent of d164016a... before meeting #2

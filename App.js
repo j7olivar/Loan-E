@@ -50,7 +50,6 @@ export default function App() {
         {user ? (
 <<<<<<< HEAD
 <<<<<<< HEAD
-<<<<<<< HEAD
           <>
           <Stack1.Navigator>
           <Stack1.Screen name="Home"
@@ -68,16 +67,11 @@ export default function App() {
 =======
 =======
 >>>>>>> parent of d164016a... before meeting #2
-=======
->>>>>>> parent of d164016a... before meeting #2
           <Stack.Screen name="Loans" >
             {props => <Loans {...props} extraData={user} />}
           </Stack.Screen>
         ) : (
 <<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> parent of d164016a... before meeting #2
-=======
 >>>>>>> parent of d164016a... before meeting #2
 =======
 >>>>>>> parent of d164016a... before meeting #2
@@ -100,12 +94,8 @@ export default function App() {
             }}
 <<<<<<< HEAD
 <<<<<<< HEAD
-<<<<<<< HEAD
             component={Signup} />  
             </Stack2.Navigator>
-=======
-            component={Signup} />
->>>>>>> parent of d164016a... before meeting #2
 =======
             component={Signup} />
 >>>>>>> parent of d164016a... before meeting #2
