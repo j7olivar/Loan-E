@@ -6,8 +6,11 @@ import GoalInput from './../../components/GoalInput';
 import Header from './../../components/Header'
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import {firebase} from './../../Constants/ApiKeys'
 import {NavigationActions} from '@react-navigation'
+=======
+>>>>>>> parent of d164016a... before meeting #2
 =======
 >>>>>>> parent of d164016a... before meeting #2
 =======
@@ -35,6 +38,7 @@ export default function Loans(props) {
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   const onLogoutPress = () =>{
     firebase
       .auth()
@@ -51,6 +55,8 @@ export default function Loans(props) {
       })
   }
     
+=======
+>>>>>>> parent of d164016a... before meeting #2
 =======
 >>>>>>> parent of d164016a... before meeting #2
 =======
