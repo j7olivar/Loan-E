@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler'
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, Image } from 'react';
 import {NavigationContainer} from '@react-navigation/native'
 import {createStackNavigator} from '@react-navigation/stack'
 import {Login,Loans,Signup} from './Screens'
@@ -17,9 +17,8 @@ export default function App() {
   const [loading, setLoading]=useState(true)
   const [user, setUser] = useState(null)
   
-  
-  useEffect(() => {
 
+  useEffect(() => {
     const usersRef = firebase.firestore().collection('users');
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
@@ -28,27 +27,23 @@ export default function App() {
           .get()
           .then((document) => {
             const userData = document.data()
-            console.log(loading)
             setLoading(false)
-            console.log(loading)
             setUser(userData)
-            console.log(userData)
-
           })
           .catch((error) => {
             setLoading(false)
           });
-      } else {
+      } 
+      else {
         setLoading(false)
       }
     });
-  }, []);
+  }, [])
 
   return (
       <NavigationContainer>
       
         {user ? (
-<<<<<<< HEAD
           <>
           <Stack1.Navigator>
           <Stack1.Screen name="Home"
@@ -63,12 +58,6 @@ export default function App() {
           
           </>
           ) : (
-=======
-          <Stack.Screen name="Loans" >
-            {props => <Loans {...props} extraData={user} />}
-          </Stack.Screen>
-        ) : (
->>>>>>> parent of d164016a... before meeting #2
           <>
             <Stack2.Navigator>
             <Stack2.Screen 
@@ -86,13 +75,10 @@ export default function App() {
               headerTintColor: 'white',
               headerTitleStyle: {fontWeight: 'bold',}
             }}
-<<<<<<< HEAD
             component={Signup} />  
             </Stack2.Navigator>
-=======
-            component={Signup} />
->>>>>>> parent of d164016a... before meeting #2
           </>
+          
         )}
       
     </NavigationContainer>

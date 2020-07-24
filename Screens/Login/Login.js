@@ -28,14 +28,9 @@ export default function Login({navigation}) {
                             return;
                         }
                         const user = firestoreDocument.data()
-<<<<<<< HEAD
                         console.log("this is where the error occurs")
                         navigation.navigate('Home', {user:user})
                         //navigation.reset({index:0, routes:[{name:'Home'}]})
-=======
-            
-                        navigation.navigate('Loans', {user:user})
->>>>>>> parent of d164016a... before meeting #2
                     })
                     .catch(error => {
                         alert(error)
