@@ -10,7 +10,8 @@ import {firebase} from './Constants/ApiKeys'
 if (!global.btoa){global.btoa=encode}
 if(!global.atob){global.atob=decode}
 
-const Stack = createStackNavigator()
+const Stack1 = createStackNavigator()
+const Stack2 = createStackNavigator()
 
 export default function App() {
   const [loading, setLoading]=useState(true)
@@ -41,38 +42,25 @@ export default function App() {
 
   return (
       <NavigationContainer>
-      <Stack.Navigator>
+      
         {user ? (
           <>
-          <Stack.Screen name="Home"
+          <Stack1.Navigator>
+          <Stack1.Screen name="Home"
           options={{
             headerStyle:{backgroundColor:'#060320',},
             headerTintColor: 'white',
-            headerTitleStyle: {fontWeight: 'bold',}, 
-          }} >
-            {props => <Loans {...props} extraData={user} />}
-          </Stack.Screen>
-          <Stack.Screen 
-            name="Login" 
-            options={{
-              headerStyle:{backgroundColor:'#060320',},
-              headerTintColor: 'white',
-              headerTitleStyle: {fontWeight: 'bold',}
-            }}
-            component={Login} 
-            />
-            <Stack.Screen name="Signup" 
-            options={{
-              headerStyle:{backgroundColor:'#060320',},
-              headerTintColor: 'white',
-              headerTitleStyle: {fontWeight: 'bold',},
-              headerTitle: props => <LogoTitle {...props}/>
-            }}
-            component={Signup} />  
+            headerTitleStyle: {fontWeight: 'bold',},
+          }}>
+            {props => <Loans {...props} extraData={[user,setUser]} />}
+          </Stack1.Screen>
+          </Stack1.Navigator>
+          
           </>
           ) : (
           <>
-            <Stack.Screen 
+            <Stack2.Navigator>
+            <Stack2.Screen 
             name="Login" 
             options={{
               headerStyle:{backgroundColor:'#060320',},
@@ -81,17 +69,18 @@ export default function App() {
             }}
             component={Login} 
             />
-            <Stack.Screen name="Signup" 
+            <Stack2.Screen name="Signup" 
             options={{
               headerStyle:{backgroundColor:'#060320',},
               headerTintColor: 'white',
               headerTitleStyle: {fontWeight: 'bold',}
             }}
             component={Signup} />  
+            </Stack2.Navigator>
           </>
           
         )}
-      </Stack.Navigator>
+      
     </NavigationContainer>
   )
 }
