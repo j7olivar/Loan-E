@@ -1,5 +1,5 @@
 import React, {useState, useContext} from 'react'
-import {Image,Text,TextInput,TouchableOpacity, View,StyleSheet} from 'react-native'
+import {Text,TextInput,TouchableOpacity, View,StyleSheet} from 'react-native'
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view'
 import {firebase} from '../../Constants/ApiKeys'
 

@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler'
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect} from 'react';
 import {TouchableOpacity} from 'react-native'
 import { StyleSheet, Text, View, TextInput, Button, Modal, ScrollView, FlatList } from 'react-native';
 import GoalItem from './../../components/GoalItem';
@@ -10,7 +10,37 @@ import {firebase} from './../../Constants/ApiKeys'
 export default function Loans(props) {
   const [courseGoals, setCourseGoals] = useState([])
   const[isAddMode, setIsAddMode] = useState(false);
-  
+
+  const userId = props.extraData.id
+  //create new collection
+  const loansRef = firebase.firestore().collection('goals')
+
+  useEffect(() => {
+    let isMounted = true
+
+    if(isMounted){
+      loansRef 
+      .where('authorID', '==', userId)
+      .orderBy("createdAt", 'desc')
+      .onSnapshot(
+        querySnapshot => {
+          const newGoals = []
+          querySnapshot.forEach(doc => {
+            const goal = doc.data()
+            goal.id = doc.id
+            newGoals.push(goal)
+          })
+          setCourseGoals(newGoals)
+        },
+        error => {
+          console.log(error)
+        }
+      )
+    }
+    return () => {isMounted = false}
+    
+  }, [])
+
   const addGoalHandler = (goalTitle, interestRate, years, paidOff) => {
     //setCourseGoals([...courseGoals, enteredGoal])
     setCourseGoals(prevGoals => [
@@ -22,7 +52,12 @@ export default function Loans(props) {
           paidOff: paidOff 
         }
       ])
-    
+    //time to save it to firebase
+    const timestamp = firebase.firestore.FieldValue.serverTimestamp()
+    const data = {goals: courseGoals, authorID: userId, createdAt: timestamp}
+    loansRef
+      .add(data)
+      .catch((error) => {alert(error)})
     setIsAddMode(false)
   }
 
@@ -31,10 +66,7 @@ export default function Loans(props) {
       .auth()
       .signOut()
       .then(() => {
-        //console.log('pressed it')
         props.navigation.navigate('Login',)
-        //props.extraData[1](null)
-        //console.log(props.extraData[1](null))
         props.navigation.reset({index:0, routes:[{name:'Login'}]})
       })
       .catch(error => {
@@ -50,6 +82,8 @@ export default function Loans(props) {
         setCourseGoals(currentGoals=>{
             return currentGoals.filter(goal => goal.id !== goalId)
         })
+        //delete loan from database
+        firebase.database().ref(goalId).remove()
    }
 
   return (

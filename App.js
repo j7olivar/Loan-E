@@ -1,10 +1,10 @@
 import 'react-native-gesture-handler'
-import React, { useState, useEffect, useContext, Image } from 'react';
+import React, { useState, useEffect } from 'react';
 import {NavigationContainer} from '@react-navigation/native'
 import {createStackNavigator} from '@react-navigation/stack'
 import {Login,Loans,Signup} from './Screens'
 import {decode,encode} from 'base-64' 
-import { StyleSheet, Text, View} from 'react-native';
+import { StyleSheet} from 'react-native';
 import {firebase} from './Constants/ApiKeys'
 
 if (!global.btoa){global.btoa=encode}
@@ -50,7 +50,7 @@ export default function App() {
             headerTintColor: 'white',
             headerTitleStyle: {fontWeight: 'bold',},
           }}>
-            {props => <Loans {...props} extraData={[user,setUser]} />}
+            {props => <Loans {...props} extraData={user} />}
           </Stack.Screen>
           <Stack.Screen 
             name="Login" 

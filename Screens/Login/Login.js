@@ -1,8 +1,7 @@
-import React, { useState, createContext} from 'react'
+import React, { useState} from 'react'
 import { Image, Text, TextInput, TouchableOpacity, View,StyleSheet } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import {firebase} from '../../Constants/ApiKeys'
-import {App} from './../../App'
 
 export default function Login({navigation}) {
     const [email, setEmail] = useState('')
@@ -28,9 +27,7 @@ export default function Login({navigation}) {
                             return;
                         }
                         const user = firestoreDocument.data()
-                        //console.log("this is where the error occurs")
                         navigation.navigate('Home', {user:user})
-                        //console.log("whats happening here")
                         navigation.reset({index:0, routes:[{name:'Home'}]})
                     })
                     .catch(error => {
