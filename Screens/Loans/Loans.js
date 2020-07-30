@@ -97,7 +97,7 @@ export default function Loans(props) {
         </TouchableOpacity>
       </View>
 
-      <View style ={{position:'absolute', left:375, top:10}}>
+      <View style ={{position:'absolute', left:300, top:10}}>
       <TouchableOpacity
         style = {styles.newLoanButton}
         onPress={()=>setIsAddMode(true)}>
