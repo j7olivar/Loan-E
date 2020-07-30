@@ -71,12 +71,16 @@ const HomeScreen = props => {
   const styles = StyleSheet.create({
     screen: {
       flex: 1,
+       //backgroundColor: '#060320'
     },
     title: {
+      //color: '#35CA96',
       fontSize: 22,
       fontWeight: 'bold',
+
     }
     
   });
 
   export default HomeScreen;
+

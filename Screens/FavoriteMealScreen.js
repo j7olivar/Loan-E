@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 
 const FavoriteMealScreen = props => {
     return(
-        <View style={styles.screen}>
+        <View style={styles.screen} >
             <Text>THIS ISNT DEVELOPED YET, USE YOUR IMAGINATION!</Text>
         </View>
     )

@@ -6,6 +6,7 @@ import {Login,Loans,Signup} from './Screens'
 import {decode,encode} from 'base-64' 
 import { StyleSheet} from 'react-native';
 import {firebase} from './Constants/ApiKeys'
+import Stacker from './navigator/appNavigator';
 
 if (!global.btoa){global.btoa=encode}
 if(!global.atob){global.atob=decode}
@@ -44,13 +45,8 @@ export default function App() {
       <Stack.Navigator>
         {user ? (
           <>
-          <Stack.Screen name="Home"
-          options={{
-            headerStyle:{backgroundColor:'#060320',},
-            headerTintColor: 'white',
-            headerTitleStyle: {fontWeight: 'bold',},
-          }}>
-            {props => <Loans {...props} extraData={user} />}
+          <Stack.Screen name="Home" options={{headerShown:false}}>
+           {props => <Stacker {...props} extraData={user} />}
           </Stack.Screen>
           <Stack.Screen 
             name="Login" 
