@@ -6,10 +6,10 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import { Colors } from '../components/Colors';
-import Faq from '../components/Faq';
-import Links from '../components/Links';
-import About from '../components/About';
+import { Colors } from '../../components/Colors';
+import Faq from '../../components/Faq';
+import Links from '../../components/Links';
+import About from '../../components/About';
 
 function ResourcesPage({ navigation }) {
 	return (

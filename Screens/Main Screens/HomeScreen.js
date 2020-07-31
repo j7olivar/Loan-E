@@ -1,10 +1,10 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TextInput, Button, Modal, ScrollView, FlatList } from 'react-native';
-import GoalItem from '../components/GoalItem';
-import GoalInput from '../components/GoalInput';
-import Header from '../components/Header';
-import { firebase } from '../Constants/ApiKeys';
+import GoalItem from '../../components/GoalItem';
+import GoalInput from '../../components/GoalInput';
+import Header from '../../components/Header';
+import { firebase } from '../../Constants/ApiKeys';
 
 const HomeScreen = (props) => {
 	const [ courseGoals, setCourseGoals ] = useState([]);
