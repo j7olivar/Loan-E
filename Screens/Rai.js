@@ -14,6 +14,7 @@ import About from '../components/About';
 function ResourcesPage({ navigation }) {
 	return (
 		<View>
+			
 			<View style={styles.box}>
 				<Text>FAQ</Text>
 				<Icon
