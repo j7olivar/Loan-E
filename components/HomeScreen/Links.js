@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { StyleSheet, View, Linking} from 'react-native';
-import { Colors } from './Colors'
-import Accordian from './Accordian'
+import { Colors } from '../Resources/Colors'
+import Accordian from '../Resources/Accordian'
 
 export default class Links extends Component {
 

@@ -1,8 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TextInput, Button, Modal, ScrollView, FlatList } from 'react-native';
-import GoalItem from '../../components/GoalItem';
-import GoalInput from '../../components/GoalInput';
+import GoalItem from '../../components/HomeScreen/GoalItem';
+import GoalInput from '../../components/HomeScreen/GoalInput';
 import Header from '../../components/Header';
 import { firebase } from '../../Constants/ApiKeys';
 

@@ -13,7 +13,7 @@ if(!global.atob){global.atob=decode}
 
 const Stack = createStackNavigator()
 
-const logNavigator =  () => {
+const LoginNavigator =  () => {
   const [loading, setLoading]=useState(true)
   const [user, setUser] = useState(null)
   
@@ -101,4 +101,4 @@ const styles = StyleSheet.create({
   
 });
 
-export default AppNavigator
+export default LoginNavigator

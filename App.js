@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import AppNavigator from './navigator/loginNavigator';
+import React from 'react';
+import LoginNavigator from './navigator/loginNavigator';
 
 export default function App() {
-	return (<AppNavigator />)
+	return <LoginNavigator />;
 }

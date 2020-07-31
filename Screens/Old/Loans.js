@@ -2,8 +2,8 @@ import 'react-native-gesture-handler'
 import React, { useState, useEffect} from 'react';
 import {TouchableOpacity} from 'react-native'
 import { StyleSheet, Text, View, TextInput, Button, Modal, ScrollView, FlatList } from 'react-native';
-import GoalItem from '../../components/GoalItem';
-import GoalInput from '../../components/GoalInput';
+import GoalItem from '../../components/HomeScreen/GoalItem';
+import GoalInput from '../../components/HomeScreen/GoalInput';
 import {firebase} from '../../Constants/ApiKeys'
 
 
