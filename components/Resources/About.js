@@ -6,7 +6,7 @@ function About() {
     return (
     <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
         <Text>
-            About Us
+            About Us, we are cool
         </Text>
     </View>
 )
