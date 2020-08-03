@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { Text, TextInput, Button, ScrollView, View, ImageBackground } from 'react-native'
-import styles from './styles.js'
+import styles from './LoanHomeStyles.js'
 
 export default function LoanHomeScreen({navigation}){
     
     
     return(
-    <ScrollView>
+    <ScrollView style={{backgroundColor: '#060320', flex: 1}}>
         
         <View style={styles.loanBoxes}>
 
@@ -17,6 +17,7 @@ export default function LoanHomeScreen({navigation}){
             
             <Text style={{
                 textAlign: 'center',
+                color: '#32c090'
             }}>
                 ___________________________________________________
             
@@ -45,6 +46,7 @@ export default function LoanHomeScreen({navigation}){
             
             <Text style={{
                 textAlign: 'center',
+                color: '#32c090'
             }}>
                 ___________________________________________________
             

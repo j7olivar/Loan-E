@@ -12,43 +12,51 @@ export default StyleSheet.create({
         height: 120,
         marginTop: 50,
         marginLeft: 30,
-        backgroundColor: '#ffffff',
+        borderColor: '#32c090',
+        borderWidth: 1,
+        backgroundColor: '#060320',
       },
 
       loanInside1: {
         fontWeight: 'bold',
         fontSize: 25,
         paddingLeft: 10,
-        paddingTop: 5
+        paddingTop: 5,
+        color: '#32c090'
       },
 
       loanInside2: {
         fontWeight: 'bold',
         fontSize: 25,
         paddingLeft: 80,
-        paddingTop: 5
+        paddingTop: 5,
+        color: '#32c090'
       },
 
       loanInside3: {
         paddingLeft: 18,
-        fontSize: 17
+        fontSize: 17,
+        color: '#32c090'
       },
 
       loanInside4: {
         paddingLeft: 28,
-        fontSize: 17
+        fontSize: 17,
+        color: '#32c090'
       },
 
       loanInside5: {
         paddingLeft: 18,
         fontSize: 17,
-        paddingTop: 7
+        paddingTop: 7,
+        color: '#32c090'
       },
 
       loanInside6: {
         paddingLeft: 28,
         fontSize: 17,
-        paddingTop: 7
+        paddingTop: 7,
+        color: '#32c090'
       },
 
     na: {

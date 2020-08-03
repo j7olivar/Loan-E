@@ -5,7 +5,8 @@ export default StyleSheet.create({
         paddingTop: 25,
         textAlign: 'center',
         fontWeight: 'bold',
-        fontSize: 25
+        fontSize: 25,
+        color: '#32c090'
     },
 
     textStyle: {
@@ -16,7 +17,8 @@ export default StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'center',
         fontSize: 40,
-        paddingTop: 60
+        paddingTop: 60,
+        color: '#32c090'
     },
 
     
@@ -39,13 +41,14 @@ export default StyleSheet.create({
         height: 48,
         borderRadius: 5,
         overflow: 'hidden',
-        backgroundColor: 'white',
+        backgroundColor: 'grey',
         marginTop: 10,
         marginBottom: 10,
         marginLeft: 30,
         marginRight: 30,
         paddingLeft: 16,
         fontSize: 20,
+        color: 'white'
     },
     button: {
         backgroundColor: '#788eec',

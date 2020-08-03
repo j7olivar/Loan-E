@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Text, TextInput, Button, ScrollView, View } from 'react-native'
 import styles from './LoanCalculatorStyles.js'
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 
 export default function LoanCalculatorScreen({navigation}) {
@@ -8,6 +9,10 @@ export default function LoanCalculatorScreen({navigation}) {
     const [months, setMonths] = useState(0);
     const [loanAmount, setLoanAmount] = useState(0);
     const [interestRate, setInterestRate] = useState(0);
+
+    const onFooterLinkPress = () => {
+        navigation.navigate('Calculator Results', {months: months, interestRate: interestRate, loanAmount: loanAmount})
+    }
 
     function getMonthlyPayments(months, interestRate, loanAmount){
         var monthlyIR = (interestRate * .01)/12;
@@ -19,20 +24,8 @@ export default function LoanCalculatorScreen({navigation}) {
         return monthlyPayments.toFixed(2);
     }
 
-    function getTotalPaid(months, interestRate, loanAmount){
-        var monthlyPayment = getMonthlyPayments(months, interestRate, loanAmount);
-        var totalPaid = monthlyPayment * months;
-        return totalPaid.toFixed(2); 
-    }
-
-    function getInterestPaid(months, interestRate, loanAmount){
-        var monthlyPayment = getMonthlyPayments(months, interestRate, loanAmount);
-        var interestPaid = (monthlyPayment * months) - loanAmount;
-        return interestPaid.toFixed(2); 
-    }
-
     return(
-        <ScrollView>
+        <ScrollView style={{backgroundColor: '#060320', flex: 1}}>
             <Text style={styles.formatText}>
                 Loan Amount
             </Text>
@@ -64,78 +57,18 @@ export default function LoanCalculatorScreen({navigation}) {
              style={styles.input}
              onChangeText ={interestRate => setInterestRate(interestRate)}/>
 
-            <Button style={{paddingTop: 50}} 
-            title="Calculate"
-            />
-
-            <Text style={{
-                textAlign: 'center',
-                paddingTop: 30
-            }}>
-                _________________________________________________________________
-            </Text>
-
-            <Text style={styles.monthlyPayments}>
-                Montly Payments
-            </Text>
-            
-            <Text style={{
-                textAlign: 'center',
-                fontSize: 50,
-                paddingTop: 30,
-                fontWeight: 'bold'
-            }}>
-                 ${getMonthlyPayments(months, interestRate, loanAmount)}
-            </Text>
-            
-            <View style={{flexDirection: 'row'}}>
-
-                <Text style={{
-                    fontSize: 25,
-                    paddingTop: 40,
-                    paddingLeft: 20,
-                    fontWeight: 'bold'
-                }}> 
-                    Total Paid    
-                </Text>
-
-                <Text style={{
-                    fontSize: 25,
-                    paddingTop: 40,
-                    paddingLeft: 150,
-                    fontWeight: 'bold'
+            <TouchableOpacity>
+                <Text onPress={onFooterLinkPress}
+                style={{
+                    fontWeight: 'bold',
+                    fontSize: 20,
+                    color: '#32c090',
+                    textAlign: 'center',
+                    paddingTop: 20
                 }}>
-                    ${getTotalPaid(months, interestRate, loanAmount)}
+                    Calculate
                 </Text>
-            </View>
-
-            <Text style={{
-                textAlign: 'center',
-            }}>
-                ___________________________________________________________
-            </Text>
-
-            <View style={{flexDirection: 'row'}}>
-
-                <Text style={{
-                    fontSize: 25,
-                    paddingTop: 15,
-                    paddingLeft: 20,
-                    fontWeight: 'bold'
-                }}> 
-                    Total Interest   
-                </Text>
-
-                <Text style={{
-                    fontSize: 25,
-                    paddingTop: 15,
-                    paddingLeft: 112,
-                    fontWeight: 'bold'
-                }}>
-                    ${getInterestPaid(months, interestRate, loanAmount)}
-                </Text>
-            </View>
-
+            </TouchableOpacity>
         </ScrollView>
     )
 }

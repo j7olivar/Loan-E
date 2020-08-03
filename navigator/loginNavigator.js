@@ -7,6 +7,9 @@ import {decode,encode} from 'base-64'
 import { StyleSheet} from 'react-native';
 import {firebase} from '../Constants/ApiKeys'
 import Stacker from '../navigator/appNavigator';
+import  LoanCalculatorScreen  from '../Screens/LoanScreens/LoanCalculator.js'
+import  LoanHomeScreen  from '../Screens/LoanScreens/LoanHome.js'
+import  LoanCalculatorResults from '../Screens/LoanScreens/LoanCalculatorResults.js'
 
 if (!global.btoa){global.btoa=encode}
 if(!global.atob){global.atob=decode}
@@ -86,6 +89,27 @@ const LoginNavigator =  () => {
           </>
 
         )}
+        <Stack.Screen name="Loan Calculator"
+        options={{
+          headerStyle:{backgroundColor:'#32c090',},
+          headerTintColor: 'black',
+          headerTitleStyle: {fontWeight: 'bold',}
+        }}
+        component={LoanCalculatorScreen} />
+        <Stack.Screen name="Loan Home" 
+        options={{
+          headerStyle:{backgroundColor:'#32c090',},
+          headerTintColor: 'black',
+          headerTitleStyle: {fontWeight: 'bold',}
+        }}
+        component={LoanHomeScreen} />
+        <Stack.Screen name="Calculator Results" 
+        options={{
+              headerStyle:{backgroundColor:'#32c090',},
+              headerTintColor: 'black',
+              headerTitleStyle: {fontWeight: 'bold',}
+            }}
+        component={LoanCalculatorResults} />
       </Stack.Navigator>
     </NavigationContainer>
   )

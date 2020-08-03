@@ -6,12 +6,28 @@ import GoalInput from '../../components/HomeScreen/GoalInput';
 import Header from '../../components/Header';
 import { firebase } from '../../Constants/ApiKeys';
 
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import LoanCalculatorScreen from '../LoanScreens/LoanCalculator.js';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+
+const Stack = createStackNavigator();
+
+
 const HomeScreen = (props) => {
 	const [ courseGoals, setCourseGoals ] = useState([]);
 	const [ isAddMode, setIsAddMode ] = useState(false);
 
 	const userId = props.extraData.id;
 	const loansRef = firebase.firestore().collection('goals');
+
+	const onFooterLinkPress = () => {
+		props.navigation.navigate('Loan Calculator')
+	  }
+
+	  const onFooterLinkPress2 = () => {
+		props.navigation.navigate('Loan Home')
+	  }
 
 	useEffect(() => {
 		let isMounted = true;
@@ -100,6 +116,31 @@ const HomeScreen = (props) => {
 					)}
 				/>
 				<Button title="Add New Loan" onPress={() => setIsAddMode(true)} />
+				
+				<TouchableOpacity title='Loan Calculator' onPress={onFooterLinkPress}> 
+					<Text style={{
+						fontWeight: 'bold',
+						fontSize: 20,
+						color: '#32c090',
+						textAlign: 'center',
+						paddingTop: 20
+					}}>
+						Loan Calculator
+					</Text>
+				</TouchableOpacity>
+
+				<TouchableOpacity title='Loan Calculator' onPress={onFooterLinkPress2}> 
+					<Text style={{
+						fontWeight: 'bold',
+						fontSize: 20,
+						color: '#32c090',
+						textAlign: 'center',
+						paddingTop: 20
+					}}>
+						Loan Home Screen Prototype
+					</Text>
+				</TouchableOpacity>
+
 			</View>
 			<View style={styles.logout}>
 				<Button style={styles.logout} title="Logout" onPress={() => onLogoutPress()} />
