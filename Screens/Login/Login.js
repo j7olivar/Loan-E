@@ -77,7 +77,7 @@ export default function Login({navigation}) {
                 <View style= {{fontSize: 16,color: 'red'}}>
                     <Text style = {styles.footerText}>
                         Don't have an account? 
-                    <Text onPress={onFooterLinkPress} 
+                    <Text onPress={()=>onFooterLinkPress()} 
                         style = {styles.signupText}> Sign up</Text>
                     </Text>
                 </View>
