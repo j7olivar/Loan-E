@@ -2,8 +2,6 @@ import React, { useState} from 'react'
 import { Image, Text, TextInput, TouchableOpacity, View,StyleSheet } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import {firebase} from '../../Constants/ApiKeys'
-import {MaterialCommunityIcons as Icon} from '@expo/vector-icons'
-
 
 export default function Login({navigation}) {
     const [email, setEmail] = useState('')
@@ -60,17 +58,14 @@ export default function Login({navigation}) {
                 />
                 
                 <TextInput 
-                    style={styles.input}
-                    placeholder='Password'
-                    placeholderTextColor='gray'
-                    onChangeText={(text) => setPassword(text)}
-                    value={password}
-                    underlineColorAndroid = 'transparent'
-                    autoCapitalize='none'
-                    secureTextEntry={true}
+                style={styles.input}
+                placeholder='Password'
+                placeholderTextColor='gray'
+                onChangeText={(text) => setPassword(text)}
+                value={password}
+                underlineColorAndroid = 'transparent'
+                autoCapitalize='none'
                 />
-                
-                
 
                 <TouchableOpacity
                 style = {styles.button}
@@ -78,14 +73,16 @@ export default function Login({navigation}) {
                 <Text style = {styles.buttonText}>Log in</Text>
                 </TouchableOpacity>
 
-                <View style= {{fontSize: 16,color: '#2e2e2d'}}>
+                <View style= {{fontSize: 16,color: 'red'}}>
                     <Text style = {styles.footerText}>
                         Don't have an account? 
                     <Text onPress={onFooterLinkPress} 
                         style = {styles.signupText}> Sign up</Text>
                     </Text>
                 </View>
+
             </KeyboardAwareScrollView>
+            
         </View>
     )
 }
@@ -130,10 +127,8 @@ const styles = StyleSheet.create({
     },
     footerText:{
         flex: 1,
-        alignItems: "center",
-        bottom:-75,
-        position:'absolute',
-        paddingLeft:75,
+        textAlign: 'center',
+        paddingTop: 20,
         color:'white'
     },
     signupText:{
