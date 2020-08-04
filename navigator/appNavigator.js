@@ -9,20 +9,35 @@ import { StyleSheet, Text, View } from 'react-native';
 import HomeScreen from '../Screens/Main Screens/HomeScreen';
 import Rai from '../Screens/Main Screens/Rai';
 
+
 import { StatusBar } from 'expo-status-bar';
 import * as React from 'react';
 import FavoriteMealScreen from '../Screens/Main Screens/FavoriteMealScreen';
 import FilterScreen from '../Screens/Old/FilterScreen';
+import {Ionicons} from '@expo/vector-icons'
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const Stacker = (props) => {
 	return (
-		<Tab.Navigator>
-			<Tab.Screen name="Loan Calculator" {...props} component={() => <HomeScreen {...props} />} />
-			<Tab.Screen name="Resources" {...props} component={() => <Rai {...props} />} />
-			<Tab.Screen name="SECRET DONT LOOK" {...props} component={() => <FavoriteMealScreen {...props} />} />
+		<Tab.Navigator
+			tabBarOptions={{
+				activeTintColor:'#0da935'
+			}}
+		>
+			<Tab.Screen 
+				name="Loan Calculator" {...props} 
+				component={() => <HomeScreen {...props} />} 
+				options={{tabBarIcon: (props)=> <Ionicons name = 'ios-calculator' size={props.size} color = {props.color}/>}}/>
+			<Tab.Screen 
+				name="Resources" {...props} 
+				component={() => <Rai {...props} />} 
+				options={{tabBarIcon: (props)=> <Ionicons name = 'ios-information-circle-outline' size={props.size} color = {props.color}/>}}/>
+			<Tab.Screen 
+				name="SECRET DONT LOOK" {...props} 
+				component={() => <FavoriteMealScreen {...props} />} 
+				options={{tabBarIcon: (props)=> <Ionicons name = 'ios-egg' size={props.size} color = {props.color}/>}}/>
 		</Tab.Navigator>
 	);
 };

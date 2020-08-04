@@ -93,7 +93,7 @@ const HomeScreen = (props) => {
 			return currentGoals.filter((goal) => goal.id !== goalId);
 		});
 
-		firebase.database().ref(goalId).remove()
+		//firebase.database().ref(goalId).remove()
 	};
 
 	return (
