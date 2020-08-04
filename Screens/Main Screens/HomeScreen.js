@@ -88,9 +88,12 @@ const HomeScreen = (props) => {
 
 	const removeGoalHandler = (goalId) => {
 		setCourseGoals((currentGoals) => {
+			
+			loansRef.doc(goalId).delete().then(console.log('removed correctly'))
 			return currentGoals.filter((goal) => goal.id !== goalId);
 		});
-		firebase.database().ref(goalId).remove();
+
+		firebase.database().ref(goalId).remove()
 	};
 
 	return (

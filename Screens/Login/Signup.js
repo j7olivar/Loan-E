@@ -84,6 +84,7 @@ export default function Signup({navigation}){
                 value={password}
                 underlineColorAndroid='transparent'
                 autoCapitalize='none'
+                secureTextEntry= {true}
             />
 
             <TextInput
@@ -94,6 +95,7 @@ export default function Signup({navigation}){
                value={confirmPW}
                underlineColorAndroid='transparent'
                autoCapitalize='none' 
+               secureTextEntry= {true}
             />
             <TouchableOpacity
                 style={styles.button}

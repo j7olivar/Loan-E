@@ -65,6 +65,7 @@ export default function Login({navigation}) {
                 value={password}
                 underlineColorAndroid = 'transparent'
                 autoCapitalize='none'
+                secureTextEntry= {true}
                 />
 
                 <TouchableOpacity
