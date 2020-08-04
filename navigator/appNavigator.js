@@ -8,6 +8,7 @@ import MealDetailScreen from '../Screens/Old/MealDetailScreen';
 import { StyleSheet, Text, View } from 'react-native';
 import HomeScreen from '../Screens/Main Screens/HomeScreen';
 import Rai from '../Screens/Main Screens/Rai';
+import Loans from '../Screens/Main Screens/DanielHomeScreen'
 
 import { StatusBar } from 'expo-status-bar';
 import * as React from 'react';
@@ -23,6 +24,7 @@ const Stacker = (props) => {
 			<Tab.Screen name="Loan Calculator" {...props} component={() => <HomeScreen {...props} />} />
 			<Tab.Screen name="Resources" {...props} component={() => <Rai {...props} />} />
 			<Tab.Screen name="SECRET DONT LOOK" {...props} component={() => <FavoriteMealScreen {...props} />} />
+			<Tab.Screen name="Daniel Home Screen" {...props} component={()=> <Loans {...props} />} />
 		</Tab.Navigator>
 	);
 };
