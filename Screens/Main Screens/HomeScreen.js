@@ -5,6 +5,7 @@ import GoalItem from '../../components/HomeScreen/GoalItem';
 import GoalInput from '../../components/HomeScreen/GoalInput';
 import Header from '../../components/Header';
 import { firebase } from '../../Constants/ApiKeys';
+import FavoriteMealScreen from './FavoriteMealScreen'
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -114,7 +115,7 @@ const HomeScreen = (props) => {
 	};
 
 	return (
-		<View style={styles.screen}>
+		<ScrollView style={styles.screen}>
 			<Header title="Student Loan Calculator" />
 
 			<View style={{ padding: 20 }}>
@@ -136,49 +137,59 @@ const HomeScreen = (props) => {
 					)}
 				/>
 				<Button title="Add New Loan" onPress={() => setIsAddMode(true)} />
+				<Text style={styles.title}> SHINY GRAPH/SLIDER: </Text>
+				<FavoriteMealScreen/>
 				
-				<TouchableOpacity title='Loan Calculator' onPress={onFooterLinkPress}> 
-					<Text style={{
-						fontWeight: 'bold',
-						fontSize: 20,
-						color: '#32c090',
-						textAlign: 'center',
-						paddingTop: 20
-					}}>
-						Loan Calculator
-					</Text>
-				</TouchableOpacity>
+				
 
-				<TouchableOpacity title='Loan Calculator' onPress={onFooterLinkPress2}> 
-					<Text style={{
-						fontWeight: 'bold',
-						fontSize: 20,
-						color: '#32c090',
-						textAlign: 'center',
-						paddingTop: 20
-					}}>
-						Loan Home Screen Prototype
-					</Text>
-				</TouchableOpacity>
+<TouchableOpacity title='Loan Calculator' onPress={onFooterLinkPress}> 
+	<Text style={{
+		fontWeight: 'bold',
+		fontSize: 20,
+		color: '#32c090',
+		textAlign: 'center',
+		paddingTop: 20
+	}}>
+		Loan Calculator
+	</Text>
+</TouchableOpacity>
 
-				<TouchableOpacity title= 'Delete User' onPress={onDeleteAccountPress}>
-					<Text style={{
-						fontWeight: 'bold',
-						fontSize: 20,
-						color: '#32c090',
-						textAlign: 'center',
-						paddingTop: 20
-					}}>
-						Delete Account
-					</Text>
-				</TouchableOpacity>
+<TouchableOpacity title='Loan Calculator' onPress={onFooterLinkPress2}> 
+	<Text style={{
+		fontWeight: 'bold',
+		fontSize: 20,
+		color: '#32c090',
+		textAlign: 'center',
+		paddingTop: 20
+	}}>
+		Loan Home Screen Prototype
+	</Text>
+</TouchableOpacity>
+
+<TouchableOpacity title= 'Delete User' onPress={onDeleteAccountPress}>
+	<Text style={{
+		fontWeight: 'bold',
+		fontSize: 20,
+		color: '#32c090',
+		textAlign: 'center',
+		paddingTop: 20
+	}}>
+		Delete Account
+	</Text>
+</TouchableOpacity>
+
 
 			</View>
 			<View style={styles.logout}>
 				<Button style={styles.logout} title="Logout" onPress={() => onLogoutPress()} />
 			</View>
-		</View>
+
+
+			
+		</ScrollView>
+
 	);
+
 };
 const styles = StyleSheet.create({
 	screen: {
@@ -188,6 +199,7 @@ const styles = StyleSheet.create({
 	title: {
 		//color: '#35CA96',
 		fontSize: 22,
+		margin:15,
 		fontWeight: 'bold'
 	},
 	logout: {
@@ -197,7 +209,9 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: 'flex-end'
 		//marginBottom: 500
-	}
+	},
+
 });
 
 export default HomeScreen;
+
