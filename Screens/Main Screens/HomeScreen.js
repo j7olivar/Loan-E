@@ -23,11 +23,26 @@ const HomeScreen = (props) => {
 
 	const onFooterLinkPress = () => {
 		props.navigation.navigate('Loan Calculator')
-	  }
+	}
 
-	  const onFooterLinkPress2 = () => {
+	const onFooterLinkPress2 = () => {
 		props.navigation.navigate('Loan Home')
-	  }
+	}
+	
+	const onDeleteAccountPress = () => {
+		console.log(props.extraData)
+		/*
+		firebase.database().ref('users/'+userId).remove()
+		firebase.database().ref('goals')
+		firebase.auth().currentUser.delete()
+		.then(function(){
+			props.navigation.navigate('Login');
+			props.navigation.reset({ index: 0, routes: [ { name: 'Login' } ] });
+		}).catch(function(error){
+			console.log('there is something wrong')
+		})
+		*/
+	}
 
 	useEffect(() => {
 		let isMounted = true;
@@ -72,6 +87,8 @@ const HomeScreen = (props) => {
 			...courseGoals,
 			{
 				id: Math.random().toString(),
+				//possible fix to deleting new loans
+				//id:userId.toString(),
 				value: goalTitle,
 				interest: interestRate,
 				years: years,
@@ -141,6 +158,18 @@ const HomeScreen = (props) => {
 						paddingTop: 20
 					}}>
 						Loan Home Screen Prototype
+					</Text>
+				</TouchableOpacity>
+
+				<TouchableOpacity title= 'Delete User' onPress={onDeleteAccountPress}>
+					<Text style={{
+						fontWeight: 'bold',
+						fontSize: 20,
+						color: '#32c090',
+						textAlign: 'center',
+						paddingTop: 20
+					}}>
+						Delete Account
 					</Text>
 				</TouchableOpacity>
 
