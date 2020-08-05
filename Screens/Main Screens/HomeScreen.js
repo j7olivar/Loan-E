@@ -28,6 +28,11 @@ const HomeScreen = (props) => {
 	const onFooterLinkPress2 = () => {
 		props.navigation.navigate('Loan Home')
 	}
+
+	const onFooterLinkPress3 = () => {
+		props.navigation.navigate('Budget')
+	}
+
 	
 	const onDeleteAccountPress = () => {
 		console.log(props.extraData)
@@ -158,6 +163,19 @@ const HomeScreen = (props) => {
 						paddingTop: 20
 					}}>
 						Loan Home Screen Prototype
+					</Text>
+				</TouchableOpacity>
+
+				
+				<TouchableOpacity title='Budget Page' onPress={onFooterLinkPress3}> 
+					<Text style={{
+						fontWeight: 'bold',
+						fontSize: 20,
+						color: '#32c090',
+						textAlign: 'center',
+						paddingTop: 20
+					}}>
+						Budgeting
 					</Text>
 				</TouchableOpacity>
 
