@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Header from '../../components/Header';
 import {Dimensions} from 'react-native';
@@ -10,14 +10,28 @@ import {
   ContributionGraph,
   StackedBarChart
 } from "react-native-chart-kit";
+import Slider from '@react-native-community/slider';
 
 
 
   const FavoriteMealScreen = (props) => {
+
+    const [ sliderValue, setSliderValue ] = useState(0);
+
     return (
       <View style={styles.screen}>
         <Header title="Student Loan Calculator" />
         <View style={styles.screen}>
+        <Slider
+    style={{width: 200, height: 40}}
+    minimumValue={1}
+    maximumValue={30}
+    step={1}
+    minimumTrackTintColor="#FFFFFF"
+    maximumTrackTintColor="#000000"
+    onValueChange={value => setSliderValue(value)}
+  />
+  <Text>Value = {sliderValue}</Text>
         <LineChart
   data={{
     labels: [
@@ -30,7 +44,7 @@ import {
     ],
     datasets: [
       {
-        data: [20, 45, 28, 80, 99, 43],
+        data: [100, 45, 28, 80, 99, 43],
         strokeWidth: 2,
       },
     ],
