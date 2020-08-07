@@ -14,7 +14,7 @@ function Settings() {
             <NotificationSwitch />
 
             <View style={styles.box}>
-                <Text>Export to CSV</Text>
+                <Text style={styles.text}>Export to CSV</Text>
                 <Icon 
                 name={'keyboard-arrow-right'} 
                 size={30} 
@@ -23,7 +23,7 @@ function Settings() {
             </View>
             
             <View style={styles.box}>
-                <Text>Bank Account</Text>
+                <Text style={styles.text}>Bank Account</Text>
                 <Icon 
                 name={'keyboard-arrow-right'} 
                 size={30} 
@@ -32,7 +32,7 @@ function Settings() {
             </View>
             
             <View style={styles.box}>
-                <Text>Anonymous Data</Text>
+                <Text style={styles.text}>Anonymous Data</Text>
                 <Icon 
                 name={'keyboard-arrow-right'} 
                 size={30} 
@@ -40,7 +40,7 @@ function Settings() {
                 />
             </View>
             <View style={styles.box}>
-                <Text>Replay Tutorial</Text>
+                <Text style={styles.text}>Replay Tutorial</Text>
                 <Icon 
                 name={'keyboard-arrow-right'} 
                 size={30} 
@@ -73,8 +73,12 @@ const styles = StyleSheet.create({
     delete: {
         color: 'red',
         fontWeight: 'bold',
-        fontSize: 18
-    }
+        fontSize: 16
+    },
+    text: {
+        fontSize: 15
+    },
+    
 })
 
 export default Settings;

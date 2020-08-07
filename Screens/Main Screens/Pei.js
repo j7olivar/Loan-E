@@ -30,8 +30,32 @@ function ProfilePage({ navigation }) {
                 Awards
               </Text>
               <View style={styles.square}>
-                <Emoji name="coffee" style={{fontSize: 50}} />
+                <View style={styles.row}>
+                  <Emoji name="coffee" style={styles.emoji} />
+                  <Emoji name="coffee" style={styles.emoji} />
+                  <Emoji name="coffee" style={styles.emoji} />
+                  <Emoji name="coffee" style={styles.emoji} />
+                  <Emoji name="coffee" style={styles.emoji} />
+                </View>
+                
+                <View style={styles.row}>
+                  <Emoji name="coffee" style={styles.emoji} />
+                  <Emoji name="coffee" style={styles.emoji} />
+                  <Emoji name="coffee" style={styles.emoji} />
+                  <Emoji name="coffee" style={styles.emoji} />
+                  <Emoji name="coffee" style={styles.emoji} />
+                </View>
+
+                <View style={styles.row}>
+                  <Emoji name="coffee" style={styles.emoji} />
+                  <Emoji name="coffee" style={styles.emoji} />
+                  <Emoji name="coffee" style={styles.emoji} />
+                  <Emoji name="coffee" style={styles.emoji} />
+                  <Emoji name="coffee" style={styles.emoji} />
+                </View>
+
               </View>
+
             </View>
 
         </View>
@@ -100,6 +124,17 @@ const styles = StyleSheet.create({
       marginTop: 10,
       alignSelf: 'center',
       borderColor: 'black',
+      
+      paddingTop: 8,
+      paddingHorizontal: 20,
+    },
+    emoji: {
+      fontSize: 42,
+      paddingRight: 20,
+      flexDirection: 'row'
+    },
+    row: {
+      flexDirection: 'row'
     }
   });
 

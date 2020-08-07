@@ -21,7 +21,7 @@ const LogOut = () => {
                 style={{
                   padding: 1,
                   margin: 11,
-                  borderBottomColor: 'black',
+                  borderBottomColor: 'gray',
                   borderBottomWidth: 1,
                   width: 240
                 }}
@@ -40,7 +40,7 @@ const LogOut = () => {
                 style={{
                   padding: 2,
                   margin: 11,
-                  borderBottomColor: 'black',
+                  borderBottomColor: 'gray',
                   borderBottomWidth: 1,
                   width: 240
                 }}
@@ -52,7 +52,7 @@ const LogOut = () => {
                   setModalVisible(!modalVisible);
                 }}
               >
-                <Text style={styles.textStyle}>Cancel</Text>
+                <Text style={styles.textStyle1}>Cancel</Text>
               </TouchableHighlight>
 
             </View>
@@ -109,13 +109,22 @@ const styles = StyleSheet.create({
     textStyle: {
       fontSize: 16,
       paddingTop: 8,
+      color: "red",
+      fontWeight: 'bold',
+      textAlign: "center"
+    },
+    textStyle1: {
+      fontSize: 16,
+      paddingTop: 8,
       color: "black",
       textAlign: "center"
     },
     modalText: {
       marginBottom: 7,
       marginTop: 0,
-      fontSize: 18,
+      fontSize: 16,
+      fontWeight: 'bold',
+      color: 'black',
     }
     
   });

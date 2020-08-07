@@ -42,7 +42,7 @@ const Stacker = (props) => {
 			<Tab.Screen 
 				name="Profile" 
 				component={() => <Pei {...props} />} 
-				options={{tabBarIcon: (props)=> <Ionicons name = 'ios-egg' size={props.size} color = {props.color}/>}}/>
+				options={{tabBarIcon: (props)=> <Ionicons name = 'ios-contact' size={props.size} color = {props.color}/>}}/>
 		</Tab.Navigator>
 	);
 };
