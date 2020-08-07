@@ -50,6 +50,64 @@ const HomeScreen = (props) => {
 		*/
 	}
 
+	const [userOut, setUserOut] = useState("");
+
+	const pickDocument = async () => {
+		try {
+			let input = await DocumentPicker.getDocumentAsync({
+				type: "text/plain",
+			});
+			setUserOut(await FileSystem.readAsStringAsync(input.uri));
+		} catch (error) {
+			console.log(error);
+		}
+
+		createLoans();
+	};
+
+	const fileParser = () => {
+		const parsedLoans = [];
+		var newUserOut = userOut;
+
+		if (newUserOut.length == 0) {
+			return;
+		}
+		//remove the grants
+		var grantPos = newUserOut.search("Grant Type:");
+		var pos = newUserOut.search("Loan Type:");
+		//hopefully just the loans now
+		newUserOut = newUserOut.slice(pos, grantPos);
+
+		while (newUserOut.length > 0) {
+			var lastPos = newUserOut.lastIndexOf("Loan Type:");
+			parsedLoans.push(newUserOut.slice(lastPos, newUserOut.length));
+			newUserOut = newUserOut.slice(0, lastPos);
+		}
+
+		return parsedLoans;
+	};
+
+	const createLoans = () => {
+    var newLoans = fileParser();
+    //console.log(newLoans)
+    const title= 'Loan Amount:$'
+    const interest = 'Loan Interest Rate:'
+
+    for(let i =0; i < newLoans.length; i++)
+    {
+      var loan = newLoans[i]
+      var goalTitle=loan.substring(loan.indexOf(title)+title.length,loan.indexOf('Loan Disbursed Amount:'))
+      console.log("goalTitle: " + goalTitle)
+      var interestRate = loan.substring(loan.indexOf(interest)+interest.length,loan.indexOf('Loan Repayment Plan Type'))
+      console.log("Interest rate: "+ interestRate)
+      var years = 0
+      var paidOff = 0
+
+      addGoalHandler(goalTitle,interestRate,years,paidOff)
+    }
+    
+	};
+
 	useEffect(() => {
 		let isMounted = true;
 
