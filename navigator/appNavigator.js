@@ -16,6 +16,7 @@ import * as React from 'react';
 import FavoriteMealScreen from '../Screens/Main Screens/FavoriteMealScreen';
 import FilterScreen from '../Screens/Old/FilterScreen';
 import {Ionicons} from '@expo/vector-icons'
+import BudgetScreen from '../Screens/BudgetScreens/Budget';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -32,13 +33,14 @@ const Stacker = (props) => {
 				component={() => <HomeScreen {...props} />} 
 				options={{tabBarIcon: (props)=> <Ionicons name = 'ios-calculator' size={props.size} color = {props.color}/>}}/>
 			<Tab.Screen 
+				name="Budget Screen" 
+				component={() => <BudgetScreen {...props} />} 
+				options={{tabBarIcon: (props)=> <Ionicons name = 'ios-egg' size={props.size} color = {props.color}/>}}/>
+			<Tab.Screen 
 				name="Resources" 
 				component={() => <Rai {...props} />} 
 				options={{tabBarIcon: (props)=> <Ionicons name = 'ios-information-circle-outline' size={props.size} color = {props.color}/>}}/>
-			<Tab.Screen 
-				name="SECRET DONT LOOK" 
-				component={() => <FavoriteMealScreen {...props} />} 
-				options={{tabBarIcon: (props)=> <Ionicons name = 'ios-egg' size={props.size} color = {props.color}/>}}/>
+		
 			<Tab.Screen 
 				name="Profile" 
 				component={() => <Pei {...props} />} 

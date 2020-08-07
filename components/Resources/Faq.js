@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { StyleSheet, View} from 'react-native';
+import { StyleSheet, View, ScrollView} from 'react-native';
 import { Colors } from './Colors'
 import Accordian from './Accordian'
 
@@ -39,9 +39,9 @@ export default class Faq extends Component {
   
     render() {
       return (
-        <View style={styles.container}>
+        <ScrollView style={styles.container}>
           { this.renderAccordians() }
-        </View>
+        </ScrollView>
       );
     }
   
