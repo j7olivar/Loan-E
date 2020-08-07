@@ -1,10 +1,11 @@
-import React, { useEffect, useState, useRef } from 'react'
-import { Animated, SafeAreaView, FlatList, StyleSheet, StatusBar, Text, TextInput, Button, ScrollView, View, ImageBackground, Dimensions } from 'react-native'
-import styles from './BudgetStyles.js'
-import SlidingUpPanel from 'rn-sliding-up-panel'
+import React, { useEffect, useState, useRef } from 'react';
+import { Image, Animated, SafeAreaView, FlatList, StyleSheet, StatusBar, Text, TextInput, Button, ScrollView, View, ImageBackground, Dimensions } from 'react-native'
+import styles from './BudgetStyles.js';
+import SlidingUpPanel from 'rn-sliding-up-panel';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export default function BudgetScreen({navigation}){
-    
+
     const {width,height} = Dimensions.get('window')
 
     const ModalRef = useRef(null)
@@ -20,18 +21,23 @@ export default function BudgetScreen({navigation}){
           amount: 'Amount here',
           credit: true
         },
-      ]
+    ]
 
     return(
     <View style={{backgroundColor: '#000', flex: 1}}>
         
-        <Text style={styles.budgetTitle}>Budgeting</Text>
+        <View style={styles.budgetTitle}>
+            <Text style={{fontWeight: 'bold', fontSize: 26, color: '#32c090'}}>Budget </Text>
+            <TouchableOpacity onPress={() => navigation.navigate('Plaid Link')}>
+            <Image style={{width: 30, height: 30, alignSelf: 'center'}} source = {require('../../assets/linkIcon.png')}/>
+            </TouchableOpacity>
+        </View>
 
         <View style={styles.budgetBox1}>
 
             <View style={{flexDirection: 'row'}}>
                 <Text style={styles.budgetBold}>Total Income: </Text>
-                <Text style={styles.budgetNormal}>$4500.00</Text>
+                <Text style={styles.budgetNormal}>$0</Text>
             </View>
             
             <Text style={styles.budgetBold}>Spendings:</Text>
@@ -86,7 +92,7 @@ export default function BudgetScreen({navigation}){
                         renderItem={({item}) => {
                             return(
                                 <View style={styles.panelItemContainer}>
-
+                                    <Text style={styles.budgetNormal}>More to come!</Text>
                                 </View>
                             )
                         }}
@@ -98,5 +104,6 @@ export default function BudgetScreen({navigation}){
             </SlidingUpPanel>
         </View>
 
-    </View>)
+    </View>
+    )
 }

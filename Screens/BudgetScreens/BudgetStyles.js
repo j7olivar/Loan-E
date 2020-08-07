@@ -8,11 +8,13 @@ export default StyleSheet.create({
       },
 
       budgetTitle: {
-        fontWeight: 'bold',
-        fontSize: 26,
-        paddingLeft: 23,
-        paddingTop: 34,
-        color: '#32c090'
+        width: 334,
+        height: 30,
+        marginTop: 34,
+        marginLeft: 23,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'flex-start',
       },
 
       budgetBox1: {
@@ -66,19 +68,4 @@ export default StyleSheet.create({
           alignItems: 'center',
           marginBottom: 20
       },
-
-    na: {
-        width: 60,
-        height: 60,
-        borderRadius: 60 / 2,
-        backgroundColor: 'orange',
-        alignItems: 'center',
-        textAlign: 'center',
-        fontWeight: 'bold',
-        color: 'white',
-        fontSize: 15,
-        textAlignVertical: 'center',
-        marginRight: 10,
-        overflow: 'hidden',
-    },
 })

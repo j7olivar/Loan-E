@@ -11,6 +11,7 @@ import  LoanCalculatorScreen  from '../Screens/LoanScreens/LoanCalculator.js'
 import  LoanHomeScreen  from '../Screens/LoanScreens/LoanHome.js'
 import  LoanCalculatorResults from '../Screens/LoanScreens/LoanCalculatorResults.js'
 import BudgetScreen from '../Screens/BudgetScreens/Budget.js'
+import PlaidScreen from '../Screens/BudgetScreens/Plaid.js'
 
 if (!global.btoa){global.btoa=encode}
 if(!global.atob){global.atob=decode}
@@ -118,6 +119,13 @@ const LoginNavigator =  () => {
               headerTitleStyle: {fontWeight: 'bold',}
             }}
         component={BudgetScreen} />
+        <Stack.Screen name="Plaid Link" 
+        options={{
+              headerStyle:{backgroundColor:'#32c090',},
+              headerTintColor: 'black',
+              headerTitleStyle: {fontWeight: 'bold',}
+            }}
+        component={PlaidScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   )
