@@ -297,5 +297,3 @@ Temporary Items
 .apdisk
 
 # End of https://www.toptal.com/developers/gitignore/api/reactnative
-package-lock.json
-package.json
