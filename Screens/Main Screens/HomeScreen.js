@@ -1,26 +1,23 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TextInput, Button, Modal, ScrollView, FlatList, Alert } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button, Modal, ScrollView, FlatList } from 'react-native';
 import GoalItem from '../../components/HomeScreen/GoalItem';
 import GoalInput from '../../components/HomeScreen/GoalInput';
 import Header from '../../components/Header';
 import { firebase } from '../../Constants/ApiKeys';
+import FavoriteMealScreen from './FavoriteMealScreen'
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import LoanCalculatorScreen from '../LoanScreens/LoanCalculator.js';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import AsyncStorage from '@react-native-community/async-storage';
 
 const Stack = createStackNavigator();
 
 
 const HomeScreen = (props) => {
-	const [goalCounter, setGoalCounter] = useState(0)
 	const [ courseGoals, setCourseGoals ] = useState([]);
-	const [docIDS, setDocIDS] = useState([])
 	const [ isAddMode, setIsAddMode ] = useState(false);
-	const [pw, setPW] = useState('')
 
 	const userId = props.extraData.id;
 	const loansRef = firebase.firestore().collection('goals');
@@ -32,57 +29,97 @@ const HomeScreen = (props) => {
 	const onFooterLinkPress2 = () => {
 		props.navigation.navigate('Loan Home')
 	}
+
+	const onFooterLinkPress3 = () => {
+		props.navigation.navigate('Budget')
+	}
+
 	
-	const getPW = async () => {
-		try {
-			const currPW = await AsyncStorage.getItem('password')
-			if(currPW !== null){
-				setPW(currPW)
-			}
-			
-		}catch (error){console.log(error)}
-	}
-
-	const clearPW = async() => {
-		try{
-			await AsyncStorage.removeItem('password')
-			console.log('removed successfully')
-		}catch(error){console.log(error)}
-	}
-
-	const onDeleteAccountPress = () => {		
+	const onDeleteAccountPress = () => {
+		console.log(props.extraData)
+		/*
 		firebase.database().ref('users/'+userId).remove()
-		var userReauth = firebase.auth().currentUser
-		const credential = firebase.auth.EmailAuthProvider.credential(userReauth.email,pw)
-		userReauth.reauthenticateWithCredential(credential)
-		for(let i =0; i < goalCounter; i++){
-			firebase.database().ref('goals/'+(courseGoals[i].id)).remove()
-		}
-
-		userReauth.delete()
+		firebase.database().ref('goals')
+		firebase.auth().currentUser.delete()
 		.then(function(){
 			props.navigation.navigate('Login');
 			props.navigation.reset({ index: 0, routes: [ { name: 'Login' } ] });
 		}).catch(function(error){
-			console.log(error)
 			console.log('there is something wrong')
 		})
-		clearPW()
+		*/
 	}
+
+	const [userOut, setUserOut] = useState("");
+
+	const pickDocument = async () => {
+		try {
+			let input = await DocumentPicker.getDocumentAsync({
+				type: "text/plain",
+			});
+			setUserOut(await FileSystem.readAsStringAsync(input.uri));
+		} catch (error) {
+			console.log(error);
+		}
+
+		createLoans();
+	};
+
+	const fileParser = () => {
+		const parsedLoans = [];
+		var newUserOut = userOut;
+
+		if (newUserOut.length == 0) {
+			return;
+		}
+		//remove the grants
+		var grantPos = newUserOut.search("Grant Type:");
+		var pos = newUserOut.search("Loan Type:");
+		//hopefully just the loans now
+		newUserOut = newUserOut.slice(pos, grantPos);
+
+		while (newUserOut.length > 0) {
+			var lastPos = newUserOut.lastIndexOf("Loan Type:");
+			parsedLoans.push(newUserOut.slice(lastPos, newUserOut.length));
+			newUserOut = newUserOut.slice(0, lastPos);
+		}
+
+		return parsedLoans;
+	};
+
+	const createLoans = () => {
+    var newLoans = fileParser();
+    //console.log(newLoans)
+    const title= 'Loan Amount:$'
+    const interest = 'Loan Interest Rate:'
+
+    for(let i =0; i < newLoans.length; i++)
+    {
+      var loan = newLoans[i]
+      var goalTitle=loan.substring(loan.indexOf(title)+title.length,loan.indexOf('Loan Disbursed Amount:'))
+      console.log("goalTitle: " + goalTitle)
+      var interestRate = loan.substring(loan.indexOf(interest)+interest.length,loan.indexOf('Loan Repayment Plan Type'))
+      console.log("Interest rate: "+ interestRate)
+      var years = 0
+      var paidOff = 0
+
+      addGoalHandler(goalTitle,interestRate,years,paidOff)
+    }
+    
+	};
 
 	useEffect(() => {
 		let isMounted = true;
-		getPW()
+
 		if (isMounted) {
 			loansRef.where('authorID', '==', userId).orderBy('createdAt', 'desc').onSnapshot(
 				(querySnapshot) => {
 					const newGoals = [];
 					querySnapshot.forEach((doc) => {
 						const goal = doc.data();
-						goal.id = doc.id + goalCounter.toString();
+						goal.id = doc.id;
 						newGoals.push(goal);
-					});	
-					console.log(newGoals)
+					});
 					setCourseGoals(newGoals);
 				},
 				(error) => {
@@ -110,19 +147,19 @@ const HomeScreen = (props) => {
 
 	const addGoalHandler = (goalTitle, interestRate, years, paidOff) => {
 		//setCourseGoals([...courseGoals, enteredGoal])
-		//console.log(goalCounter)
 		setCourseGoals((prevGoals) => [
 			...courseGoals,
 			{
-				id:(userId + goalCounter.toString()),
+				id: Math.random().toString(),
+				//possible fix to deleting new loans
+				//id:userId.toString(),
 				value: goalTitle,
 				interest: interestRate,
 				years: years,
 				paidOff: paidOff
 			}
 		]);
-		setGoalCounter(goalCounter+1)
-		//console.log(goalCounter)
+
 		setIsAddMode(false);
 	};
 
@@ -136,10 +173,12 @@ const HomeScreen = (props) => {
 			loansRef.doc(goalId).delete().then(console.log('removed correctly'))
 			return currentGoals.filter((goal) => goal.id !== goalId);
 		});
+
+		//firebase.database().ref(goalId).remove()
 	};
 
 	return (
-		<View style={styles.screen}>
+		<ScrollView style={styles.screen}>
 			<Header title="Student Loan Calculator" />
 
 			<View style={{ padding: 20 }}>
@@ -161,7 +200,9 @@ const HomeScreen = (props) => {
 					)}
 				/>
 				<Button title="Add New Loan" onPress={() => setIsAddMode(true)} />
-				
+				<Text style={styles.title}> SHINY GRAPH/SLIDER: </Text>
+				<FavoriteMealScreen/>
+
 				<TouchableOpacity title='Loan Calculator' onPress={onFooterLinkPress}> 
 					<Text style={{
 						fontWeight: 'bold',
@@ -186,6 +227,19 @@ const HomeScreen = (props) => {
 					</Text>
 				</TouchableOpacity>
 
+				
+				<TouchableOpacity title='Budget Page' onPress={onFooterLinkPress3}> 
+					<Text style={{
+						fontWeight: 'bold',
+						fontSize: 20,
+						color: '#32c090',
+						textAlign: 'center',
+						paddingTop: 20
+					}}>
+						Budgeting
+					</Text>
+				</TouchableOpacity>
+
 				<TouchableOpacity title= 'Delete User' onPress={onDeleteAccountPress}>
 					<Text style={{
 						fontWeight: 'bold',
@@ -202,8 +256,13 @@ const HomeScreen = (props) => {
 			<View style={styles.logout}>
 				<Button style={styles.logout} title="Logout" onPress={() => onLogoutPress()} />
 			</View>
-		</View>
+
+
+			
+		</ScrollView>
+
 	);
+
 };
 const styles = StyleSheet.create({
 	screen: {
@@ -213,6 +272,7 @@ const styles = StyleSheet.create({
 	title: {
 		//color: '#35CA96',
 		fontSize: 22,
+		margin:15,
 		fontWeight: 'bold'
 	},
 	logout: {
@@ -222,7 +282,9 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: 'flex-end'
 		//marginBottom: 500
-	}
+	},
+
 });
 
 export default HomeScreen;
+
