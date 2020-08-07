@@ -19,6 +19,10 @@ const Stack = createStackNavigator();
 const HomeScreen = (props) => {
 	const [ courseGoals, setCourseGoals ] = useState([]);
 	const [ isAddMode, setIsAddMode ] = useState(false);
+	const [goalCounter, setGoalCounter] = useState(0)
+	const [pw, setPW] = useState('')
+	const [userOut, setUserOut] = useState("")
+
 
 	const userId = props.extraData.id;
 	const loansRef = firebase.firestore().collection('goals');
@@ -35,23 +39,46 @@ const HomeScreen = (props) => {
 		props.navigation.navigate('Budget')
 	}
 
+	const getPW = async () => {
+		try {
+			const currPW = await AsyncStorage.getItem('password')
+			if(currPW !== null){
+				setPW(currPW)
+			}	
+		}catch (error){console.log(error)}
+	}
+
+	const clearPW = async() => {
+		try{
+			await AsyncStorage.removeItem('password')
+			console.log('removed successfully')
+		}catch(error){console.log(error)}
+	}
+
+
 	
 	const onDeleteAccountPress = () => {
-		console.log(props.extraData)
-		/*
+		var userReauth = firebase.auth().currentUser
+		const credential = firebase.auth.EmailAuthProvider.credential(userReauth.email,pw)
+		userReauth.reauthenticateWithCredential(credential)
+		if(courseGoals.length !== 0){
+			for(let i =0; i < goalCounter; i++){
+				console.log(courseGoals[i].id)
+				firebase.database().ref('goals/'+(courseGoals[i].id)).remove()
+			}
+		}
+		
 		firebase.database().ref('users/'+userId).remove()
-		firebase.database().ref('goals')
-		firebase.auth().currentUser.delete()
+		
+		userReauth.delete()
 		.then(function(){
 			props.navigation.navigate('Login');
 			props.navigation.reset({ index: 0, routes: [ { name: 'Login' } ] });
 		}).catch(function(error){
 			console.log('there is something wrong')
 		})
-		*/
+		clearPW()
 	}
-
-	const [userOut, setUserOut] = useState("");
 
 	const pickDocument = async () => {
 		try {
@@ -89,8 +116,13 @@ const HomeScreen = (props) => {
 	};
 
 	const createLoans = () => {
-		var newLoans = fileParser();
-		//console.log(newLoans)
+		const newLoans = fileParser();
+		newLoans.then(function() {
+			console.log('went through')
+		}).catch(function(){
+			console.log('didnt do so well')
+		})
+		console.log(newLoans)
 		const title= 'Loan Amount:$'
 		const interest = 'Loan Interest Rate:'
 
@@ -110,6 +142,7 @@ const HomeScreen = (props) => {
 	};
 
 	useEffect(() => {
+		getPW()
 		let isMounted = true;
 
 		if (isMounted) {
@@ -118,10 +151,11 @@ const HomeScreen = (props) => {
 					const newGoals = [];
 					querySnapshot.forEach((doc) => {
 						const goal = doc.data();
-						goal.id = doc.id;
+						goal.id = doc.id + goalCounter.toString();
 						newGoals.push(goal);
 					});
 					setCourseGoals(newGoals);
+					setGoalCounter(goalCounter+1)
 				},
 				(error) => {
 					console.log(error);
@@ -170,7 +204,6 @@ const HomeScreen = (props) => {
 
 	const removeGoalHandler = (goalId) => {
 		setCourseGoals((currentGoals) => {
-			
 			loansRef.doc(goalId).delete().then(console.log('removed correctly'))
 			return currentGoals.filter((goal) => goal.id !== goalId);
 		});
@@ -250,6 +283,18 @@ const HomeScreen = (props) => {
 						paddingTop: 20
 					}}>
 						Delete Account
+					</Text>
+				</TouchableOpacity>
+
+				<TouchableOpacity title= 'Upload Doc' onPress={pickDocument}>
+					<Text style={{
+						fontWeight: 'bold',
+						fontSize: 20,
+						color: '#32c090',
+						textAlign: 'center',
+						paddingTop: 20
+					}}>
+						Upload Document
 					</Text>
 				</TouchableOpacity>
 

@@ -12,7 +12,15 @@ export default function Login({navigation}) {
         navigation.navigate('Signup')
     }
 
+    const savePW = async () => {
+        try {
+            await AsyncStorage.setItem('password',password)
+        }catch(error){console.log(error)}
+    }
+
+
     const onLoginPress = () => {
+        savePW()
         firebase
             .auth()
             .signInWithEmailAndPassword(email, password)
