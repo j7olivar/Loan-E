@@ -16,7 +16,7 @@ function ResourcesPage({ navigation }) {
 		<View>
 			
 			<View style={styles.box}>
-				<Text>FAQ</Text>
+				<Text style={styles.text}>FAQ</Text>
 				<Icon
 					name={'keyboard-arrow-right'}
 					size={30}
@@ -24,9 +24,9 @@ function ResourcesPage({ navigation }) {
 					onPress={() => navigation.navigate('FAQ')}
 				/>
 			</View>
-			<View style={{ padding: 5 }} />
+			<View style={{ padding: 10 }} />
 			<View style={styles.box}>
-				<Text>LINKS</Text>
+				<Text style={styles.text}>LINKS</Text>
 				<Icon
 					name={'keyboard-arrow-right'}
 					size={30}
@@ -34,9 +34,9 @@ function ResourcesPage({ navigation }) {
 					onPress={() => navigation.navigate('Links')}
 				/>
 			</View>
-			<View style={{ padding: 5 }} />
+			<View style={{ padding: 10 }} />
 			<View style={styles.box}>
-				<Text>ABOUT</Text>
+				<Text style={styles.text}>ABOUT</Text>
 				<Icon
 					name={'keyboard-arrow-right'}
 					size={30}
@@ -82,9 +82,21 @@ const styles = StyleSheet.create({
 		height: 58,
 		paddingLeft: 22,
 		paddingRight: 18,
-		padding: 10,
+		
 		alignItems: 'center',
-		backgroundColor: Colors.CGRAY
+		backgroundColor: Colors.WHITE,
+		shadowColor: "#000",
+		shadowOffset: {
+		  width: 0,
+		  height: 2
+		},
+		shadowOpacity: 0.25,
+		shadowRadius: 3.84,
+	},
+	text: {
+		fontWeight: 'bold',
+		color: '#426FFE',
+		fontSize: 16
 	}
 });
 

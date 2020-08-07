@@ -31,9 +31,11 @@ export default class Accordian extends Component{
             {
                 this.state.expanded &&
                 <View style={styles.child}>
-                    <Text>{ this.onPressLink() }</Text>    
+                    <Text style={styles.data}>{ this.onPressLink() }</Text>    
                 </View>
             }
+            <View style={{paddingBottom: 20}}>
+            </View>
        </View>
     )
   }
@@ -58,15 +60,14 @@ const styles = StyleSheet.create({
     title:{
         fontSize: 15,
         fontWeight:'bold',
-        color: Colors.DARKGRAY,
+        color: '#426FFE',
     },
-    /*
+    
     data:{
-        fontSize: 15,
-        fontWeight:'bold',
+        fontSize: 14,
         color: Colors.DARKGRAY,
     },
-    */
+    
     row:{
         flexDirection: 'row',
         justifyContent:'space-between',
@@ -74,7 +75,14 @@ const styles = StyleSheet.create({
         paddingLeft:22,
         paddingRight:18,
         alignItems:'center',
-        backgroundColor: Colors.CGRAY,
+        backgroundColor: Colors.WHITE,
+        shadowColor: "#000",
+		shadowOffset: {
+		  width: 0,
+		  height: 2
+		},
+		shadowOpacity: 0.25,
+		shadowRadius: 3.84,
     },
     parentHr:{
         height:2,
@@ -82,8 +90,9 @@ const styles = StyleSheet.create({
         width:'100%'
     },
     child:{
-        backgroundColor: Colors.CGRAY,
+        backgroundColor: Colors.WHITE,
         paddingLeft:22,
+        paddingTop: 15,
         padding:3,
     },
 });

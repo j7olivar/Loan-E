@@ -8,6 +8,7 @@ import MealDetailScreen from '../Screens/Old/MealDetailScreen';
 import { StyleSheet, Text, View } from 'react-native';
 import HomeScreen from '../Screens/Main Screens/HomeScreen';
 import Rai from '../Screens/Main Screens/Rai';
+import Pei from '../Screens/Main Screens/Pei';
 
 
 import { StatusBar } from 'expo-status-bar';
@@ -27,17 +28,21 @@ const Stacker = (props) => {
 			}}
 		>
 			<Tab.Screen 
-				name="Loan Calculator" {...props} 
+				name="Loan Calculator" 
 				component={() => <HomeScreen {...props} />} 
 				options={{tabBarIcon: (props)=> <Ionicons name = 'ios-calculator' size={props.size} color = {props.color}/>}}/>
 			<Tab.Screen 
-				name="Resources" {...props} 
+				name="Resources" 
 				component={() => <Rai {...props} />} 
 				options={{tabBarIcon: (props)=> <Ionicons name = 'ios-information-circle-outline' size={props.size} color = {props.color}/>}}/>
 			<Tab.Screen 
-				name="SECRET DONT LOOK" {...props} 
+				name="SECRET DONT LOOK" 
 				component={() => <FavoriteMealScreen {...props} />} 
 				options={{tabBarIcon: (props)=> <Ionicons name = 'ios-egg' size={props.size} color = {props.color}/>}}/>
+			<Tab.Screen 
+				name="Profile" 
+				component={() => <Pei {...props} />} 
+				options={{tabBarIcon: (props)=> <Ionicons name = 'ios-contact' size={props.size} color = {props.color}/>}}/>
 		</Tab.Navigator>
 	);
 };
