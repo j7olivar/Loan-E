@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TextInput, Button, Modal, ScrollView, FlatList, Alert } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button, Modal, ScrollView, FlatList } from 'react-native';
 import GoalItem from '../../components/HomeScreen/GoalItem';
 import GoalInput from '../../components/HomeScreen/GoalInput';
 import Header from '../../components/Header';
@@ -11,17 +11,13 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import LoanCalculatorScreen from '../LoanScreens/LoanCalculator.js';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import AsyncStorage from '@react-native-community/async-storage';
 
 const Stack = createStackNavigator();
 
 
 const HomeScreen = (props) => {
-	const [goalCounter, setGoalCounter] = useState(0)
 	const [ courseGoals, setCourseGoals ] = useState([]);
-	const [docIDS, setDocIDS] = useState([])
 	const [ isAddMode, setIsAddMode ] = useState(false);
-	const [pw, setPW] = useState('')
 
 	const userId = props.extraData.id;
 	const loansRef = firebase.firestore().collection('goals');
@@ -38,57 +34,34 @@ const HomeScreen = (props) => {
 		props.navigation.navigate('Budget')
 	}
 
-
-	const getPW = async () => {
-		try {
-			const currPW = await AsyncStorage.getItem('password')
-			if(currPW !== null){
-				setPW(currPW)
-			}
-			
-		}catch (error){console.log(error)}
-	}
-
-	const clearPW = async() => {
-		try{
-			await AsyncStorage.removeItem('password')
-			console.log('removed successfully')
-		}catch(error){console.log(error)}
-	}
-
-	const onDeleteAccountPress = () => {		
+	
+	const onDeleteAccountPress = () => {
+		console.log(props.extraData)
+		/*
 		firebase.database().ref('users/'+userId).remove()
-		var userReauth = firebase.auth().currentUser
-		const credential = firebase.auth.EmailAuthProvider.credential(userReauth.email,pw)
-		userReauth.reauthenticateWithCredential(credential)
-		for(let i =0; i < goalCounter; i++){
-			firebase.database().ref('goals/'+(courseGoals[i].id)).remove()
-		}
-
-		userReauth.delete()
+		firebase.database().ref('goals')
+		firebase.auth().currentUser.delete()
 		.then(function(){
 			props.navigation.navigate('Login');
 			props.navigation.reset({ index: 0, routes: [ { name: 'Login' } ] });
 		}).catch(function(error){
 			console.log('there is something wrong')
 		})
-		clearPW()
-		
+		*/
 	}
 
 	useEffect(() => {
 		let isMounted = true;
-		getPW()
+
 		if (isMounted) {
 			loansRef.where('authorID', '==', userId).orderBy('createdAt', 'desc').onSnapshot(
 				(querySnapshot) => {
 					const newGoals = [];
 					querySnapshot.forEach((doc) => {
 						const goal = doc.data();
-						goal.id = doc.id + goalCounter.toString();
+						goal.id = doc.id;
 						newGoals.push(goal);
-					});	
-					console.log(newGoals)
+					});
 					setCourseGoals(newGoals);
 				},
 				(error) => {
@@ -116,19 +89,19 @@ const HomeScreen = (props) => {
 
 	const addGoalHandler = (goalTitle, interestRate, years, paidOff) => {
 		//setCourseGoals([...courseGoals, enteredGoal])
-		//console.log(goalCounter)
 		setCourseGoals((prevGoals) => [
 			...courseGoals,
 			{
-				id:(userId + goalCounter.toString()),
+				id: Math.random().toString(),
+				//possible fix to deleting new loans
+				//id:userId.toString(),
 				value: goalTitle,
 				interest: interestRate,
 				years: years,
 				paidOff: paidOff
 			}
 		]);
-		setGoalCounter(goalCounter+1)
-		//console.log(goalCounter)
+
 		setIsAddMode(false);
 	};
 
@@ -142,6 +115,8 @@ const HomeScreen = (props) => {
 			loansRef.doc(goalId).delete().then(console.log('removed correctly'))
 			return currentGoals.filter((goal) => goal.id !== goalId);
 		});
+
+		//firebase.database().ref(goalId).remove()
 	};
 
 	return (
