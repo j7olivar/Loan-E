@@ -2,6 +2,7 @@ import React, { useState} from 'react'
 import { Image, Text, TextInput, TouchableOpacity, View,StyleSheet } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import {firebase} from '../../Constants/ApiKeys'
+import AsyncStorage from '@react-native-community/async-storage'
 
 export default function Login({navigation}) {
     const [email, setEmail] = useState('')

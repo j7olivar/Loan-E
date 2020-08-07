@@ -6,6 +6,7 @@ import GoalInput from '../../components/HomeScreen/GoalInput';
 import Header from '../../components/Header';
 import { firebase } from '../../Constants/ApiKeys';
 import FavoriteMealScreen from './FavoriteMealScreen'
+import AsyncStorage from '@react-native-community/async-storage'
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -88,23 +89,23 @@ const HomeScreen = (props) => {
 	};
 
 	const createLoans = () => {
-    var newLoans = fileParser();
-    //console.log(newLoans)
-    const title= 'Loan Amount:$'
-    const interest = 'Loan Interest Rate:'
+		var newLoans = fileParser();
+		//console.log(newLoans)
+		const title= 'Loan Amount:$'
+		const interest = 'Loan Interest Rate:'
 
-    for(let i =0; i < newLoans.length; i++)
-    {
-      var loan = newLoans[i]
-      var goalTitle=loan.substring(loan.indexOf(title)+title.length,loan.indexOf('Loan Disbursed Amount:'))
-      console.log("goalTitle: " + goalTitle)
-      var interestRate = loan.substring(loan.indexOf(interest)+interest.length,loan.indexOf('Loan Repayment Plan Type'))
-      console.log("Interest rate: "+ interestRate)
-      var years = 0
-      var paidOff = 0
+		for(let i =0; i < newLoans.length; i++)
+		{
+		var loan = newLoans[i]
+		var goalTitle=loan.substring(loan.indexOf(title)+title.length,loan.indexOf('Loan Disbursed Amount:'))
+		console.log("goalTitle: " + goalTitle)
+		var interestRate = loan.substring(loan.indexOf(interest)+interest.length,loan.indexOf('Loan Repayment Plan Type'))
+		console.log("Interest rate: "+ interestRate)
+		var years = 0
+		var paidOff = 0
 
-      addGoalHandler(goalTitle,interestRate,years,paidOff)
-    }
+		addGoalHandler(goalTitle,interestRate,years,paidOff)
+		}
     
 	};
 
