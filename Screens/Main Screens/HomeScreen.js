@@ -7,6 +7,8 @@ import Header from '../../components/Header';
 import { firebase } from '../../Constants/ApiKeys';
 import FavoriteMealScreen from './FavoriteMealScreen'
 import AsyncStorage from '@react-native-community/async-storage'
+import * as DocumentPicker from 'expo-document-picker'
+import * as FileSystem from 'expo-file-system';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -15,13 +17,13 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const Stack = createStackNavigator();
 
-
 const HomeScreen = (props) => {
 	const [ courseGoals, setCourseGoals ] = useState([]);
 	const [ isAddMode, setIsAddMode ] = useState(false);
 	const [goalCounter, setGoalCounter] = useState(0)
 	const [pw, setPW] = useState('')
 	const [userOut, setUserOut] = useState("")
+	const [docIDS, setDocIDS] = useState([])
 
 
 	const userId = props.extraData.id;
@@ -58,13 +60,15 @@ const HomeScreen = (props) => {
 
 	
 	const onDeleteAccountPress = () => {
+		//console.log(goalCounter)
+		//console.log(courseGoals)
 		var userReauth = firebase.auth().currentUser
 		const credential = firebase.auth.EmailAuthProvider.credential(userReauth.email,pw)
 		userReauth.reauthenticateWithCredential(credential)
 		if(courseGoals.length !== 0){
 			for(let i =0; i < goalCounter; i++){
-				console.log(courseGoals[i].id)
-				firebase.database().ref('goals/'+(courseGoals[i].id)).remove()
+				//console.log(courseGoals[i])
+				firebase.database().ref('goals/'+(docIDS[i])).remove()
 			}
 		}
 		
@@ -111,32 +115,25 @@ const HomeScreen = (props) => {
 			parsedLoans.push(newUserOut.slice(lastPos, newUserOut.length));
 			newUserOut = newUserOut.slice(0, lastPos);
 		}
-
+		//console.log('parsed loans: ' + parsedLoans)
 		return parsedLoans;
 	};
 
 	const createLoans = () => {
 		const newLoans = fileParser();
-		newLoans.then(function() {
-			console.log('went through')
-		}).catch(function(){
-			console.log('didnt do so well')
-		})
-		console.log(newLoans)
 		const title= 'Loan Amount:$'
 		const interest = 'Loan Interest Rate:'
 
-		for(let i =0; i < newLoans.length; i++)
-		{
-		var loan = newLoans[i]
-		var goalTitle=loan.substring(loan.indexOf(title)+title.length,loan.indexOf('Loan Disbursed Amount:'))
-		console.log("goalTitle: " + goalTitle)
-		var interestRate = loan.substring(loan.indexOf(interest)+interest.length,loan.indexOf('Loan Repayment Plan Type'))
-		console.log("Interest rate: "+ interestRate)
-		var years = 0
-		var paidOff = 0
+		for(let i =0; i < newLoans.length; i++){
+			var loan = newLoans[i]
+			var goalTitle=loan.substring(loan.indexOf(title)+title.length,loan.indexOf('Loan Disbursed Amount:'))
+			//console.log("goalTitle: " + goalTitle)
+			var interestRate = loan.substring(loan.indexOf(interest)+interest.length,loan.indexOf('Loan Repayment Plan Type'))
+			//console.log("Interest rate: "+ interestRate)
+			var years = 0
+			var paidOff = 0
 
-		addGoalHandler(goalTitle,interestRate,years,paidOff)
+			addGoalHandler(goalTitle,interestRate,years,paidOff)
 		}
     
 	};
@@ -154,7 +151,13 @@ const HomeScreen = (props) => {
 						goal.id = doc.id + goalCounter.toString();
 						newGoals.push(goal);
 					});
-					setCourseGoals(newGoals);
+					console.log('new Goals: '+ newGoals)
+					console.log('old goals: '+ oldGoals)
+					var oldGoals = courseGoals
+					for(let j =0; j < newGoals.length; j++){
+						oldGoals.push(newGoals[j])
+					}
+					setCourseGoals(oldGoals);
 					setGoalCounter(goalCounter+1)
 				},
 				(error) => {
@@ -185,16 +188,17 @@ const HomeScreen = (props) => {
 		setCourseGoals((prevGoals) => [
 			...courseGoals,
 			{
-				id: Math.random().toString(),
-				//possible fix to deleting new loans
-				//id:userId.toString(),
+				id:userId.toString() + goalCounter.toString(),
 				value: goalTitle,
 				interest: interestRate,
 				years: years,
 				paidOff: paidOff
 			}
 		]);
-
+		var oldIDS = docIDS 
+		oldIDS.push(userId.toString() + goalCounter.toString())
+		setDocIDS(oldIDS)
+		setGoalCounter(goalCounter+1)
 		setIsAddMode(false);
 	};
 
@@ -207,8 +211,7 @@ const HomeScreen = (props) => {
 			loansRef.doc(goalId).delete().then(console.log('removed correctly'))
 			return currentGoals.filter((goal) => goal.id !== goalId);
 		});
-
-		//firebase.database().ref(goalId).remove()
+		setGoalCounter(goalCounter-1)
 	};
 
 	return (
