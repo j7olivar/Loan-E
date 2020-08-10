@@ -25,7 +25,6 @@ const HomeScreen = (props) => {
 	const [userOut, setUserOut] = useState("")
 	const [docIDS, setDocIDS] = useState([])
 
-
 	const userId = props.extraData.id;
 	const loansRef = firebase.firestore().collection('goals');
 
@@ -56,20 +55,14 @@ const HomeScreen = (props) => {
 			console.log('removed successfully')
 		}catch(error){console.log(error)}
 	}
-
-
 	
 	const onDeleteAccountPress = () => {
-		//console.log(goalCounter)
-		//console.log(courseGoals)
 		var userReauth = firebase.auth().currentUser
 		const credential = firebase.auth.EmailAuthProvider.credential(userReauth.email,pw)
 		userReauth.reauthenticateWithCredential(credential)
 		if(courseGoals.length !== 0){
-			for(let i =0; i < goalCounter; i++){
-				//console.log(courseGoals[i])
-				firebase.database().ref('goals/'+(docIDS[i])).remove()
-			}
+			//console.log(courseGoals[i])
+			firebase.database().ref('goals/'+ userId).remove()
 		}
 		
 		firebase.database().ref('users/'+userId).remove()
@@ -125,40 +118,34 @@ const HomeScreen = (props) => {
 		const interest = 'Loan Interest Rate:'
 
 		for(let i =0; i < newLoans.length; i++){
-			var loan = newLoans[i]
-			var goalTitle=loan.substring(loan.indexOf(title)+title.length,loan.indexOf('Loan Disbursed Amount:'))
+			let loan = newLoans[i]
+			let goalTitle=loan.substring(loan.indexOf(title)+title.length,loan.indexOf('Loan Disbursed Amount:'))
 			//console.log("goalTitle: " + goalTitle)
-			var interestRate = loan.substring(loan.indexOf(interest)+interest.length,loan.indexOf('Loan Repayment Plan Type'))
+			let interestRate = loan.substring(loan.indexOf(interest)+interest.length,loan.indexOf('Loan Repayment Plan Type'))
 			//console.log("Interest rate: "+ interestRate)
-			var years = 0
-			var paidOff = 0
+			let years = 0
+			let paidOff = 0
 
 			addGoalHandler(goalTitle,interestRate,years,paidOff)
 		}
+		return
     
 	};
+
 
 	useEffect(() => {
 		getPW()
 		let isMounted = true;
 
 		if (isMounted) {
-			loansRef.where('authorID', '==', userId).orderBy('createdAt', 'desc').onSnapshot(
-				(querySnapshot) => {
-					const newGoals = [];
-					querySnapshot.forEach((doc) => {
-						const goal = doc.data();
-						goal.id = doc.id + goalCounter.toString();
-						newGoals.push(goal);
-					});
-					console.log('new Goals: '+ newGoals)
-					console.log('old goals: '+ oldGoals)
-					var oldGoals = courseGoals
-					for(let j =0; j < newGoals.length; j++){
-						oldGoals.push(newGoals[j])
+			loansRef.doc(userId).onSnapshot(
+				(docSnapshot) => {
+					if(!docSnapshot.exists){console.log('doc doesnt exist, start from scratch')}
+					else{
+						console.log('loaded successfully '+docSnapshot.data())
+						setGoalCounter(docSnapshot.data().loans.length)
+						console.log(goalCounter)
 					}
-					setCourseGoals(oldGoals);
-					setGoalCounter(goalCounter+1)
 				},
 				(error) => {
 					console.log(error);
@@ -185,6 +172,7 @@ const HomeScreen = (props) => {
 
 	const addGoalHandler = (goalTitle, interestRate, years, paidOff) => {
 		//setCourseGoals([...courseGoals, enteredGoal])
+		setGoalCounter(goalCounter+1)
 		setCourseGoals((prevGoals) => [
 			...courseGoals,
 			{
@@ -195,10 +183,12 @@ const HomeScreen = (props) => {
 				paidOff: paidOff
 			}
 		]);
-		var oldIDS = docIDS 
-		oldIDS.push(userId.toString() + goalCounter.toString())
-		setDocIDS(oldIDS)
-		setGoalCounter(goalCounter+1)
+
+		addToFB(goalTitle, interestRate,years,paidOff)
+		
+		//var oldIDS = docIDS 
+		//oldIDS.push(userId.toString() + goalCounter.toString())
+		//setDocIDS(oldIDS)
 		setIsAddMode(false);
 	};
 
@@ -206,12 +196,55 @@ const HomeScreen = (props) => {
 		setIsAddMode(false);
 	};
 
-	const removeGoalHandler = (goalId) => {
+	const addToFB = async (goalTitle, interestRate, years, paidOff) => {
+		//adding data to firebase, takes into account if doc exists already 
+		const loadDoc = await loansRef.doc(userId).get()
+			.then((docSnapshot)=> {
+				if(docSnapshot.exists){
+					loansRef.doc(userId).onSnapshot((docu)=>{
+						const updateLoansArr = loansRef.doc(userId).update({
+							loans: firebase.firestore.FieldValue.arrayUnion({
+								id: userId+goalCounter.toString(),
+								value: goalTitle,
+								interest: interestRate,
+								years: years,
+								paidOff: paidOff
+							})
+						})
+						//setGoalCounter(goalCounter+1)
+					})
+				}
+				else{
+					const addDoc = loansRef.doc(userId).set({
+						loans: firebase.firestore.FieldValue.arrayUnion({
+						id: userId+goalCounter.toString(),
+						value: goalTitle,
+						interest: interestRate,
+						years: years,
+						paidOff: paidOff
+					})
+				})
+				//setGoalCounter(goalCounter+1)
+			}})
+			//setGoalCounter(goalCounter+1)
+		
+	}
+
+	const removeGoalHandler = async (goalId) => {
+		/*
 		setCourseGoals((currentGoals) => {
 			loansRef.doc(goalId).delete().then(console.log('removed correctly'))
 			return currentGoals.filter((goal) => goal.id !== goalId);
 		});
 		setGoalCounter(goalCounter-1)
+		*/
+		//need to use the value and not the goalId
+		const removeGoal = await loansRef.doc(goalId).update({
+			goals: firebase.firestore.FieldValue.arrayRemove(goalId)
+		})
+		setCourseGoals((currentGoals)=> {
+			return currentGoals.filer((goal)=> goal.id !== goalId)
+		})
 	};
 
 	return (
