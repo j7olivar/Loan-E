@@ -14,6 +14,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import LoanCalculatorScreen from '../LoanScreens/LoanCalculator.js';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { set } from 'react-native-reanimated';
 
 const Stack = createStackNavigator();
 
@@ -23,7 +24,7 @@ const HomeScreen = (props) => {
 	const [goalCounter, setGoalCounter] = useState(0)
 	const [pw, setPW] = useState('')
 	const [userOut, setUserOut] = useState("")
-	const [docIDS, setDocIDS] = useState([])
+	//const [docIDS, setDocIDS] = useState([])
 
 	const userId = props.extraData.id;
 	const loansRef = firebase.firestore().collection('goals');
@@ -62,10 +63,13 @@ const HomeScreen = (props) => {
 		userReauth.reauthenticateWithCredential(credential)
 		if(courseGoals.length !== 0){
 			//console.log(courseGoals[i])
-			firebase.database().ref('goals/'+ userId).remove()
+			//firebase.database().ref('goals/'+ userId).remove()
+			loansRef.doc(userId).delete()
+			firebase.firestore().collection('users').doc(userId).delete()
+
 		}
 		
-		firebase.database().ref('users/'+userId).remove()
+		//firebase.database().ref('users/'+userId).remove()
 		
 		userReauth.delete()
 		.then(function(){
@@ -81,14 +85,13 @@ const HomeScreen = (props) => {
 		try {
 			let input = await DocumentPicker.getDocumentAsync({
 				type: "text/plain",
-			});
-			setUserOut(await FileSystem.readAsStringAsync(input.uri));
+			})
+			setUserOut(await FileSystem.readAsStringAsync(input.uri))
+			createLoans()
 		} catch (error) {
 			console.log(error);
 		}
-
-		createLoans();
-	};
+	}
 
 	const fileParser = () => {
 		const parsedLoans = [];
@@ -144,6 +147,7 @@ const HomeScreen = (props) => {
 					else{
 						console.log('loaded successfully '+docSnapshot.data())
 						setGoalCounter(docSnapshot.data().loans.length)
+						setCourseGoals(docSnapshot.data().loans)
 						console.log(goalCounter)
 					}
 				},
