@@ -8,19 +8,19 @@ import { firebase } from '../../Constants/ApiKeys';
 import FavoriteMealScreen from './FavoriteMealScreen'
 
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
 import LoanCalculatorScreen from '../LoanScreens/LoanCalculator.js';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-
-const Stack = createStackNavigator();
-
 
 const HomeScreen = (props) => {
 	const [ courseGoals, setCourseGoals ] = useState([]);
 	const [ isAddMode, setIsAddMode ] = useState(false);
+	const [ totalLoan, setTotalLoan ] = useState(0);
+
 
 	const userId = props.extraData.id;
 	const loansRef = firebase.firestore().collection('goals');
+
+	let allLoans = [0];
 
 	const onFooterLinkPress = () => {
 		props.navigation.navigate('Loan Calculator')
@@ -104,7 +104,19 @@ const HomeScreen = (props) => {
 		setIsAddMode(false);
 	};
 
-	const removeGoalHandler = (goalId) => {
+	function deleteLoan(index, loans){
+		loans.splice(index, 1);
+		var total = 0;
+
+		for(var i = 0; i < loans.length; i++){
+			total += loans[i]
+		}
+
+		setTotalLoan(total)
+	}
+
+	const removeGoalHandler = (goalId, loans) => {
+		deleteLoan(1, loans);
 		setCourseGoals((currentGoals) => {
 			
 			loansRef.doc(goalId).delete().then(console.log('removed correctly'))
@@ -114,11 +126,33 @@ const HomeScreen = (props) => {
 		//firebase.database().ref(goalId).remove()
 	};
 
+	function addNewLoan(loanToAdd, paidOff, arr){
+		arr.push(loanToAdd - paidOff);
+		var total = 0;
+
+		for(var i = 0; i < arr.length; i++){
+			total += arr[i]
+		}
+
+		setTotalLoan(total);
+	}
+
 	return (
 		<ScrollView style={styles.screen}>
 			<Header title="Student Loan Calculator" />
 
 			<View style={{ padding: 20 }}>
+				<Text style={styles.total}> Total Loans </Text>
+
+				<FlatList
+				keyExtractor={(item, index) => item.id}
+				data={courseGoals}
+				renderItem={(itemData) => (
+					addNewLoan(itemData.item.value, itemData.item.paidOff, allLoans)
+				)}/>
+
+				<Text style={styles.totalLoan}> ${totalLoan} </Text>
+
 				<Text style={styles.title}> LOANS: </Text>
 
 				<GoalInput visible={isAddMode} addGoalHandler={addGoalHandler} onCancel={cancelGoalAdditionHandler} />
@@ -128,7 +162,8 @@ const HomeScreen = (props) => {
 					data={courseGoals}
 					renderItem={(itemData) => (
 						<GoalItem
-							onDelete={removeGoalHandler.bind(this, itemData.item.id)}
+							onDelete={removeGoalHandler.bind(this, itemData.item.id, allLoans)}
+							
 							title={itemData.item.value}
 							subInterest={itemData.item.interest}
 							subPaid={itemData.item.paidOff}
@@ -210,6 +245,19 @@ const styles = StyleSheet.create({
 		justifyContent: 'flex-end'
 		//marginBottom: 500
 	},
+	total: {
+		fontSize: 25,
+		margin:15,
+		fontWeight: 'bold',
+		textAlign: 'center'
+	},
+	totalLoan: {
+		fontWeight: 'bold',
+		fontSize: 40,
+		color: '#32c090',
+		textAlign: 'center',
+		paddingTop: 20
+	}
 
 });
 
