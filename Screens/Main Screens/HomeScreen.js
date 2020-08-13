@@ -14,6 +14,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { set } from 'react-native-reanimated';
 
+console.ignoredYellowBox = ['Warning:', '- node', 'Encountered', 'Failed'];
+
 const Stack = createStackNavigator();
 
 const HomeScreen = (props) => {
@@ -76,6 +78,7 @@ const HomeScreen = (props) => {
 	}
 
 	const pickDocument = async () => {
+		console.log('pic Doc')
 		try {
 			let input = await DocumentPicker.getDocumentAsync({
 				type: "text/plain",
@@ -88,6 +91,7 @@ const HomeScreen = (props) => {
 	}
 
 	const fileParser = () => {
+		console.log('file parser')
 		const parsedLoans = [];
 		var newUserOut = userOut;
 
@@ -98,7 +102,7 @@ const HomeScreen = (props) => {
 		var grantPos = newUserOut.search("Grant Type:");
 		var pos = newUserOut.search("Loan Type:");
 		//hopefully just the loans now
-		newUserOut = newUserOut.slice(pos, grantPos);
+		newUserOut = newUserOut.slice(pos, grantPos)
 
 		while (newUserOut.length > 0) {
 			var lastPos = newUserOut.lastIndexOf("Loan Type:");
@@ -110,6 +114,7 @@ const HomeScreen = (props) => {
 	};
 
 	const createLoans = () => {
+		console.log('create loans')
 		const newLoans = fileParser();
 		const title= 'Loan Amount:$'
 		const interest = 'Loan Interest Rate:'
@@ -133,6 +138,7 @@ const HomeScreen = (props) => {
 
 	useEffect(() => {
 		getPW()
+		console.log('use effect')
 		let isMounted = true;
 
 		if (isMounted) {
@@ -140,13 +146,17 @@ const HomeScreen = (props) => {
 				(docSnapshot) => {
 					if(!docSnapshot.exists){console.log('doc doesnt exist, start from scratch')}
 					else{
-						console.log('loaded successfully '+docSnapshot.data())
-						console.log(docSnapshot.data().goals.length)
+						console.log('loaded successfully '+docSnapshot.data().goals)
+						//console.log(docSnapshot.data().goals.length)
+						setCourseGoals(docSnapshot.data().goals)
+						setGoalCounter(docSnapshot.data().goals.length)
+						/*
 						if(courseGoals.length !== docSnapshot.data().goals.length){
 							setCourseGoals(docSnapshot.data().goals)
 							setGoalCounter(docSnapshot.data().goals.length)
 						}
-						console.log(goalCounter)
+						*/
+						//console.log(goalCounter)
 					}
 				},
 				(error) => {
@@ -173,12 +183,17 @@ const HomeScreen = (props) => {
 	};
 
 	const addGoalHandler = (goalTitle, interestRate, years, paidOff,id) => {
-		console.log(goalCounter)
+		console.log('add goal handler')
+		if(id==undefined){
+			id = 0
+		}
+		console.log('num: '+ (goalCounter+id).toString())
+		//console.log(goalCounter)
 		setGoalCounter(goalCounter+1)
 		setCourseGoals((courseGoals) => [
 			...courseGoals,
 			{
-				id: userId +id.toString(),
+				id: userId + (goalCounter+id).toString(),
 				value: goalTitle,
 				interest: interestRate,
 				years: years,
@@ -196,13 +211,18 @@ const HomeScreen = (props) => {
 
 	const addToFB = async (goalTitle, interestRate, years, paidOff,id) => {
 		//adding data to firebase, takes into account if doc exists already 
+		if(id==undefined){
+			id = goalCounter
+		}
+		console.log('add to firebase')
 		const loadDoc = await loansRef.doc(userId).get()
 			.then((docSnapshot)=> {
 				if(docSnapshot.exists){
 					loansRef.doc(userId).onSnapshot((docu)=>{
+						console.log('num: '+ (goalCounter+id).toString())
 						const updateLoansArr = loansRef.doc(userId).update({
 							goals: firebase.firestore.FieldValue.arrayUnion({
-								id: userId+id.toString(),
+								id: userId+(goalCounter+id).toString(),
 								value: goalTitle,
 								interest: interestRate,
 								years: years,
@@ -212,9 +232,10 @@ const HomeScreen = (props) => {
 					})
 				}
 				else{
+					console.log('num: '+ (goalCounter+id).toString())
 					const addDoc = loansRef.doc(userId).set({
 						goals: firebase.firestore.FieldValue.arrayUnion({
-						id: userId+id.toString(),
+						id: userId+(goalCounter+id).toString(),
 						value: goalTitle,
 						interest: interestRate,
 						years: years,
@@ -225,6 +246,8 @@ const HomeScreen = (props) => {
 	}
 
 	const removeGoalHandler = async (goalId) => {
+		console.log('remove goal handler')
+		/*
 		let goalToDel = {}
 		for(let i =0; i < courseGoals.length; i++){
 			if(courseGoals[i].id == goalId){
@@ -240,6 +263,11 @@ const HomeScreen = (props) => {
 		setCourseGoals((courseGoals)=> {
 			return courseGoals.filter((goal)=> goal.id !== goalId)
 		})
+		*/
+		const existingDoc = await loansRef.doc(userId).get();
+    	const goals = existingDoc.data().goals.filter(goal => goal.id !== goalId);
+    	await loansRef.doc(userId).update({ goals });
+    	setCourseGoals(goals);
 		setGoalCounter(goalCounter-1)
 	}
 
