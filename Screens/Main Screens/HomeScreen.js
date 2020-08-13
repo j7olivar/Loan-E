@@ -10,9 +10,7 @@ import AsyncStorage from '@react-native-community/async-storage'
 import * as DocumentPicker from 'expo-document-picker'
 import * as FileSystem from 'expo-file-system';
 
-import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import LoanCalculatorScreen from '../LoanScreens/LoanCalculator.js';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { set } from 'react-native-reanimated';
 
@@ -66,11 +64,7 @@ const HomeScreen = (props) => {
 			//firebase.database().ref('goals/'+ userId).remove()
 			loansRef.doc(userId).delete()
 			firebase.firestore().collection('users').doc(userId).delete()
-
 		}
-		
-		//firebase.database().ref('users/'+userId).remove()
-		
 		userReauth.delete()
 		.then(function(){
 			props.navigation.navigate('Login');
@@ -120,16 +114,17 @@ const HomeScreen = (props) => {
 		const title= 'Loan Amount:$'
 		const interest = 'Loan Interest Rate:'
 
-		for(let i =0; i < newLoans.length; i++){
+		for(let i =1; i <= newLoans.length; i++){
 			let loan = newLoans[i]
 			let goalTitle=loan.substring(loan.indexOf(title)+title.length,loan.indexOf('Loan Disbursed Amount:'))
 			//console.log("goalTitle: " + goalTitle)
 			let interestRate = loan.substring(loan.indexOf(interest)+interest.length,loan.indexOf('Loan Repayment Plan Type'))
 			//console.log("Interest rate: "+ interestRate)
-			let years = 0
-			let paidOff = 0
-
-			addGoalHandler(goalTitle,interestRate,years,paidOff)
+			let years = 10
+			let paidOff = 50
+			setGoalCounter(goalCounter+1)
+			let id =i
+			addGoalHandler(goalTitle,interestRate,years,paidOff,id)
 		}
 		return
     
@@ -146,8 +141,11 @@ const HomeScreen = (props) => {
 					if(!docSnapshot.exists){console.log('doc doesnt exist, start from scratch')}
 					else{
 						console.log('loaded successfully '+docSnapshot.data())
-						setGoalCounter(docSnapshot.data().loans.length)
-						setCourseGoals(docSnapshot.data().loans)
+						console.log(docSnapshot.data().goals.length)
+						if(courseGoals.length !== docSnapshot.data().goals.length){
+							setCourseGoals(docSnapshot.data().goals)
+							setGoalCounter(docSnapshot.data().goals.length)
+						}
 						console.log(goalCounter)
 					}
 				},
@@ -174,82 +172,76 @@ const HomeScreen = (props) => {
 			});
 	};
 
-	const addGoalHandler = (goalTitle, interestRate, years, paidOff) => {
-		//setCourseGoals([...courseGoals, enteredGoal])
+	const addGoalHandler = (goalTitle, interestRate, years, paidOff,id) => {
+		console.log(goalCounter)
 		setGoalCounter(goalCounter+1)
-		setCourseGoals((prevGoals) => [
+		setCourseGoals((courseGoals) => [
 			...courseGoals,
 			{
-				id:userId.toString() + goalCounter.toString(),
+				id: userId +id.toString(),
 				value: goalTitle,
 				interest: interestRate,
 				years: years,
 				paidOff: paidOff
 			}
 		]);
-
-		addToFB(goalTitle, interestRate,years,paidOff)
-		
-		//var oldIDS = docIDS 
-		//oldIDS.push(userId.toString() + goalCounter.toString())
-		//setDocIDS(oldIDS)
+		//console.log(goalCounter)
+		addToFB(goalTitle, interestRate,years,paidOff,id)
 		setIsAddMode(false);
-	};
+	}
 
 	const cancelGoalAdditionHandler = () => {
 		setIsAddMode(false);
-	};
+	}
 
-	const addToFB = async (goalTitle, interestRate, years, paidOff) => {
+	const addToFB = async (goalTitle, interestRate, years, paidOff,id) => {
 		//adding data to firebase, takes into account if doc exists already 
 		const loadDoc = await loansRef.doc(userId).get()
 			.then((docSnapshot)=> {
 				if(docSnapshot.exists){
 					loansRef.doc(userId).onSnapshot((docu)=>{
 						const updateLoansArr = loansRef.doc(userId).update({
-							loans: firebase.firestore.FieldValue.arrayUnion({
-								id: userId+goalCounter.toString(),
+							goals: firebase.firestore.FieldValue.arrayUnion({
+								id: userId+id.toString(),
 								value: goalTitle,
 								interest: interestRate,
 								years: years,
 								paidOff: paidOff
 							})
 						})
-						//setGoalCounter(goalCounter+1)
 					})
 				}
 				else{
 					const addDoc = loansRef.doc(userId).set({
-						loans: firebase.firestore.FieldValue.arrayUnion({
-						id: userId+goalCounter.toString(),
+						goals: firebase.firestore.FieldValue.arrayUnion({
+						id: userId+id.toString(),
 						value: goalTitle,
 						interest: interestRate,
 						years: years,
 						paidOff: paidOff
 					})
 				})
-				//setGoalCounter(goalCounter+1)
 			}})
-			//setGoalCounter(goalCounter+1)
-		
 	}
 
 	const removeGoalHandler = async (goalId) => {
-		/*
-		setCourseGoals((currentGoals) => {
-			loansRef.doc(goalId).delete().then(console.log('removed correctly'))
-			return currentGoals.filter((goal) => goal.id !== goalId);
-		});
+		let goalToDel = {}
+		for(let i =0; i < courseGoals.length; i++){
+			if(courseGoals[i].id == goalId){
+				goalToDel = courseGoals[i]
+				console.log(goalToDel)
+			}
+		}
+		const removeGoal = await loansRef.doc(userId).update({
+			goals: firebase.firestore.FieldValue.arrayRemove(goalToDel)
+		})
+		
+		//ask sam to explain this
+		setCourseGoals((courseGoals)=> {
+			return courseGoals.filter((goal)=> goal.id !== goalId)
+		})
 		setGoalCounter(goalCounter-1)
-		*/
-		//need to use the value and not the goalId
-		const removeGoal = await loansRef.doc(goalId).update({
-			goals: firebase.firestore.FieldValue.arrayRemove(goalId)
-		})
-		setCourseGoals((currentGoals)=> {
-			return currentGoals.filer((goal)=> goal.id !== goalId)
-		})
-	};
+	}
 
 	return (
 		<ScrollView style={styles.screen}>
