@@ -24,7 +24,6 @@ const HomeScreen = (props) => {
 	const [goalCounter, setGoalCounter] = useState(0)
 	const [pw, setPW] = useState('')
 	const [userOut, setUserOut] = useState("")
-	//const [docIDS, setDocIDS] = useState([])
 
 	const userId = props.extraData.id;
 	const loansRef = firebase.firestore().collection('goals');
@@ -62,8 +61,6 @@ const HomeScreen = (props) => {
 		const credential = firebase.auth.EmailAuthProvider.credential(userReauth.email,pw)
 		userReauth.reauthenticateWithCredential(credential)
 		if(courseGoals.length !== 0){
-			//console.log(courseGoals[i])
-			//firebase.database().ref('goals/'+ userId).remove()
 			loansRef.doc(userId).delete()
 			firebase.firestore().collection('users').doc(userId).delete()
 		}
@@ -148,16 +145,8 @@ const HomeScreen = (props) => {
 					if(!docSnapshot.exists){console.log('doc doesnt exist, start from scratch')}
 					else{
 						console.log('loaded successfully '+docSnapshot.data().goals)
-						//console.log(docSnapshot.data().goals.length)
 						setCourseGoals(docSnapshot.data().goals)
 						setGoalCounter(docSnapshot.data().goals.length)
-						/*
-						if(courseGoals.length !== docSnapshot.data().goals.length){
-							setCourseGoals(docSnapshot.data().goals)
-							setGoalCounter(docSnapshot.data().goals.length)
-						}
-						*/
-						//console.log(goalCounter)
 					}
 				},
 				(error) => {
@@ -246,23 +235,6 @@ const HomeScreen = (props) => {
 
 	const removeGoalHandler = async (goalId) => {
 		console.log('remove goal handler')
-		/*
-		let goalToDel = {}
-		for(let i =0; i < courseGoals.length; i++){
-			if(courseGoals[i].id == goalId){
-				goalToDel = courseGoals[i]
-				console.log(goalToDel)
-			}
-		}
-		const removeGoal = await loansRef.doc(userId).update({
-			goals: firebase.firestore.FieldValue.arrayRemove(goalToDel)
-		})
-		
-		//ask sam to explain this
-		setCourseGoals((courseGoals)=> {
-			return courseGoals.filter((goal)=> goal.id !== goalId)
-		})
-		*/
 		const existingDoc = await loansRef.doc(userId).get();
     	const goals = existingDoc.data().goals.filter(goal => goal.id !== goalId);
     	await loansRef.doc(userId).update({ goals });
