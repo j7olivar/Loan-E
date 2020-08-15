@@ -2,6 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TextInput, Button, Modal, ScrollView, FlatList, Alert } from 'react-native';
 import GoalItem from '../../components/HomeScreen/GoalItem';
+import EditGoalInput from '../../components/HomeScreen/EditGoalInput';
 import GoalInput from '../../components/HomeScreen/GoalInput';
 import Header from '../../components/Header';
 import { firebase } from '../../Constants/ApiKeys';
@@ -21,7 +22,8 @@ const Stack = createStackNavigator();
 const HomeScreen = (props) => {
 	const [ courseGoals, setCourseGoals ] = useState([]);
 	const [ isAddMode, setIsAddMode ] = useState(false);
-	const [goalCounter, setGoalCounter] = useState(0)
+	const [ isEditMode, setIsEditMode ] = useState(false)
+ 	const [goalCounter, setGoalCounter] = useState(0)
 	const [pw, setPW] = useState('')
 	const [userOut, setUserOut] = useState("")
 
@@ -238,8 +240,23 @@ const HomeScreen = (props) => {
 		const existingDoc = await loansRef.doc(userId).get();
     	const goals = existingDoc.data().goals.filter(goal => goal.id !== goalId);
     	await loansRef.doc(userId).update({ goals });
-    	//setCourseGoals(goals);
-		//setGoalCounter(goalCounter-1)
+	}
+
+	const editLoan = async (goalId) => {
+		const existingDoc = await loansRef.doc(userId).get();
+		
+		setIsEditMode(true)
+		const goals = existingDoc.data().goals
+		//setIsEditMode(false)
+		await loansRef.doc(userId).update({ goals });
+	}
+
+	const cancelGoalEditHandler = () => {
+		setIsEditMode(false);
+	}
+
+	const editGoalHandler = async (goalId) => {
+		
 	}
 
 	return (
@@ -250,13 +267,13 @@ const HomeScreen = (props) => {
 				<Text style={styles.title}> LOANS: </Text>
 
 				<GoalInput visible={isAddMode} addGoalHandler={addGoalHandler} onCancel={cancelGoalAdditionHandler} />
-
 				<FlatList
 					keyExtractor={(item, index) => item.id}
 					data={courseGoals}
 					renderItem={(itemData) => (
 						<GoalItem
 							onDelete={removeGoalHandler.bind(this, itemData.item.id)}
+							onEdit = {editLoan.bind(this,itemData.item.id)}
 							title={itemData.item.value}
 							subInterest={itemData.item.interest}
 							subPaid={itemData.item.paidOff}
@@ -362,6 +379,8 @@ const styles = StyleSheet.create({
 	},
 
 });
+//onDelete={removeGoalHandler.bind(this, itemData.item.id)}
+//<EditGoalInput visible={isEditMode} editGoalHandler={editGoalHandler} onCancel={cancelGoalEditHandler} />
 
 export default HomeScreen;
 
