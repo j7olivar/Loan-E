@@ -15,6 +15,7 @@ const HomeScreen = (props) => {
 	const [ courseGoals, setCourseGoals ] = useState([]);
 	const [ isAddMode, setIsAddMode ] = useState(false);
 	const [ totalLoan, setTotalLoan ] = useState(0);
+	const [ updatedLoan, setUpdatedLoan ] = useState(false);
 
 
 	const userId = props.extraData.id;
@@ -29,6 +30,11 @@ const HomeScreen = (props) => {
 	const onFooterLinkPress2 = () => {
 		props.navigation.navigate('Loan Home')
 	}
+
+	const onFooterLinkPress3 = (item, allLoans) => {
+		props.navigation.navigate('Individual Loan', 
+		{loan: item.value, interestRate: item.interest, timeLeft: item.years, paidSoFar: item.paidOff, allLoans: allLoans })
+    }
 	
 	const onDeleteAccountPress = () => {
 		console.log(props.extraData)
@@ -115,13 +121,15 @@ const HomeScreen = (props) => {
 		setTotalLoan(total)
 	}
 
-	const removeGoalHandler = (goalId, loans) => {
-		deleteLoan(1, loans);
-		setCourseGoals((currentGoals) => {
+	const removeGoalHandler = (goalId, loans, item) => {
+		onFooterLinkPress3(item, loans);
+		//deleteLoan(1, loans);
+
+		/*setCourseGoals((currentGoals) => {
 			
 			loansRef.doc(goalId).delete().then(console.log('removed correctly'))
 			return currentGoals.filter((goal) => goal.id !== goalId);
-		});
+		});*/
 
 		//firebase.database().ref(goalId).remove()
 	};
@@ -134,7 +142,19 @@ const HomeScreen = (props) => {
 			total += arr[i]
 		}
 
+		console.log(arr[1])
+
 		setTotalLoan(total);
+	}
+
+	function getTotalLoan(arr){
+		var total = 0;
+
+		for(var i = 0; i < arr.length; i++){
+			total += arr[i]
+		}
+
+		return total;
 	}
 
 	return (
@@ -151,7 +171,7 @@ const HomeScreen = (props) => {
 					addNewLoan(itemData.item.value, itemData.item.paidOff, allLoans)
 				)}/>
 
-				<Text style={styles.totalLoan}> ${totalLoan} </Text>
+				<Text style={styles.totalLoan}> ${() => setTotalLoan(getTotalLoan(allLoans))}{totalLoan}{console.log(allLoans[1])} </Text>
 
 				<Text style={styles.title}> LOANS: </Text>
 
@@ -162,7 +182,7 @@ const HomeScreen = (props) => {
 					data={courseGoals}
 					renderItem={(itemData) => (
 						<GoalItem
-							onDelete={removeGoalHandler.bind(this, itemData.item.id, allLoans)}
+							onDelete={removeGoalHandler.bind(this, itemData.item.id, allLoans, itemData.item)}
 							
 							title={itemData.item.value}
 							subInterest={itemData.item.interest}
@@ -218,11 +238,8 @@ const HomeScreen = (props) => {
 			<View style={styles.logout}>
 				<Button style={styles.logout} title="Logout" onPress={() => onLogoutPress()} />
 			</View>
-
-
 			
 		</ScrollView>
-
 	);
 
 };
@@ -257,9 +274,9 @@ const styles = StyleSheet.create({
 		color: '#32c090',
 		textAlign: 'center',
 		paddingTop: 20
-	}
-
+	},
 });
 
 export default HomeScreen;
 
+//removeGoalHandler.bind(this, itemData.item.id, allLoans)
