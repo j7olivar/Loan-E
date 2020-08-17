@@ -263,7 +263,7 @@ const HomeScreen = (props) => {
 		<ScrollView style={styles.screen}>
 			<Header title="Student Loan Calculator" />
 
-			<View style={{ padding: 20 }}>
+			<View style={{ padding: 15 }}>
 				<Text style={styles.title}> LOANS: </Text>
 
 				<GoalInput visible={isAddMode} addGoalHandler={addGoalHandler} onCancel={cancelGoalAdditionHandler} />
@@ -366,7 +366,7 @@ const styles = StyleSheet.create({
 	title: {
 		//color: '#35CA96',
 		fontSize: 22,
-		margin:15,
+		margin:10,
 		fontWeight: 'bold'
 	},
 	logout: {

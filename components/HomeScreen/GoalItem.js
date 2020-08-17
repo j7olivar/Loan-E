@@ -1,5 +1,5 @@
 import React from 'react'
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native'
+import {View, Text, StyleSheet, TouchableOpacity, Dimensions} from 'react-native'
 import {Swipeable} from 'react-native-gesture-handler'
 
 const GoalItem = props =>{
@@ -33,7 +33,7 @@ const GoalItem = props =>{
    
     return (
       <View style = {styles.rightItem}>
-        <TouchableOpacity style = {styles.deleteButton} onPress= {props.onDelete}>
+        <TouchableOpacity onPress= {props.onDelete}>
           <Text style={styles.rightItemText}>Delete</Text>
         </TouchableOpacity>
         
@@ -55,10 +55,10 @@ const GoalItem = props =>{
             <Text style={styles.title}> ${props.title} </Text>
           </View>
           <View style={styles.sub}>
-            <Text> {props.subInterest}% 
+            <Text style={{color:'white'}}> {props.subInterest}% 
             </Text>
-            <Text> , {props.subYears} Years, </Text>
-            <Text> Paid Off: ${props.subPaid} </Text>
+            <Text style={{color:'white'}}> , {props.subYears} Years, </Text>
+            <Text style={{color:'white'}}> Paid Off: ${props.subPaid} </Text>
           </View> 
        </View>
        </Swipeable>)
@@ -67,43 +67,56 @@ const GoalItem = props =>{
 
 const styles = StyleSheet.create({
     listItem: {
-        padding: 10,
-        marginVertical: 10,
-        backgroundColor: '#ccc',
+        padding: 2,
+        flex: 2,
+        height:60,
+        width:Dimensions.get('window').width - 40,
+        borderRadius:8,
+        marginVertical: 3,
+        backgroundColor: 'black',
         borderColor: 'black',
         borderWidth:1,
+        opacity:0.8
       },
       sub: {
         flexDirection: "row",
-        flex: 1
+        flex: 2,
+        color:'white'
       },
       main:{
-        
        flex: 2
       },
       title:{
-        fontSize: 18
+        fontSize: 18,
+        color:'white'
       },
       leftItem: {
-        padding: 10,
-        marginVertical: 10,
+        borderRadius:8,
+        marginVertical: 3,
+        flex:1,
         backgroundColor: '#32c090',
         justifyContent: 'center',
       },
       leftItemText: {
         fontSize: 20,
         fontWeight: 'bold',
-        marginLeft:20,
+        //marginLeft:20,
+        justifyContent: 'center',
+        alignSelf:'center',
         color: '#fff',
       },
       rightItemText: {
         fontSize: 20,
         fontWeight: 'bold',
-        marginRight:15,
+        //marginRight:-20,
+        justifyContent: 'center',
+        alignSelf:'center',
         color: '#fff',
       },
       rightItem: {
-        marginVertical: 10,
+        borderRadius:8,
+        marginVertical: 3,
+        flex: 1,
         backgroundColor: '#ff392e',
         justifyContent: 'center',
       },
@@ -111,8 +124,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        flex: 1,
-        backgroundColor: '#c00000',
+        //flex: 1,
+        backgroundColor: '##ff392e',
       },
 })
  //<TouchableOpacity onPress={props.onDelete}>
