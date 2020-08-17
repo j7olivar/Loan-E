@@ -40,13 +40,24 @@ export default function Login({navigation}) {
     }   
     
     return(
-        <View style= {{flex:1, alignItems:'center', backgroundColor: '#060320'}}>
+        <View style= {{flex:1, alignItems:'center', /*backgroundColor: '#060320'*/ backgroundColor: 'white'}}>
             <KeyboardAwareScrollView 
             style={{flex:1,width:'100%'}}
             keyboardShouldPersistTaps='always'>
+                
+                {/*
                 <Image 
                 style={styles.logo}
                 source = {require('../../assets/tempLogo.jpg')}/>
+                */}
+            
+            <Text style={{fontWeight: 'bold', fontSize: 33, marginLeft: 33, marginTop: 150}}>
+                Welcome Back, 
+            </Text>
+
+            <Text style={{color: '#A5A5A5', marginLeft: 34, marginTop: 18, fontWeight: 'bold'}}> Sign in to continue
+            </Text>
+
                 <TextInput 
                 style={styles.input}
                 placeholder='Email'
@@ -55,6 +66,7 @@ export default function Login({navigation}) {
                 value={email}
                 underlineColorAndroid = 'transparent'
                 autoCapitalize='none'
+                secureTextEntry= {false}
                 />
                 
                 <TextInput 
@@ -71,14 +83,14 @@ export default function Login({navigation}) {
                 <TouchableOpacity
                 style = {styles.button}
                 onPress={()=>onLoginPress()}>
-                <Text style = {styles.buttonText}>Log in</Text>
+                <Text style = {styles.buttonText}>Login</Text>
                 </TouchableOpacity>
 
                 <View style= {{fontSize: 16,color: 'red'}}>
                     <Text style = {styles.footerText}>
                         Don't have an account? 
                     <Text onPress={()=>onFooterLinkPress()} 
-                        style = {styles.signupText}> Sign up</Text>
+                        style = {styles.signupText}>  Sign up</Text>
                     </Text>
                 </View>
 
@@ -100,22 +112,24 @@ const styles = StyleSheet.create({
         height: 48,
         borderRadius: 5,
         overflow: 'hidden',
-        color:'white',
+        color:'black',
         backgroundColor: 'transparent',
         borderBottomWidth:1,
         borderBottomColor:'white',
-        marginTop: 10,
+        marginTop: 40,
         marginBottom: 10,
-        marginLeft: 30,
+        marginLeft: 20,
         marginRight: 30,
         paddingLeft: 16,
+        borderBottomColor: 50
         
     },
     button: {
-        backgroundColor: '#35CA96',
+        //backgroundColor: '#35CA96',
+        backgroundColor: '#426FFE',
         marginLeft: 30,
         marginRight: 30,
-        marginTop: 20,
+        marginTop: 50,
         height: 48,
         borderRadius: 5,
         alignItems: "center",
@@ -129,13 +143,14 @@ const styles = StyleSheet.create({
     footerText:{
         flex: 1,
         textAlign: 'center',
+        fontWeight: 'bold',
         paddingTop: 20,
-        color:'white'
+        color:'#A5A5A5'
     },
     signupText:{
-        color: "#35CA96",
+        color: "#426FFE",
         fontWeight: "bold",
-        fontSize: 16,
+        fontSize: 14,
         paddingVertical:400
     }
   });

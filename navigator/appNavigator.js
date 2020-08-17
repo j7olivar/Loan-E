@@ -29,11 +29,11 @@ const Stacker = (props) => {
 			}}
 		>
 			<Tab.Screen 
-				name="Loan Calculator" 
+				name="Loans" 
 				component={() => <HomeScreen {...props} />} 
 				options={{tabBarIcon: (props)=> <Ionicons name = 'ios-calculator' size={props.size} color = {props.color}/>}}/>
 			<Tab.Screen 
-				name="Budget Screen" 
+				name="Budgeting" 
 				component={() => <BudgetScreen {...props} />} 
 				options={{tabBarIcon: (props)=> <Ionicons name = 'ios-egg' size={props.size} color = {props.color}/>}}/>
 			<Tab.Screen 

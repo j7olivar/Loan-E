@@ -12,6 +12,9 @@ import { createStackNavigator } from '@react-navigation/stack';
 import LoanCalculatorScreen from '../LoanScreens/LoanCalculator.js';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
+import Icon from 'react-native-vector-icons/MaterialIcons';
+
+
 const Stack = createStackNavigator();
 
 
@@ -19,8 +22,16 @@ const HomeScreen = (props) => {
 	const [ courseGoals, setCourseGoals ] = useState([]);
 	const [ isAddMode, setIsAddMode ] = useState(false);
 
+	const [ totalLoan, setTotalLoan ] = useState(0);
+	const [ ifHalfPaid, setIfHalfPaid ] = useState(false);
+
+
 	const userId = props.extraData.id;
 	const loansRef = firebase.firestore().collection('goals');
+
+	let allLoans = [0];
+
+	
 
 	const onFooterLinkPress = () => {
 		props.navigation.navigate('Loan Calculator')
@@ -132,6 +143,7 @@ const HomeScreen = (props) => {
 		};
 	}, []);
 
+	{/*}
 	const onLogoutPress = () => {
 		firebase
 			.auth()
@@ -144,6 +156,7 @@ const HomeScreen = (props) => {
 				alert(error);
 			});
 	};
+	*/}
 
 	const addGoalHandler = (goalTitle, interestRate, years, paidOff) => {
 		//setCourseGoals([...courseGoals, enteredGoal])
@@ -177,12 +190,53 @@ const HomeScreen = (props) => {
 		//firebase.database().ref(goalId).remove()
 	};
 
+	function deleteLoan(index, loans){
+		loans.splice(index, 1);
+		var total = 0;
+
+		for(var i = 0; i < loans.length; i++){
+			total += loans[i]
+		}
+
+		setTotalLoan(total)
+	}
+
+	function addNewLoan(loanToAdd, paidOff, arr){
+		arr.push(loanToAdd - paidOff);
+		var total = 0;
+
+		for(var i = 0; i < arr.length; i++){
+			total += arr[i]
+		}
+
+		setTotalLoan(total);
+	}
+
+	
+
+
 	return (
 		<ScrollView style={styles.screen}>
-			<Header title="Student Loan Calculator" />
 
-			<View style={{ padding: 20 }}>
-				<Text style={styles.title}> LOANS: </Text>
+			<Text style={styles.loanTitle}>
+				Student Loan Calculator
+			</Text> 
+
+			<View style={{ padding: 20, marginTop: 15 }}>
+
+				<Text style={styles.title}>Total Loans:</Text>
+
+				<FlatList
+				keyExtractor={(item, index) => item.id}
+				data={courseGoals}
+				renderItem={(itemData) => (
+					addNewLoan(itemData.item.value, itemData.item.paidOff, allLoans)
+				)}/>
+
+				<Text style={styles.totalLoan}> ${totalLoan} </Text>
+			
+
+				<Text style={styles.title}>Loans:</Text>
 
 				<GoalInput visible={isAddMode} addGoalHandler={addGoalHandler} onCancel={cancelGoalAdditionHandler} />
 
@@ -191,7 +245,7 @@ const HomeScreen = (props) => {
 					data={courseGoals}
 					renderItem={(itemData) => (
 						<GoalItem
-							onDelete={removeGoalHandler.bind(this, itemData.item.id)}
+							onDelete={removeGoalHandler.bind(this, itemData.item.id, allLoans)}
 							title={itemData.item.value}
 							subInterest={itemData.item.interest}
 							subPaid={itemData.item.paidOff}
@@ -200,27 +254,45 @@ const HomeScreen = (props) => {
 					)}
 				/>
 				<Button title="Add New Loan" onPress={() => setIsAddMode(true)} />
-				<Text style={styles.title}> SHINY GRAPH/SLIDER: </Text>
+
+				<View style={{paddingBottom: 15}}>
+				</View>
+
+				<Text style={styles.title}>Graph:</Text>
 				<FavoriteMealScreen/>
 
-				<TouchableOpacity title='Loan Calculator' onPress={onFooterLinkPress}> 
-					<Text style={{
-						fontWeight: 'bold',
-						fontSize: 20,
-						color: '#32c090',
-						textAlign: 'center',
-						paddingTop: 20
-					}}>
-						Loan Calculator
+				<View style={{paddingBottom: 15}}>
+				</View>
+
+				<View style={styles.box} title='Loan Calculator' onPress={onFooterLinkPress}>
+					<Text 
+						style={{
+							fontWeight: 'bold',
+							fontSize: 20,
+							color: 'black',
+							textAlign: 'left',
+							marginTop: 10,
+							flexDirection: 'row'
+						}}>
+							Loan Calculator
 					</Text>
-				</TouchableOpacity>
+
+					<Icon
+					name={'keyboard-arrow-right'}
+					size={30}
+					color="grey"
+					onPress={onFooterLinkPress}
+					style={{marginTop: 7}}
+					/>
+					
+				</View>
 
 				<TouchableOpacity title='Loan Calculator' onPress={onFooterLinkPress2}> 
 					<Text style={{
 						fontWeight: 'bold',
 						fontSize: 20,
-						color: '#32c090',
-						textAlign: 'center',
+						color: 'black',
+						textAlign: 'left',
 						paddingTop: 20
 					}}>
 						Loan Home Screen Prototype
@@ -228,6 +300,7 @@ const HomeScreen = (props) => {
 				</TouchableOpacity>
 
 				
+				{/*}
 				<TouchableOpacity title='Budget Page' onPress={onFooterLinkPress3}> 
 					<Text style={{
 						fontWeight: 'bold',
@@ -239,7 +312,10 @@ const HomeScreen = (props) => {
 						Budgeting
 					</Text>
 				</TouchableOpacity>
+				*/}
 
+				{/*
+			
 				<TouchableOpacity title= 'Delete User' onPress={onDeleteAccountPress}>
 					<Text style={{
 						fontWeight: 'bold',
@@ -251,11 +327,17 @@ const HomeScreen = (props) => {
 						Delete Account
 					</Text>
 				</TouchableOpacity>
+				
+				*/}
 
 			</View>
+
+			
+			{/*
 			<View style={styles.logout}>
 				<Button style={styles.logout} title="Logout" onPress={() => onLogoutPress()} />
 			</View>
+			*/}
 
 
 			
@@ -266,13 +348,20 @@ const HomeScreen = (props) => {
 };
 const styles = StyleSheet.create({
 	screen: {
-		flex: 1
-		//backgroundColor: '#060320'
+		flex: 1,
+		backgroundColor: 'white'
 	},
+	loanTitle: {
+        fontWeight: 'bold',
+        fontSize: 26,
+        paddingLeft: 23,
+        paddingTop: 34,
+        color: '#426FFE'
+      },
 	title: {
 		//color: '#35CA96',
-		fontSize: 22,
-		margin:15,
+		fontSize: 20,
+		marginLeft:5,
 		fontWeight: 'bold'
 	},
 	logout: {
@@ -283,6 +372,13 @@ const styles = StyleSheet.create({
 		justifyContent: 'flex-end'
 		//marginBottom: 500
 	},
+	box: {
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		height: 58,
+		marginLeft: 5,
+		paddingRight: 18,
+	}
 
 });
 

@@ -52,10 +52,15 @@ export default function Signup({navigation}){
     }
 
     return(
-    <View style= {{flex:1, alignItems:'center', backgroundColor: '#060320'}}>
+    <View style= {{flex:1, alignItems:'center', backgroundColor: 'white'}}>
         <KeyboardAwareScrollView 
             style ={{flex:1,width:'100%'}}
             keyboardShouldPersistTaps='always'>
+
+            <Text style={{fontWeight: 'bold', fontSize: 33, marginLeft: 33, marginTop: 117, marginBottom: 20}}>
+                Sign up 
+            </Text>
+
             <TextInput
                 style={styles.input}
                 placeholder = 'Full Name'
@@ -104,7 +109,7 @@ export default function Signup({navigation}){
             </TouchableOpacity>
             <View style={styles.footerView}>
                 <Text style={styles.footerText}>Already have an account?
-                <Text onPress={onFooterLinkPress} style = {styles.loginText}> Log in
+                <Text onPress={onFooterLinkPress} style = {styles.loginText}>  Login
                 </Text>
                 </Text>
             </View>
@@ -116,9 +121,9 @@ export default function Signup({navigation}){
 
 const styles = StyleSheet.create({
     loginText:{
-        color: "#35CA96",
+        color: "#426FFE",
         fontWeight: "bold",
-        fontSize: 16,
+        fontSize: 14,
         paddingVertical:400
     },
     logo:{
@@ -132,7 +137,7 @@ const styles = StyleSheet.create({
         height: 48,
         borderRadius: 5,
         overflow: 'hidden',
-        color:'white',
+        color:'black',
         backgroundColor: 'transparent',
         borderBottomWidth:1,
         borderBottomColor:'white',
@@ -141,13 +146,15 @@ const styles = StyleSheet.create({
         marginLeft: 30,
         marginRight: 30,
         paddingLeft: 16,
-        
+        borderBottomColor: 50
+
     },
     button: {
-        backgroundColor: '#35CA96',
+        //backgroundColor: '#35CA96',
+        backgroundColor: '#426FFE',
         marginLeft: 30,
         marginRight: 30,
-        marginTop: 20,
+        marginTop: 50,
         height: 48,
         borderRadius: 5,
         alignItems: "center",
@@ -161,19 +168,20 @@ const styles = StyleSheet.create({
     footerText:{
         flex: 1,
         alignItems: "center",
-        bottom:-75,
+        fontWeight: 'bold',
         position:'absolute',
         paddingLeft:75,
-        color:'white'
+        color:'#A5A5A5',
+        paddingTop: 20
     },
     footerView:{
         fontSize: 16,
         color: '#2e2e2d'
     },
     signupText:{
-        color: "#35CA96",
+        color: "#426FFE",
         fontWeight: "bold",
-        fontSize: 16,
+        fontSize: 14,
         paddingVertical:400
     }
   });

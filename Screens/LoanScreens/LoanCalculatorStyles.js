@@ -3,10 +3,12 @@ import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
     formatText: {
         paddingTop: 25,
-        textAlign: 'center',
+        //textAlign: 'center',
+        textAlign: 'left',
+        marginLeft: 30,
         fontWeight: 'bold',
-        fontSize: 25,
-        color: '#32c090'
+        fontSize: 18,
+        color: '#426FFE'
     },
 
     textStyle: {
@@ -16,9 +18,11 @@ export default StyleSheet.create({
     monthlyPayments: {
         fontWeight: 'bold',
         textAlign: 'center',
-        fontSize: 40,
-        paddingTop: 60,
-        color: '#32c090'
+        fontSize: 20,
+        paddingTop: 25,
+        //marginLeft: 30,
+        //color: '#32c090'
+        color: '#426FFE',
     },
 
     
@@ -41,14 +45,14 @@ export default StyleSheet.create({
         height: 48,
         borderRadius: 5,
         overflow: 'hidden',
-        backgroundColor: 'grey',
+        backgroundColor: '#e7e7e7',
         marginTop: 10,
         marginBottom: 10,
         marginLeft: 30,
         marginRight: 30,
         paddingLeft: 16,
-        fontSize: 20,
-        color: 'white'
+        fontSize: 18,
+        //color: 'white'
     },
     button: {
         backgroundColor: '#788eec',
@@ -78,5 +82,46 @@ export default StyleSheet.create({
         color: "#788eec",
         fontWeight: "bold",
         fontSize: 16
+    },
+    appButtonContainer: {
+        height: 48,
+        borderRadius:5,
+        overflow: 'hidden',
+        backgroundColor: '#426FFE',
+        marginTop: 25,
+        marginBottom: 10,
+        marginLeft: 30,
+        marginRight: 30,
+        paddingLeft: 16,
+        fontSize: 20,
+    },
+    appButtonText: {
+        fontSize: 16,
+        marginTop: 13,
+        color: "white",
+        fontWeight: "bold",
+        alignSelf: "center",
+    },
+    monthBox: {
+        width: 334,
+        height: 130,
+        marginTop: 35,
+        marginLeft: 21,
+        //borderColor: 'black',
+        //borderWidth: 1,
+        backgroundColor: 'white',
+        //flexDirection: 'row',
+        //justifyContent: 'space-around',
+        //alignItems: 'flex-start',
+        borderRadius: 25,
+        shadowColor: "#000",
+		    shadowOffset: {
+          width: 10,
+          height: 9
+		    },
+		    shadowOpacity: 0.15,
+            shadowRadius: 8,
+        
     }
+    
 })

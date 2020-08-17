@@ -23,7 +23,7 @@ export default function BudgetScreen({navigation}){
       ]
 
     return(
-    <View style={{backgroundColor: '#000', flex: 1}}>
+    <View style={{backgroundColor: 'white', flex: 1}}>
         
         <Text style={styles.budgetTitle}>Budgeting</Text>
 
@@ -73,10 +73,12 @@ export default function BudgetScreen({navigation}){
             friction={0.9}
             >
 
-                <View style={{flex: 1, backgroundColor: '#161616', borderRadius: 25, padding: 14}}>
+                <View style={{flex: 1, backgroundColor: 'white', borderRadius: 25, padding: 14}}>
                     <View style={styles.panelHandle}></View>
                     <View>
-                        <Text style={{marginVertical: 16, color: '#32c090', fontWeight: 'bold'}}>Recent Transactions</Text>
+                        <Text style={{marginVertical: 16, color: 'black', fontWeight: 'bold'}}>
+                            Recent Transactions
+                        </Text>
                     </View>
 
                     <View style = {{height : 500, paddingBottom: 10}}>
