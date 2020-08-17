@@ -14,7 +14,8 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 const HomeScreen = (props) => {
 	const [ courseGoals, setCourseGoals ] = useState([]);
 	const [ isAddMode, setIsAddMode ] = useState(false);
-	const [ totalLoan, setTotalLoan ] = useState(0);
+	const [ payment, setPayment ] = useState(0);
+	const [ totalLoan, setTotalLoan ] = useState(0)
 	const [ updatedLoan, setUpdatedLoan ] = useState(false);
 
 
@@ -37,7 +38,7 @@ const HomeScreen = (props) => {
     }
 	
 	const onDeleteAccountPress = () => {
-		console.log(props.extraData)
+		//console.log(props.extraData)
 		/*
 		firebase.database().ref('users/'+userId).remove()
 		firebase.database().ref('goals')
@@ -142,8 +143,6 @@ const HomeScreen = (props) => {
 			total += arr[i]
 		}
 
-		console.log(arr[1])
-
 		setTotalLoan(total);
 	}
 
@@ -155,6 +154,14 @@ const HomeScreen = (props) => {
 		}
 
 		return total;
+	}
+
+	function makePayment(totalLoan, payment){
+		totalLoan -= payment;
+		console.log(totalLoan)
+
+		setTotalLoan(totalLoan)
+		//this.forceUpdate()
 	}
 
 	return (
@@ -171,7 +178,7 @@ const HomeScreen = (props) => {
 					addNewLoan(itemData.item.value, itemData.item.paidOff, allLoans)
 				)}/>
 
-				<Text style={styles.totalLoan}> ${() => setTotalLoan(getTotalLoan(allLoans))}{totalLoan}{console.log(allLoans[1])} </Text>
+				<Text style={styles.totalLoan}>${totalLoan}</Text>
 
 				<Text style={styles.title}> LOANS: </Text>
 
@@ -192,6 +199,25 @@ const HomeScreen = (props) => {
 					)}
 				/>
 				<Button title="Add New Loan" onPress={() => setIsAddMode(true)} />
+
+				<View style={{paddingTop: 60}}>
+				<TextInput placeholder="Input Payment"
+				style={styles.input} 
+				onChangeText ={ payment => setPayment(payment)}/>
+			 	</View>
+
+			<TouchableOpacity onPress={() => makePayment(getTotalLoan(allLoans), payment)}>
+				<Text style={{
+					fontWeight: 'bold',
+					fontSize: 20,
+					color: '#32c090',
+					textAlign: 'center',
+					paddingTop: 20
+				}}>
+					Make Payment
+				</Text>
+			</TouchableOpacity>
+
 				<Text style={styles.title}> SHINY GRAPH/SLIDER: </Text>
 				<FavoriteMealScreen/>
 				
@@ -275,6 +301,19 @@ const styles = StyleSheet.create({
 		textAlign: 'center',
 		paddingTop: 20
 	},
+	input: {
+        height: 48,
+        borderRadius: 5,
+        overflow: 'hidden',
+        backgroundColor: 'grey',
+        marginTop: 10,
+        marginBottom: 10,
+        marginLeft: 30,
+        marginRight: 30,
+        paddingLeft: 16,
+		fontSize: 20,
+        color: 'white',
+    },
 });
 
 export default HomeScreen;

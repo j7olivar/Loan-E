@@ -3,6 +3,7 @@ import { Text, TextInput, Button, ScrollView, View } from 'react-native'
 import styles from './IndividualLoanStyles.js'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
+
 export default function IndividualLoanScreen({route, navigation}) {
 	let { loan } = route.params
     const { interestRate } = route.params
@@ -14,15 +15,13 @@ export default function IndividualLoanScreen({route, navigation}) {
 
 	const [ payment, setPayment ] = useState(0);
 	const [ totalLoan, setTotalLoan ] = useState(info[0] - info[2])
+	const [ paidOff, setPaidOff ] = useState(info[3])
+	const [ monthlyPayment, setMonthlyPayment ] = useState(getMonthlyPayement(info[2]*12, info[1], info[0]))
 
 	const onFooterLinkPress3 = (info) => {
 		navigation.navigate('Individual Loan', 
 		{loan: info[0], interestRate: info[1], timeLeft: info[2], paidSoFar: info[3] })
 	}
-
-	/*const onFooterLinkPress = () => {
-		props.navigation.navigate('Loan Calculator')
-	}*/
 
 	function getMonthlyPayement(months, interestRate, loanAmount){
 		var monthlyIR = (interestRate * .01)/12;
@@ -34,12 +33,16 @@ export default function IndividualLoanScreen({route, navigation}) {
         return monthlyPayments.toFixed(2);
 	}
 
-	function makePayment(totalLoan, payment, route){
+	function makePayment(totalLoan, payment, paidOff, interestRate, months){
 		totalLoan -= payment;
-		route.params.allLoans[1] = totalLoan;
-		console.log(route.params.allLoans[1]);
-
 		setTotalLoan(totalLoan)
+
+		paidOff = parseFloat(payment) + parseFloat(paidOff)
+		setPaidOff(paidOff)
+
+		var payments = getMonthlyPayement(months, interestRate, totalLoan)
+		setMonthlyPayment(payments)
+		
 	}
 
     return(
@@ -49,7 +52,7 @@ export default function IndividualLoanScreen({route, navigation}) {
 
 			<View style={{flexDirection: 'row'}}>
 				<Text style={styles.leftText}>Monthly Payment:</Text>
-				<Text style={styles.rightText1}>${getMonthlyPayement(info[2]*12, info[1], info[0])}</Text>
+				<Text style={styles.rightText1}>${monthlyPayment}</Text>
 			</View>
 
 			<View style={{flexDirection: 'row'}}>
@@ -64,10 +67,33 @@ export default function IndividualLoanScreen({route, navigation}) {
 
 			<View style={{flexDirection: 'row'}}>
 				<Text style={styles.leftText}>Paid Off:</Text>
-				<Text style={styles.rightText4}>${info[3]}</Text>
+				<Text style={styles.rightText4}>${paidOff}</Text>
 			</View>
 
 			<View style={{paddingTop: 60}}>
+				<TextInput placeholder="Input Payment"
+				style={styles.input} 
+				onChangeText ={ payment => setPayment(payment)}/>
+			 </View>
+
+			<TouchableOpacity onPress={() => makePayment(totalLoan, payment, paidOff, info[1], info[2]*12)}>
+				<Text style={{
+					fontWeight: 'bold',
+					fontSize: 20,
+					color: '#32c090',
+					textAlign: 'center',
+					paddingTop: 20
+				}}>
+					Make Payment
+				</Text>
+			</TouchableOpacity>
+
+		</View>
+    )
+}
+
+/* Code that adds the functionality to make payments to the individual loan screen
+<View style={{paddingTop: 60}}>
 				<TextInput placeholder="Input Payment"
 				style={styles.input} 
 				onChangeText ={ payment => setPayment(payment)}/>
@@ -84,7 +110,4 @@ export default function IndividualLoanScreen({route, navigation}) {
 					Make Payment
 				</Text>
 			</TouchableOpacity>
-
-		</View>
-    )
-}
+*/
