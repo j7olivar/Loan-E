@@ -185,7 +185,8 @@ const HomeScreen = (props) => {
 		setCourseGoals((courseGoals) => [
 			...courseGoals,
 			{
-				id: userId + (goalCounter+id).toString(),
+				//id: userId + (goalCounter+id).toString(),
+				id: userId + (Math.floor(Math.random() * 900000)).toString(),
 				value: goalTitle,
 				interest: interestRate,
 				years: years,
@@ -213,7 +214,8 @@ const HomeScreen = (props) => {
 			console.log('num2: '+ (goalCounter+id).toString())
 			await loansRef.doc(userId).update({
 				goals: firebase.firestore.FieldValue.arrayUnion({
-				id: userId+(goalCounter+id).toString(),
+				//id: userId+(goalCounter+id).toString(),
+				id: userId + (Math.floor(Math.random() * 900000)).toString(),
 				value: goalTitle,
 				interest: interestRate,
 				years: years,
@@ -225,7 +227,8 @@ const HomeScreen = (props) => {
 			console.log('num3: '+ (goalCounter+id).toString())
 			await loansRef.doc(userId).set({
 				goals: firebase.firestore.FieldValue.arrayUnion({
-				id: userId+(goalCounter+id).toString(),
+				//id: userId+(goalCounter+id).toString(),
+				id: userId + (Math.floor(Math.random() * 900000)).toString(),
 				value: goalTitle,
 				interest: interestRate,
 				years: years,
