@@ -51,7 +51,7 @@ const FavoriteMealScreen = (props) => {
 							}
 						]
 					}}
-					width={Dimensions.get('window').width - 16}
+					width={Dimensions.get('window').width - 20}
 					height={220}
 					chartConfig={{
 						backgroundColor: '#1cc910',
