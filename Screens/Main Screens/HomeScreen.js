@@ -14,6 +14,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
+import '../../components/Global.js'
 
 const Stack = createStackNavigator();
 
@@ -23,15 +24,14 @@ const HomeScreen = (props) => {
 	const [ isAddMode, setIsAddMode ] = useState(false);
 
 	const [ totalLoan, setTotalLoan ] = useState(0);
-	const [ ifHalfPaid, setIfHalfPaid ] = useState(false);
+
+	//const [ ifHalfPaid, setIfHalfPaid ] = useState(false);
 
 
 	const userId = props.extraData.id;
 	const loansRef = firebase.firestore().collection('goals');
 
-	let allLoans = [0];
-
-	
+	global.allLoans = [0];
 
 	const onFooterLinkPress = () => {
 		props.navigation.navigate('Loan Calculator')
@@ -45,6 +45,9 @@ const HomeScreen = (props) => {
 		props.navigation.navigate('Budget')
 	}
 
+	const onFooterLinkPress4 = (totalLoans, halfPaid) => {
+		props.navigation.navigate('Pei')
+	}
 	
 	const onDeleteAccountPress = () => {
 		console.log(props.extraData)
@@ -210,10 +213,23 @@ const HomeScreen = (props) => {
 		}
 
 		setTotalLoan(total);
+		totalLoans();
 	}
 
+	/* 
+	const totalLoans = (allLoans) => {	
+		for (let i = 0; i < allLoans.length - 1; i++) {
+			totalLoans[i] === allLoans[i]+allLoans[i+1]
+		}
+	}
 	
 
+	const halfPaid = (totalLoans) => {
+		if (totalLoans[totalLoans.length - 1] === totalLoans[totalLoans] * 2 ) {
+			return true;
+		}
+	}
+	*/
 
 	return (
 		<ScrollView style={styles.screen}>
@@ -230,7 +246,7 @@ const HomeScreen = (props) => {
 				keyExtractor={(item, index) => item.id}
 				data={courseGoals}
 				renderItem={(itemData) => (
-					addNewLoan(itemData.item.value, itemData.item.paidOff, allLoans)
+					addNewLoan(itemData.item.value, itemData.item.paidOff, global.allLoans)
 				)}/>
 
 				<Text style={styles.totalLoan}> ${totalLoan} </Text>
@@ -245,7 +261,7 @@ const HomeScreen = (props) => {
 					data={courseGoals}
 					renderItem={(itemData) => (
 						<GoalItem
-							onDelete={removeGoalHandler.bind(this, itemData.item.id, allLoans)}
+							onDelete={removeGoalHandler.bind(this, itemData.item.id, global.allLoans)}
 							title={itemData.item.value}
 							subInterest={itemData.item.interest}
 							subPaid={itemData.item.paidOff}

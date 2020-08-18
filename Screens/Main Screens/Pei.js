@@ -4,9 +4,12 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import Emoji from 'react-native-emoji';
 import Settings from '../../components/Profile/Settings';
 import { createStackNavigator } from '@react-navigation/stack';
-import HomeScreen from './HomeScreen'
+import '../../components/Global.js'
 
-function ProfilePage({ navigation }) {
+
+function ProfilePage({ route, navigation }) {
+
+    //const { totalLoan } = route.params 
 
     return (    
       <View style={{backgroundColor: 'white'}}>
@@ -48,7 +51,7 @@ function ProfilePage({ navigation }) {
                 </View>
                 
                 <View style={styles.row}>
-                  <Emoji name="moneybag" style={styles.emoji} />
+                  <Emoji name={global.halfPaid ? "moneybag" : "black_circle"} style={styles.emoji} />
                   <Emoji name="100" style={styles.emoji} />
                   <Emoji name="burrito" style={styles.emoji} />
                   <Emoji name="video_game" style={styles.emoji} />
