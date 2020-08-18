@@ -10,6 +10,6 @@ function About() {
         </Text>
     </View>
 )
-}
+}  
 
 export default About
