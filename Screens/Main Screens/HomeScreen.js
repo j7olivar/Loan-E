@@ -8,7 +8,6 @@ import { firebase } from '../../Constants/ApiKeys';
 import FavoriteMealScreen from './FavoriteMealScreen'
 
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
 import LoanCalculatorScreen from '../LoanScreens/LoanCalculator.js';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
@@ -22,6 +21,10 @@ const Stack = createStackNavigator();
 const HomeScreen = (props) => {
 	const [ courseGoals, setCourseGoals ] = useState([]);
 	const [ isAddMode, setIsAddMode ] = useState(false);
+	const [ payment, setPayment ] = useState(0);
+	const [ totalLoan, setTotalLoan ] = useState(0)
+	const [ updatedLoan, setUpdatedLoan ] = useState(false);
+
 
 	const [ totalLoan, setTotalLoan ] = useState(0);
 
@@ -50,7 +53,7 @@ const HomeScreen = (props) => {
 	}
 	
 	const onDeleteAccountPress = () => {
-		console.log(props.extraData)
+		//console.log(props.extraData)
 		/*
 		firebase.database().ref('users/'+userId).remove()
 		firebase.database().ref('goals')
@@ -183,12 +186,26 @@ const HomeScreen = (props) => {
 		setIsAddMode(false);
 	};
 
-	const removeGoalHandler = (goalId) => {
-		setCourseGoals((currentGoals) => {
+	function deleteLoan(index, loans){
+		loans.splice(index, 1);
+		var total = 0;
+
+		for(var i = 0; i < loans.length; i++){
+			total += loans[i]
+		}
+
+		setTotalLoan(total)
+	}
+
+	const removeGoalHandler = (goalId, loans, item) => {
+		onFooterLinkPress3(item, loans);
+		//deleteLoan(1, loans);
+
+		/*setCourseGoals((currentGoals) => {
 			
 			loansRef.doc(goalId).delete().then(console.log('removed correctly'))
 			return currentGoals.filter((goal) => goal.id !== goalId);
-		});
+		});*/
 
 		//firebase.database().ref(goalId).remove()
 	};
@@ -206,6 +223,18 @@ const HomeScreen = (props) => {
 
 	function addNewLoan(loanToAdd, paidOff, arr){
 		arr.push(loanToAdd - paidOff);
+	function addNewLoan(loanToAdd, paidOff, arr){
+		arr.push(loanToAdd - paidOff);
+		var total = 0;
+
+		for(var i = 0; i < arr.length; i++){
+			total += arr[i]
+		}
+
+		setTotalLoan(total);
+	}
+
+	function getTotalLoan(arr){
 		var total = 0;
 
 		for(var i = 0; i < arr.length; i++){
@@ -230,6 +259,16 @@ const HomeScreen = (props) => {
 		}
 	}
 	*/
+		return total;
+	}
+
+	function makePayment(totalLoan, payment){
+		totalLoan -= payment;
+		console.log(totalLoan)
+
+		setTotalLoan(totalLoan)
+		//this.forceUpdate()
+	}
 
 	return (
 		<ScrollView style={styles.screen}>
@@ -261,7 +300,7 @@ const HomeScreen = (props) => {
 					data={courseGoals}
 					renderItem={(itemData) => (
 						<GoalItem
-							onDelete={removeGoalHandler.bind(this, itemData.item.id, global.allLoans)}
+							onDelete={removeGoalHandler.bind(this, itemData.item.id, allLoans, itemData.item)}						
 							title={itemData.item.value}
 							subInterest={itemData.item.interest}
 							subPaid={itemData.item.paidOff}
@@ -358,7 +397,6 @@ const HomeScreen = (props) => {
 
 			
 		</ScrollView>
-
 	);
 
 };
@@ -400,3 +438,4 @@ const styles = StyleSheet.create({
 
 export default HomeScreen;
 
+//removeGoalHandler.bind(this, itemData.item.id, allLoans)

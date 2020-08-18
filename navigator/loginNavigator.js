@@ -12,6 +12,7 @@ import  LoanHomeScreen  from '../Screens/LoanScreens/LoanHome.js'
 import  LoanCalculatorResults from '../Screens/LoanScreens/LoanCalculatorResults.js'
 import BudgetScreen from '../Screens/BudgetScreens/Budget.js'
 import ProfilePage from '../Screens/Main Screens/Pei.js'
+import  IndividualLoanScreen from '../Screens/LoanScreens/IndividualLoan.js'
 
 if (!global.btoa){global.btoa=encode}
 if(!global.atob){global.atob=decode}
@@ -132,6 +133,13 @@ const LoginNavigator =  () => {
               headerTitleStyle: {fontWeight: 'bold',}
             }}
         component={ProfilePage} />
+        <Stack.Screen name="Individual Loan" 
+        options={{
+              headerStyle:{backgroundColor:'#32c090',},
+              headerTintColor: 'black',
+              headerTitleStyle: {fontWeight: 'bold',}
+            }}
+        component={IndividualLoanScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   )
