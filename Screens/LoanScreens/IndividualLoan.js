@@ -6,10 +6,9 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export default function IndividualLoanScreen({route, navigation}) {
 	let { loan } = route.params
-    const { interestRate } = route.params
+	const { interestRate } = route.params
 	const { timeLeft } = route.params
 	const { paidSoFar } = route.params
-	//let { allLoans } = route.params
 
 	let info = [loan, interestRate, timeLeft, paidSoFar];
 
