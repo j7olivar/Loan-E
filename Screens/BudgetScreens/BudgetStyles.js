@@ -12,7 +12,7 @@ export default StyleSheet.create({
         fontSize: 26,
         paddingLeft: 23,
         paddingTop: 34,
-        color: '#426FFE'
+        color: '#32c090'
       },
 
       budgetBox1: {
@@ -20,32 +20,25 @@ export default StyleSheet.create({
         height: 269,
         marginTop: 35,
         marginLeft: 21,
-        //borderColor: 'black',
-        //borderWidth: 1,
-        backgroundColor: 'white',
+        borderColor: '#32c090',
+        borderWidth: 1,
+        backgroundColor: '#161616',
         flexDirection: 'column',
         justifyContent: 'space-around',
         alignItems: 'flex-start',
-        borderRadius: 25,
-        shadowColor: "#000",
-		    shadowOffset: {
-          width: 10,
-          height: 9
-		    },
-		    shadowOpacity: 0.15,
-		    shadowRadius: 8,
+        borderRadius: 25
       },
 
       budgetBold: {
         fontWeight: 'bold',
         fontSize: 15,
         paddingLeft: 20,
-        color: 'black'
+        color: '#32c090'
       },
 
       budgetNormal: {
         fontSize: 15,
-        color: 'black'
+        color: '#32c090'
       },
 
       budgetBlue: {
@@ -65,7 +58,7 @@ export default StyleSheet.create({
       
       panelItemContainer: {
           borderWidth: 0.6,
-          borderColor: 'black',
+          borderColor: '#32c090',
           padding: 14,
           borderRadius: 6,
           flexDirection: 'row',

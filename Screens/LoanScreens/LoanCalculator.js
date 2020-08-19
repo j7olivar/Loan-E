@@ -25,7 +25,7 @@ export default function LoanCalculatorScreen({navigation}) {
     }
 
     return(
-        <ScrollView style={{backgroundColor: 'white', flex: 1}}>
+        <ScrollView style={{backgroundColor: '#060320', flex: 1}}>
             <Text style={styles.formatText}>
                 Loan Amount
             </Text>
@@ -57,14 +57,18 @@ export default function LoanCalculatorScreen({navigation}) {
              style={styles.input}
              onChangeText ={interestRate => setInterestRate(interestRate)}/>
 
-            <TouchableOpacity onPress={onFooterLinkPress} style={styles.appButtonContainer}>
-                <Text style={styles.appButtonText}>
+            <TouchableOpacity>
+                <Text onPress={onFooterLinkPress}
+                style={{
+                    fontWeight: 'bold',
+                    fontSize: 20,
+                    color: '#32c090',
+                    textAlign: 'center',
+                    paddingTop: 20
+                }}>
                     Calculate
-                </Text>     
+                </Text>
             </TouchableOpacity>
-                
-                    
         </ScrollView>
     )
 }
-

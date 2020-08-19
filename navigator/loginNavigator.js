@@ -57,9 +57,7 @@ const LoginNavigator =  () => {
             options={{
               headerStyle:{backgroundColor:'#060320',},
               headerTintColor: 'white',
-              headerTitleStyle: {fontWeight: 'bold',},
-              headerShown: false
-
+              headerTitleStyle: {fontWeight: 'bold',}
             }}
             component={Login} 
             />
@@ -67,9 +65,7 @@ const LoginNavigator =  () => {
             options={{
               headerStyle:{backgroundColor:'#060320',},
               headerTintColor: 'white',
-              headerTitleStyle: {fontWeight: 'bold',},
-              headerShown: false
-
+              headerTitleStyle: {fontWeight: 'bold',}
             }}
             component={Signup} /> 
           </>
@@ -80,8 +76,7 @@ const LoginNavigator =  () => {
             options={{
               headerStyle:{backgroundColor:'#060320',},
               headerTintColor: 'white',
-              headerTitleStyle: {fontWeight: 'bold',},
-              headerShown: false
+              headerTitleStyle: {fontWeight: 'bold',}
             }}
             component={Login} 
             />
@@ -89,8 +84,7 @@ const LoginNavigator =  () => {
             options={{
               headerStyle:{backgroundColor:'#060320',},
               headerTintColor: 'white',
-              headerTitleStyle: {fontWeight: 'bold',},
-              headerShown: false
+              headerTitleStyle: {fontWeight: 'bold',}
             }}
             component={Signup} />  
           </>
@@ -98,29 +92,29 @@ const LoginNavigator =  () => {
         )}
         <Stack.Screen name="Loan Calculator"
         options={{
-          //headerStyle:{backgroundColor:'#32c090',},
-          //headerTintColor: 'black',
-          //headerTitleStyle: {fontWeight: 'bold',}
+          headerStyle:{backgroundColor:'#32c090',},
+          headerTintColor: 'black',
+          headerTitleStyle: {fontWeight: 'bold',}
         }}
         component={LoanCalculatorScreen} />
         <Stack.Screen name="Loan Home" 
         options={{
           headerStyle:{backgroundColor:'#32c090',},
-          //headerTintColor: 'black',
+          headerTintColor: 'black',
           headerTitleStyle: {fontWeight: 'bold',}
         }}
         component={LoanHomeScreen} />
         <Stack.Screen name="Calculator Results" 
         options={{
-              //headerStyle:{backgroundColor:'#32c090',},
-              //headerTintColor: 'black',
-              //headerTitleStyle: {fontWeight: 'bold',}
+              headerStyle:{backgroundColor:'#32c090',},
+              headerTintColor: 'black',
+              headerTitleStyle: {fontWeight: 'bold',}
             }}
         component={LoanCalculatorResults} />
         <Stack.Screen name="Budget" 
         options={{
               headerStyle:{backgroundColor:'#32c090',},
-              //headerTintColor: 'black',
+              headerTintColor: 'black',
               headerTitleStyle: {fontWeight: 'bold',}
             }}
         component={BudgetScreen} />

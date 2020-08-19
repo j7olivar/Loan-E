@@ -16,10 +16,6 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { set } from 'react-native-reanimated';
 
 console.ignoredYellowBox = ['Warning:', '- node', 'Encountered', 'Failed'];
-import Icon from 'react-native-vector-icons/MaterialIcons';
-
-
-
 
 const Stack = createStackNavigator();
 
@@ -31,16 +27,8 @@ const HomeScreen = (props) => {
 	const [pw, setPW] = useState('')
 	const [userOut, setUserOut] = useState("")
 
-	const [ totalLoan, setTotalLoan ] = useState(0);
-	const [ ifHalfPaid, setIfHalfPaid ] = useState(false);
-
-
 	const userId = props.extraData.id;
 	const loansRef = firebase.firestore().collection('goals');
-
-	let allLoans = [0];
-
-	
 
 	const onFooterLinkPress = () => {
 		props.navigation.navigate('Loan Calculator')
@@ -173,7 +161,6 @@ const HomeScreen = (props) => {
 		};
 	}, []);
 
-	{/*}
 	const onLogoutPress = () => {
 		firebase
 			.auth()
@@ -186,7 +173,6 @@ const HomeScreen = (props) => {
 				alert(error);
 			});
 	};
-	*/}
 
 	const addGoalHandler = async (goalTitle, interestRate, years, paidOff,id) => {
 		console.log('add goal handler')
@@ -276,53 +262,12 @@ const HomeScreen = (props) => {
 		
 	}
 
-	function deleteLoan(index, loans){
-		loans.splice(index, 1);
-		var total = 0;
-
-		for(var i = 0; i < loans.length; i++){
-			total += loans[i]
-		}
-
-		setTotalLoan(total)
-	}
-
-	function addNewLoan(loanToAdd, paidOff, arr){
-		arr.push(loanToAdd - paidOff);
-		var total = 0;
-
-		for(var i = 0; i < arr.length; i++){
-			total += arr[i]
-		}
-
-		setTotalLoan(total);
-	}
-
-	
-
-
 	return (
 		<ScrollView style={styles.screen}>
+			<Header title="Student Loan Calculator" />
 
-			<Text style={styles.loanTitle}>
-				Student Loan Calculator
-			</Text> 
-
-			<View style={{ padding: 20, marginTop: 15 }}>
-
-				<Text style={styles.title}>Total Loans:</Text>
-
-				<FlatList
-				keyExtractor={(item, index) => item.id}
-				data={courseGoals}
-				renderItem={(itemData) => (
-					addNewLoan(itemData.item.value, itemData.item.paidOff, allLoans)
-				)}/>
-
-				<Text style={styles.totalLoan}> ${totalLoan} </Text>
-			
-
-				<Text style={styles.title}>Loans:</Text>
+			<View style={{ padding: 15 }}>
+				<Text style={styles.title}> LOANS: </Text>
 
 				<GoalInput visible={isAddMode} addGoalHandler={addGoalHandler} onCancel={cancelGoalAdditionHandler} />
 				<FlatList
@@ -340,45 +285,27 @@ const HomeScreen = (props) => {
 					)}
 				/>
 				<Button title="Add New Loan" onPress={() => setIsAddMode(true)} />
-
-				<View style={{paddingBottom: 15}}>
-				</View>
-
-				<Text style={styles.title}>Graph:</Text>
+				<Text style={styles.title}> SHINY GRAPH/SLIDER: </Text>
 				<FavoriteMealScreen/>
 
-				<View style={{paddingBottom: 15}}>
-				</View>
-
-				<View style={styles.box} title='Loan Calculator' onPress={onFooterLinkPress}>
-					<Text 
-						style={{
-							fontWeight: 'bold',
-							fontSize: 20,
-							color: 'black',
-							textAlign: 'left',
-							marginTop: 10,
-							flexDirection: 'row'
-						}}>
-							Loan Calculator
+				<TouchableOpacity title='Loan Calculator' onPress={onFooterLinkPress}> 
+					<Text style={{
+						fontWeight: 'bold',
+						fontSize: 20,
+						color: '#32c090',
+						textAlign: 'center',
+						paddingTop: 20
+					}}>
+						Loan Calculator
 					</Text>
-
-					<Icon
-					name={'keyboard-arrow-right'}
-					size={30}
-					color="grey"
-					onPress={onFooterLinkPress}
-					style={{marginTop: 7}}
-					/>
-					
-				</View>
+				</TouchableOpacity>
 
 				<TouchableOpacity title='Loan Calculator' onPress={onFooterLinkPress2}> 
 					<Text style={{
 						fontWeight: 'bold',
 						fontSize: 20,
-						color: 'black',
-						textAlign: 'left',
+						color: '#32c090',
+						textAlign: 'center',
 						paddingTop: 20
 					}}>
 						Loan Home Screen Prototype
@@ -386,7 +313,6 @@ const HomeScreen = (props) => {
 				</TouchableOpacity>
 
 				
-				{/*}
 				<TouchableOpacity title='Budget Page' onPress={onFooterLinkPress3}> 
 					<Text style={{
 						fontWeight: 'bold',
@@ -398,10 +324,7 @@ const HomeScreen = (props) => {
 						Budgeting
 					</Text>
 				</TouchableOpacity>
-				*/}
 
-				{/*
-			
 				<TouchableOpacity title= 'Delete User' onPress={onDeleteAccountPress}>
 					<Text style={{
 						fontWeight: 'bold',
@@ -413,8 +336,6 @@ const HomeScreen = (props) => {
 						Delete Account
 					</Text>
 				</TouchableOpacity>
-				
-				*/}
 
 				<TouchableOpacity title= 'Upload Doc' onPress={pickDocument}>
 					<Text style={{
@@ -429,13 +350,9 @@ const HomeScreen = (props) => {
 				</TouchableOpacity>
 
 			</View>
-
-			
-			{/*
 			<View style={styles.logout}>
 				<Button style={styles.logout} title="Logout" onPress={() => onLogoutPress()} />
 			</View>
-			*/}
 
 
 			
@@ -446,20 +363,13 @@ const HomeScreen = (props) => {
 };
 const styles = StyleSheet.create({
 	screen: {
-		flex: 1,
-		backgroundColor: 'white'
+		flex: 1
+		//backgroundColor: '#060320'
 	},
-	loanTitle: {
-        fontWeight: 'bold',
-        fontSize: 26,
-        paddingLeft: 23,
-        paddingTop: 34,
-        color: '#426FFE'
-      },
 	title: {
 		//color: '#35CA96',
-		fontSize: 20,
-		marginLeft:5,
+		fontSize: 22,
+		margin:10,
 		fontWeight: 'bold'
 	},
 	logout: {
@@ -470,13 +380,6 @@ const styles = StyleSheet.create({
 		justifyContent: 'flex-end'
 		//marginBottom: 500
 	},
-	box: {
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		height: 58,
-		marginLeft: 5,
-		paddingRight: 18,
-	}
 
 });
 //onDelete={removeGoalHandler.bind(this, itemData.item.id)}

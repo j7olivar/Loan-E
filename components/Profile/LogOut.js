@@ -1,17 +1,9 @@
 import React, { useState } from 'react';
 import { Modal, StyleSheet, Text, View, TouchableHighlight } from 'react-native';
 import Icon from "react-native-vector-icons/MaterialIcons";
-import { firebase } from '../../Constants/ApiKeys';
-import { createStackNavigator } from '@react-navigation/stack';
-import { useNavigation } from '@react-navigation/native';
-
-
-
 
 const LogOut = () => {
     const [modalVisible, setModalVisible] = useState(false);
-    const navigation = useNavigation();
-
     return (
       <View style={styles.box}>
 
@@ -37,19 +29,9 @@ const LogOut = () => {
 
               <TouchableHighlight
                 style={{ ...styles.openButton, backgroundColor: "#ffffff" }}
-                onPress={() => {
-                  firebase
-                  .auth()
-                  .signOut()
-                  .then(() => {
-                    navigation.navigate('Login');
-                    navigation.reset({ index: 0, routes: [ { name: 'Login' } ] });
-                  })
-                  .catch((error) => {
-                      alert(error);
-                  });
-                }}
-                title="Logout"
+                /*onPress={() => {
+                  setModalVisible(!modalVisible);
+                }}*/
               >
                 <Text style={styles.textStyle}>Log Out</Text>
               </TouchableHighlight>
