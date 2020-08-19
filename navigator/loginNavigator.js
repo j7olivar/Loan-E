@@ -49,9 +49,7 @@ const LoginNavigator =  () => {
       <Stack.Navigator>
         {user ? (
           <>
-          <Stack.Screen name="Home" options={{headerShown:false}}>
-           {props => <Stacker {...props} extraData={user} />}
-          </Stack.Screen>
+          <Stack.Screen name="Home" component={Stacker} options={{headerShown:false}}/>
           <Stack.Screen 
             name="Login" 
             options={{

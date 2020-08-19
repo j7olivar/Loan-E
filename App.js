@@ -1,6 +1,8 @@
 import React from 'react';
 import LoginNavigator from './navigator/loginNavigator';
-
+import { UserContext } from './store';
 export default function App() {
-	return <LoginNavigator />;
+	<UserContext>
+		return <LoginNavigator />
+	</UserContext>;
 }
