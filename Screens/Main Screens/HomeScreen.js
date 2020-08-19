@@ -32,18 +32,30 @@ const HomeScreen = (props) => {
  	const [goalCounter, setGoalCounter] = useState(0)
 	const [pw, setPW] = useState('')
 	const [userOut, setUserOut] = useState("")
-
+	
 	const [ totalLoan, setTotalLoan ] = useState(0);
 	const [ ifHalfPaid, setIfHalfPaid ] = useState(false);
 
-	const {userId} = React.useContext(UserContext)
-	//const userId = userID
+	//const {userId} = React.useContext(UserContext)
+	
+	const [runOnce,setRunOnce] = useState(false)
+	const [userId,setUserId] = useState('');
 
+	
+		if(userId.length == 0){
+			console.log('what')
+			//console.log(props.route.params.user.id)
+			setUserId('LEd0pvrhUeM2GnSCdGc1i6lQPuk1') 
+			setRunOnce(true) 
+		}
+	
+	//console.log(props.route.params.user.id.toString())
+	
+	//const {userId} = React.useContext(UserContext)
+	
 	const loansRef = firebase.firestore().collection('goals');
 
 	let allLoans = [0];
-
-	
 
 	const onFooterLinkPress = () => {
 		props.navigation.navigate('Loan Calculator')
@@ -275,7 +287,7 @@ const HomeScreen = (props) => {
 		setIsEditMode(false);
 	}
 
-	const editGoalHandler = async (goalId) => {
+	const editGoalHandler = (goalId) => {
 		
 	}
 
@@ -342,7 +354,19 @@ const HomeScreen = (props) => {
 						/>
 					)}
 				/>
-				<Button title="Add New Loan" onPress={() => setIsAddMode(true)} />
+				<Button style ={{fontWeight:'bold', fontSize:20}}title="Add New Loan" onPress={() => setIsAddMode(true)} />
+
+				<TouchableOpacity title= 'Upload Doc' onPress={pickDocument}>
+					<Text style={{
+						fontWeight: 'bold',
+						fontSize: 20,
+						color: '#32c090',
+						textAlign: 'center',
+						paddingTop: 20
+					}}>
+						Upload Document
+					</Text>
+				</TouchableOpacity>
 
 				<View style={{paddingBottom: 15}}>
 				</View>
@@ -419,17 +443,7 @@ const HomeScreen = (props) => {
 				
 				*/}
 
-				<TouchableOpacity title= 'Upload Doc' onPress={pickDocument}>
-					<Text style={{
-						fontWeight: 'bold',
-						fontSize: 20,
-						color: '#32c090',
-						textAlign: 'center',
-						paddingTop: 20
-					}}>
-						Upload Document
-					</Text>
-				</TouchableOpacity>
+				
 
 			</View>
 

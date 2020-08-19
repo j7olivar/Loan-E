@@ -13,7 +13,7 @@ export default ({children}) => {
         userName: [userName, setUserName]
 	}
 
-	return <UserContext.Provider value={store}>
+	return (<UserContext.Provider value={store}>
 		{children}
-	</UserContext.Provider>
+	</UserContext.Provider>)
 }
