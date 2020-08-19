@@ -33,73 +33,85 @@ export default function LoanCalculatorResults({route, navigation}) {
     }
 
     return(
-        <View style={{backgroundColor: '#060320', flex: 1}}>
-            <Text style={styles.monthlyPayments}>
-                    Montly Payments
-                </Text>
-                
-                <Text style={{
-                    textAlign: 'center',
-                    fontSize: 50,
-                    paddingTop: 30,
-                    fontWeight: 'bold',
-                    color: '#32c090'
-                }}>
-                    ${getMonthlyPayments(months, interestRate, loanAmount)}
-                </Text>
-                
-                <View style={{flexDirection: 'row'}}>
+        <View style={{backgroundColor: 'white', flex: 1}}>
 
-                    <Text style={{
-                        fontSize: 25,
-                        paddingTop: 40,
-                        paddingLeft: 20,
-                        fontWeight: 'bold',
-                        color: '#32c090'
-                    }}> 
-                        Total Paid    
+
+                <View style={styles.monthBox}>
+
+                    <Text style={styles.monthlyPayments}>
+                            Monthly Payments
                     </Text>
-
+                        
                     <Text style={{
-                        fontSize: 25,
-                        paddingTop: 40,
-                        paddingLeft: 150,
-                        fontWeight: 'bold',
-                        color: '#32c090'
-                    }}>
-                        ${getTotalPaid(months, interestRate, loanAmount)}
+                            textAlign: 'center',
+                            fontSize: 22,
+                            paddingTop: 15,
+                            //fontWeight: 'bold',
+                            //marginLeft: 30,
+                            //color: '#32c090'
+                            }}>
+                        ${getMonthlyPayments(months, interestRate, loanAmount)}
                     </Text>
                 </View>
 
-                <Text style={{
-                    textAlign: 'center',
-                    color: '#32c090'
-                }}>
-                    ___________________________________________________________
-                </Text>
+                <View style={{marginBottom: 60,}}>
+                </View>
+
 
                 <View style={{flexDirection: 'row'}}>
 
-                    <Text style={{
-                        fontSize: 25,
-                        paddingTop: 15,
-                        paddingLeft: 20,
-                        fontWeight: 'bold',
-                        color: '#32c090'
-                    }}> 
-                        Total Interest   
-                    </Text>
+                    <View style={{flexDirection: 'column'}}>
+                        <Text style={{
+                            fontSize: 20,
+                            fontWeight: 'bold',
+                            color: '#426FFE',
+                            textAlign: 'center',
+                            marginLeft: 50
+                        }}> 
+                            Total Paid    
+                        </Text>
+                        <Text style={{
+                            fontSize: 20,
+                            paddingTop: 30,
+                            textAlign: 'center',
+                            marginLeft: 50
+                        }}>
+                            ${getTotalPaid(months, interestRate, loanAmount)}
+                        </Text>   
+                    </View>
 
-                    <Text style={{
-                        fontSize: 25,
-                        paddingTop: 15,
-                        paddingLeft: 112,
-                        fontWeight: 'bold',
-                        color: '#32c090'
-                    }}>
-                        ${getInterestPaid(months, interestRate, loanAmount)}
-                    </Text>
+                     
+                    <View style={{
+                        marginLeft: 47,
+                        borderLeftWidth: 1,
+                        borderLeftColor: 'grey',
+                        }}>
+                    </View>
+                    
+
+                    <View style={{flexDirection: 'column'}}>
+                        <Text style={{
+                            fontSize: 20,
+                            marginLeft: 31,
+                            fontWeight: 'bold',
+                            color: '#426FFE'
+                        }}> 
+                            Total Interest   
+                        </Text>
+                        <Text style={{
+                            fontSize: 20,
+                            marginLeft: 31,
+                            textAlign: 'center',
+                            paddingTop: 30
+                        }}>
+                            ${getInterestPaid(months, interestRate, loanAmount)}
+                        </Text>
+                    </View>
+                    
                 </View>
-            </View>
+
+
+        </View>
     )
 }
+

@@ -21,14 +21,17 @@ const FavoriteMealScreen = (props) => {
 		<View style={styles.screen}>
 			<View >
 				<Text style={{
-		fontWeight: 'bold',
-		fontSize: 20,
-		color: '#32c090',
-		textAlign: 'center',
-		paddingTop: 20
-	}}> You currently owe {currentDebt}. In how many years would you want to pay it off?</Text>
+					//fontWeight: 'bold',
+					fontSize: 16,
+					color: 'black',
+					textAlign: 'left',
+					paddingTop: 20,
+					marginLeft: 18,
+					marginBottom: 10
+				}}>You currently owe {currentDebt}. In how many years would you want to pay it off?</Text>
+				
 				<Slider
-					style={{ width: 200, height: 40, justifyContent:'center'}}
+					style={{ width: 200, height: 40, justifyContent:'center', marginLeft: 18}}
 					minimumValue={1}
 					maximumValue={30}
 					step={1}
@@ -74,7 +77,7 @@ const styles = StyleSheet.create({
 	screen: {
 		flex: 1,
 		justifyContent: 'center',
-		alignItems: 'center'
+		alignItems: 'center',
   },
 text:{
   textAlign:'center'

@@ -4,12 +4,13 @@ import ThemeSwitch from "./ThemeSwitch";
 import NotificationSwitch from './NotificationSwitch'
 import { Colors } from './Colors1'
 import Icon from "react-native-vector-icons/MaterialIcons";
-import LogOut from './LogOut'
+import LogOut from './LogOut';
 
 
 function Settings() {
     return (
-        <View>
+        <View style={{backgroundColor: 'white'}}>
+            
             <ThemeSwitch />
             <NotificationSwitch />
 
@@ -60,14 +61,17 @@ function Settings() {
     )
 }
 
-const styles = StyleSheet.create({
 
+
+const styles = StyleSheet.create({
+    
     box: {
       flexDirection: 'row',
       justifyContent:'space-between',
       height:65,
       paddingLeft:22,
       paddingRight:18,
+      marginBottom: 6.7,
       alignItems:'center',
     },
     delete: {
@@ -78,6 +82,7 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 15
     },
+    
     
 })
 

@@ -11,10 +11,14 @@ import Faq from '../../components/Resources/Faq';
 import Links from '../../components/HomeScreen/Links';
 import About from '../../components/Resources/About';
 
+
 function ResourcesPage({ navigation }) {
 	return (
-		<View>
-			
+		<View style={{backgroundColor: 'white'}}>
+			<Text style={styles.resourcesTitle}> 
+				Resources
+			</Text>
+
 			<View style={styles.box}>
 				<Text style={styles.text}>FAQ</Text>
 				<Icon
@@ -65,8 +69,8 @@ const Stack = createStackNavigator();
 function Rai() {
 	return (
 		//<NavigationContainer>
-		<Stack.Navigator>
-			<Stack.Screen name="Resources" component={ResourcesPage} />
+		<Stack.Navigator >
+			<Stack.Screen name="Resources" component={ResourcesPage} options={{headerShown: false}} />
 			<Stack.Screen name="FAQ" component={FaqPage} />
 			<Stack.Screen name="Links" component={LinksPage} />
 			<Stack.Screen name="About" component={AboutPage} />
@@ -80,24 +84,33 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		height: 58,
-		paddingLeft: 22,
+		paddingLeft: 24.5,
 		paddingRight: 18,
-		
+		borderRadius: 9,
 		alignItems: 'center',
 		backgroundColor: Colors.WHITE,
 		shadowColor: "#000",
 		shadowOffset: {
-		  width: 0,
-		  height: 2
+		  width: 1,
+		  height: 7
 		},
-		shadowOpacity: 0.25,
-		shadowRadius: 3.84,
+		shadowOpacity: 0.13,
+		shadowRadius: 6,
 	},
 	text: {
 		fontWeight: 'bold',
 		color: '#426FFE',
 		fontSize: 16
-	}
+	},
+	resourcesTitle: {
+        fontWeight: 'bold',
+        fontSize: 26,
+        paddingLeft: 23,
+        paddingTop: 34,
+		color: '#426FFE',
+		padding: 20
+	  },
+
 });
 
 export default Rai;
