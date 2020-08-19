@@ -36,7 +36,7 @@ export default function Login({navigation}) {
                             return;
                         }
                         const user = firestoreDocument.data()
-                        navigation.navigate('Home', {user})
+                        navigation.navigate('Home', {user:user})
                         navigation.reset({index:0, routes:[{name:'Home'}]})
                     })
                     .catch(error => {
