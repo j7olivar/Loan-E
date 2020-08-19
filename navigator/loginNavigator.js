@@ -13,6 +13,12 @@ import  LoanCalculatorResults from '../Screens/LoanScreens/LoanCalculatorResults
 import BudgetScreen from '../Screens/BudgetScreens/Budget.js'
 import ProfilePage from '../Screens/Main Screens/Pei.js'
 import  IndividualLoanScreen from '../Screens/LoanScreens/IndividualLoan.js'
+import Settings from '../components/Profile/Settings.js';
+import Faq from '../components/Resources/Faq.js';
+import About from '../components/Resources/About.js';
+import Links from '../components/HomeScreen/Links.js';
+
+
 
 if (!global.btoa){global.btoa=encode}
 if(!global.atob){global.atob=decode}
@@ -133,6 +139,34 @@ const LoginNavigator =  () => {
               headerTitleStyle: {fontWeight: 'bold',}
             }}
         component={ProfilePage} />
+        <Stack.Screen name="Settings" 
+        options={{
+              headerStyle:{backgroundColor:'#32c090',},
+              //headerTintColor: 'black',
+              headerTitleStyle: {fontWeight: 'bold',}
+            }}
+        component={Settings} />
+        <Stack.Screen name="FAQ" 
+        options={{
+              headerStyle:{backgroundColor:'#32c090',},
+              //headerTintColor: 'black',
+              headerTitleStyle: {fontWeight: 'bold',}
+            }}
+        component={Faq} />
+        <Stack.Screen name="LINKS" 
+        options={{
+              headerStyle:{backgroundColor:'#32c090',},
+              //headerTintColor: 'black',
+              headerTitleStyle: {fontWeight: 'bold',}
+            }}
+        component={Links} />
+        <Stack.Screen name="ABOUT" 
+        options={{
+              headerStyle:{backgroundColor:'#32c090',},
+              //headerTintColor: 'black',
+              headerTitleStyle: {fontWeight: 'bold',}
+            }}
+        component={About} />
         <Stack.Screen name="Individual Loan" 
         options={{
               headerStyle:{backgroundColor:'#32c090',},

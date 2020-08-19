@@ -44,8 +44,8 @@ const GoalItem = props =>{
 
     return(
       <Swipeable
-        onSwipeableLeftOpen = {() => console.log('Swiped left')}
-        onSwipeableRightOpen = {() => console.log('Swiped right')}
+        //onSwipeableLeftOpen = {() => console.log('Swiped left')}
+        //onSwipeableRightOpen = {() => console.log('Swiped right')}
         renderLeftActions = {(progress, dragX)=> (
           <LeftItem progress={progress} dragX={dragX}/>)}
         renderRightActions = {(progress, dragX)=> (
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         //flex: 1,
-        backgroundColor: '##ff392e',
+        backgroundColor: '#ff392e',
       },
 })
  //<TouchableOpacity onPress={props.onDelete}>

@@ -7,12 +7,19 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import { Colors } from '../../components/Resources/Colors';
-import Faq from '../../components/Resources/Faq';
-import Links from '../../components/HomeScreen/Links';
-import About from '../../components/Resources/About';
-
 
 function ResourcesPage({ navigation }) {
+
+	const onFooterLinkPress1 = () => {
+        navigation.navigate('FAQ')
+	}
+	const onFooterLinkPress2 = () => {
+        navigation.navigate('LINKS')
+	}
+	const onFooterLinkPress3 = () => {
+        navigation.navigate('ABOUT')
+    }
+
 	return (
 		<View style={{backgroundColor: 'white'}}>
 			<Text style={styles.resourcesTitle}> 
@@ -25,7 +32,7 @@ function ResourcesPage({ navigation }) {
 					name={'keyboard-arrow-right'}
 					size={30}
 					color={Colors.DARKGRAY}
-					onPress={() => navigation.navigate('FAQ')}
+					onPress={onFooterLinkPress1}
 				/>
 			</View>
 			<View style={{ padding: 10 }} />
@@ -35,7 +42,7 @@ function ResourcesPage({ navigation }) {
 					name={'keyboard-arrow-right'}
 					size={30}
 					color={Colors.DARKGRAY}
-					onPress={() => navigation.navigate('Links')}
+					onPress={onFooterLinkPress2}
 				/>
 			</View>
 			<View style={{ padding: 10 }} />
@@ -45,13 +52,14 @@ function ResourcesPage({ navigation }) {
 					name={'keyboard-arrow-right'}
 					size={30}
 					color={Colors.DARKGRAY}
-					onPress={() => navigation.navigate('About')}
+					onPress={onFooterLinkPress3}
 				/>
 			</View>
 		</View>
 	);
 }
 
+{/*
 function FaqPage() {
 	return <Faq />;
 }
@@ -78,6 +86,8 @@ function Rai() {
 		//	</NavigationContainer>
 	);
 }
+*/}
+
 
 const styles = StyleSheet.create({
 	box: {
@@ -113,4 +123,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default Rai;
+export default ResourcesPage;

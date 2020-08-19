@@ -18,10 +18,6 @@ import { set } from 'react-native-reanimated';
 console.ignoredYellowBox = ['Warning:', '- node', 'Encountered', 'Failed'];
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-import '../../components/Global.js'
-
-
-
 const Stack = createStackNavigator();
 
 const HomeScreen = (props) => {
@@ -33,14 +29,15 @@ const HomeScreen = (props) => {
 	const [userOut, setUserOut] = useState("")
 
 	const [ totalLoan, setTotalLoan ] = useState(0);
-
-	//const [ ifHalfPaid, setIfHalfPaid ] = useState(false);
+	const [ ifHalfPaid, setIfHalfPaid ] = useState(false);
 
 
 	const userId = props.extraData.id;
 	const loansRef = firebase.firestore().collection('goals');
 
-	global.allLoans = [0];
+	let allLoans = [0];
+
+	
 
 	const onFooterLinkPress = () => {
 		props.navigation.navigate('Loan Calculator')
@@ -54,16 +51,25 @@ const HomeScreen = (props) => {
 		props.navigation.navigate('Budget')
 	}
 
-	const onFooterLinkPress4 = (totalLoans, halfPaid) => {
-		props.navigation.navigate('Pei')
+	
+	const getPW = async () => {
+		try {
+			const currPW = await AsyncStorage.getItem('password')
+			if(currPW !== null){
+				setPW(currPW)
+			}	
+		}
+		catch (error) {console.log(JSON.stringify(error))}
 	}
 
 	const clearPW = async() => {
 		try{
 			await AsyncStorage.removeItem('password')
-			console.log('removed successfully')
-		}catch(error){console.log(error)}
+			//console.log('removed successfully')
+		}catch(error) {console.log(JSON.stringify(error))}
 	}
+	
+	
 	
 	const onDeleteAccountPress = () => {
 		var userReauth = firebase.auth().currentUser
@@ -78,13 +84,15 @@ const HomeScreen = (props) => {
 			props.navigation.navigate('Login');
 			props.navigation.reset({ index: 0, routes: [ { name: 'Login' } ] });
 		}).catch(function(error){
-			console.log('there is something wrong')
+			//console.log('there is something wrong')
 		})
 		clearPW()
 	}
 
+	
+
 	const pickDocument = async () => {
-		console.log('pic Doc')
+		//console.log('pic Doc')
 		try {
 			let input = await DocumentPicker.getDocumentAsync({
 				type: "text/plain",
@@ -92,12 +100,12 @@ const HomeScreen = (props) => {
 			setUserOut(await FileSystem.readAsStringAsync(input.uri))
 			createLoans()
 		} catch (error) {
-			console.log(error);
+			console.log(JSON.stringify(error));
 		}
 	}
 
 	const fileParser = () => {
-		console.log('file parser')
+		//console.log('file parser')
 		const parsedLoans = [];
 		var newUserOut = userOut;
 
@@ -119,9 +127,10 @@ const HomeScreen = (props) => {
 		//console.log('parsed loans: ' + parsedLoans)
 		return parsedLoans;
 	};
+	
 
 	const createLoans = () => {
-		console.log('create loans')
+		//console.log('create loans')
 		const newLoans = fileParser();
 		const title= 'Loan Amount:$'
 		const interest = 'Loan Interest Rate:'
@@ -141,11 +150,11 @@ const HomeScreen = (props) => {
 		return
     
 	};
-
+	
 
 	useEffect(() => {
 		getPW()
-		console.log('use effect')
+		//console.log('use effect')
 		let isMounted = true;
 
 		if (isMounted) {
@@ -153,13 +162,13 @@ const HomeScreen = (props) => {
 				(docSnapshot) => {
 					if(!docSnapshot.exists){console.log('doc doesnt exist, start from scratch')}
 					else{
-						console.log('loaded successfully '+docSnapshot.data().goals)
+						console.log('loaded successfully '+JSON.stringify(docSnapshot.data().goals))
 						setCourseGoals(docSnapshot.data().goals)
 						setGoalCounter(docSnapshot.data().goals.length)
 					}
 				},
 				(error) => {
-					console.log(error);
+					console.log(JSON.stringify(error));
 				}
 			);
 		}
@@ -168,27 +177,12 @@ const HomeScreen = (props) => {
 		};
 	}, []);
 
-	{/*}
-	const onLogoutPress = () => {
-		firebase
-			.auth()
-			.signOut()
-			.then(() => {
-				props.navigation.navigate('Login');
-				props.navigation.reset({ index: 0, routes: [ { name: 'Login' } ] });
-			})
-			.catch((error) => {
-				alert(error);
-			});
-	};
-	*/}
-
 	const addGoalHandler = async (goalTitle, interestRate, years, paidOff,id) => {
-		console.log('add goal handler')
+		//console.log('add goal handler')
 		if(id==undefined){
 			id = 0
 		}
-		console.log('num1: '+ (goalCounter+id).toString())
+		//console.log('num1: '+ (goalCounter+id).toString())
 		//console.log(goalCounter)
 		setGoalCounter(goalCounter+1)
 		setCourseGoals((courseGoals) => [
@@ -211,36 +205,16 @@ const HomeScreen = (props) => {
 		setIsAddMode(false);
 	}
 
-	function deleteLoan(index, loans){
-		loans.splice(index, 1);
-		var total = 0;
-
-		for(var i = 0; i < loans.length; i++){
-			total += loans[i]
-		}
-
-		setTotalLoan(total)
-	}
-
-	const removeGoalHandler = (goalId, loans, item) => {
-		onFooterLinkPress3(item, loans);
-		//deleteLoan(1, loans);
-
-		/*setCourseGoals((currentGoals) => {
-			
-			loansRef.doc(goalId).delete().then(console.log('removed correctly'))
-			return currentGoals.filter((goal) => goal.id !== goalId);
-		});*/
 	
 	const addToFB = async (goalTitle, interestRate, years, paidOff,id) => {
 		//adding data to firebase, takes into account if doc exists already
 		if(id===undefined){
 			id = 0
 		}
-		console.log('add to firebase')
+		//console.log('add to firebase')
 		const loadDoc = await loansRef.doc(userId).get();
 		if(loadDoc.exists){
-			console.log('num2: '+ (goalCounter+id).toString())
+			//console.log('num2: '+ (goalCounter+id).toString())
 			await loansRef.doc(userId).update({
 				goals: firebase.firestore.FieldValue.arrayUnion({
 				//id: userId+(goalCounter+id).toString(),
@@ -253,7 +227,7 @@ const HomeScreen = (props) => {
 			})
 		}
 		else{
-			console.log('num3: '+ (goalCounter+id).toString())
+			//console.log('num3: '+ (goalCounter+id).toString())
 			await loansRef.doc(userId).set({
 				goals: firebase.firestore.FieldValue.arrayUnion({
 				//id: userId+(goalCounter+id).toString(),
@@ -268,7 +242,7 @@ const HomeScreen = (props) => {
 	}
 
 	const removeGoalHandler = async (goalId) => {
-		console.log('remove goal handler')
+		//console.log('remove goal handler')
 		const existingDoc = await loansRef.doc(userId).get();
     	const goals = existingDoc.data().goals.filter(goal => goal.id !== goalId);
     	await loansRef.doc(userId).update({ goals });
@@ -304,8 +278,6 @@ const HomeScreen = (props) => {
 
 	function addNewLoan(loanToAdd, paidOff, arr){
 		arr.push(loanToAdd - paidOff);
-	function addNewLoan(loanToAdd, paidOff, arr){
-		arr.push(loanToAdd - paidOff);
 		var total = 0;
 
 		for(var i = 0; i < arr.length; i++){
@@ -315,41 +287,8 @@ const HomeScreen = (props) => {
 		setTotalLoan(total);
 	}
 
-	function getTotalLoan(arr){
-		var total = 0;
-
-		for(var i = 0; i < arr.length; i++){
-			total += arr[i]
-		}
-
-		setTotalLoan(total);
-		totalLoans();
-	}
-
-	/* 
-	const totalLoans = (allLoans) => {	
-		for (let i = 0; i < allLoans.length - 1; i++) {
-			totalLoans[i] === allLoans[i]+allLoans[i+1]
-		}
-	}
 	
 
-	const halfPaid = (totalLoans) => {
-		if (totalLoans[totalLoans.length - 1] === totalLoans[totalLoans] * 2 ) {
-			return true;
-		}
-	}
-	*/
-		return total;
-	}
-
-	function makePayment(totalLoan, payment){
-		totalLoan -= payment;
-		console.log(totalLoan)
-
-		setTotalLoan(totalLoan)
-		//this.forceUpdate()
-	}
 
 	return (
 		<ScrollView style={styles.screen}>
@@ -366,7 +305,7 @@ const HomeScreen = (props) => {
 				keyExtractor={(item, index) => item.id}
 				data={courseGoals}
 				renderItem={(itemData) => (
-					addNewLoan(itemData.item.value, itemData.item.paidOff, global.allLoans)
+					addNewLoan(itemData.item.value, itemData.item.paidOff, allLoans)
 				)}/>
 
 				<Text style={styles.totalLoan}> ${totalLoan} </Text>
@@ -380,7 +319,8 @@ const HomeScreen = (props) => {
 					data={courseGoals}
 					renderItem={(itemData) => (
 						<GoalItem
-							onDelete={removeGoalHandler.bind(this, itemData.item.id, allLoans, itemData.item)}						
+							onDelete={removeGoalHandler.bind(this, itemData.item.id)}
+							onEdit = {editLoan.bind(this,itemData.item.id)}
 							title={itemData.item.value}
 							subInterest={itemData.item.interest}
 							subPaid={itemData.item.paidOff}
@@ -489,6 +429,7 @@ const HomeScreen = (props) => {
 
 			
 		</ScrollView>
+
 	);
 
 };
@@ -531,4 +472,5 @@ const styles = StyleSheet.create({
 //<EditGoalInput visible={isEditMode} editGoalHandler={editGoalHandler} onCancel={cancelGoalEditHandler} />
 
 export default HomeScreen;
+
 
