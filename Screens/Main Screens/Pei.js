@@ -11,6 +11,10 @@ function ProfilePage({ route, navigation }) {
 
     //const { totalLoan } = route.params 
 
+    const onFooterLinkPress = () => {
+      navigation.navigate('Settings')
+    }
+
     return (    
       <View style={{backgroundColor: 'white'}}>
 
@@ -24,7 +28,7 @@ function ProfilePage({ route, navigation }) {
               style={styles.setting} 
               name={'settings'} 
               size={30}
-              onPress={() => navigation.navigate('Settings')}
+              onPress={onFooterLinkPress}
             />
 
         </View>
@@ -72,26 +76,6 @@ function ProfilePage({ route, navigation }) {
     );
 }
 
-function SettingsPage() {
-  return (
-
-  <Settings />
-
-  )
-}
-
-const Stack = createStackNavigator();
-
-function Pei() {
-	return (
-		//<NavigationContainer>
-		<Stack.Navigator>
-      <Stack.Screen name="Profile" component={ProfilePage} options={{headerShown: false}}/>
-			<Stack.Screen name="Settings" component={SettingsPage} />
-		</Stack.Navigator>
-		//	</NavigationContainer>
-	);
-}
 
 const styles = StyleSheet.create({
     header:{
@@ -183,4 +167,4 @@ const styles = StyleSheet.create({
     }
   });
 
-  export default Pei;
+  export default ProfilePage;

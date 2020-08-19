@@ -59,34 +59,6 @@ function ResourcesPage({ navigation }) {
 	);
 }
 
-{/*
-function FaqPage() {
-	return <Faq />;
-}
-
-function LinksPage() {
-	return <Links />;
-}
-
-function AboutPage() {
-	return <About />;
-}
-
-const Stack = createStackNavigator();
-
-function Rai() {
-	return (
-		//<NavigationContainer>
-		<Stack.Navigator >
-			<Stack.Screen name="Resources" component={ResourcesPage} options={{headerShown: false}} />
-			<Stack.Screen name="FAQ" component={FaqPage} />
-			<Stack.Screen name="Links" component={LinksPage} />
-			<Stack.Screen name="About" component={AboutPage} />
-		</Stack.Navigator>
-		//	</NavigationContainer>
-	);
-}
-*/}
 
 
 const styles = StyleSheet.create({
