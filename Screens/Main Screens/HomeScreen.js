@@ -17,11 +17,13 @@ import { set } from 'react-native-reanimated';
 
 console.ignoredYellowBox = ['Warning:', '- node', 'Encountered', 'Failed'];
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { UserContext } from '../../store';
 
 
 
 
 const Stack = createStackNavigator();
+
 
 const HomeScreen = (props) => {
 	const [ courseGoals, setCourseGoals ] = useState([]);
@@ -34,8 +36,9 @@ const HomeScreen = (props) => {
 	const [ totalLoan, setTotalLoan ] = useState(0);
 	const [ ifHalfPaid, setIfHalfPaid ] = useState(false);
 
+	const {userId} = React.useContext(UserContext)
+	//const userId = userID
 
-	const userId = props.extraData.id;
 	const loansRef = firebase.firestore().collection('goals');
 
 	let allLoans = [0];
