@@ -261,28 +261,19 @@ const HomeScreen = (props) => {
 
 	const editLoan = async (goalId) => {
 		const existingDoc = await loansRef.doc(userId).get();
-		
-		setIsEditMode(true)
+		//setIsEditMode(true)
 		const goals = existingDoc.data().goals
-		console.log('now i have goals: '+ goals)
+		//console.log('now i have goals: '+ goals)
 		var theOne = {}
 		for(let i =0; i < goals.length;i++){
 			if(goals[i].id == goalId){
 			  theOne = goals[i]
 			}
 		}
-		props.navigation.navigate('EditLoan',{theOne})
-		//setIsEditMode(false)
-		await loansRef.doc(userId).update({ goals });
+		props.navigation.navigate('EditLoan',{theOne,userId})
+		//console.log('done boi')
 	}
 
-	const cancelGoalEditHandler = () => {
-		setIsEditMode(false);
-	}
-
-	const editGoalHandler = async (goalId) => {
-		
-	}
 
 	function deleteLoan(index, loans){
 		loans.splice(index, 1);

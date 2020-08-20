@@ -1,18 +1,23 @@
 import React, {useState} from 'react'
 import {View, Text, TextInput, Button, StyleSheet, Modal} from 'react-native'
-
+import { firebase } from '../../Constants/ApiKeys';
 
 const EditGoalInput = props => {
     const {theOne} = props.route.params
+    
     const [enteredGoal, setEnteredGoal] = useState(theOne.value)
     const [interestRate, setInterestRate] = useState(theOne.interest)
     const [paid, setPaid] = useState(theOne.paidOff.toString())
     const [years, setYears] = useState(theOne.years.toString())
     
+    
+	const loansRef = firebase.firestore().collection('goals');
+
     const goalInputHandler = (enteredText) => {
         if(enteredText !==enteredGoal ){
           setEnteredGoal(enteredText)
         }
+        
       }    
 
       const interestInputHandler = (enteredText) =>{
@@ -25,6 +30,7 @@ const EditGoalInput = props => {
         if(enteredText !==years ){
           setYears(enteredText)
         }
+        
       }
       const paidInputHandler = (enteredText) =>{
         if(enteredText !==paid){
@@ -32,11 +38,28 @@ const EditGoalInput = props => {
         }
       }
 
-      const editGoalHandler = () =>{
-        
-        //props.addGoalHandler(enteredGoal, interestRate, years, paid)
-        //setEnteredGoal("")
-        console.log('in here')
+      const editGoalHandler = async () =>{
+        const {userId} = props.route.params
+        const existingDoc = await loansRef.doc(userId).get();
+        const goals = existingDoc.data().goals
+        const newGoals = goals.slice()
+        //time to replace the old goal with new one
+        for(let i =0; i < goals.length;i++){
+          if(goals[i].id == theOne.id){
+            console.log('doing this bro')
+            newGoals[i] = {
+              id: theOne.id,
+              value: enteredGoal,
+              interest: interestRate,
+              years: years,
+              paidOff: paid
+            }
+          }
+        }
+        //rewrite to firestore
+        await loansRef.doc(userId).update({goals:newGoals})
+        console.log('did this')
+        //now can go back to home screen
         props.navigation.goBack()
       }
 
@@ -81,10 +104,10 @@ const EditGoalInput = props => {
      
           <View style={styles.buttons}>
             <View style={styles.button}>
-              <Button title="CANCEL" color="red" onPress={props.navigation.goBack()} />
+              <Button title="CANCEL" color="red" onPress={() => props.navigation.goBack()} />
             </View>   
             <View style="button">          
-              <Button title="Update" onPress={() => editGoalHandler()} />
+              <Button title="Update" onPress={editGoalHandler} />
             </View>
       </View>
     </View>
