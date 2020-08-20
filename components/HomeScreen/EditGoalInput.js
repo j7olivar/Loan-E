@@ -1,32 +1,43 @@
 import React, {useState} from 'react'
 import {View, Text, TextInput, Button, StyleSheet, Modal} from 'react-native'
 
+
 const EditGoalInput = props => {
-
-    const [enteredGoal, setEnteredGoal] = useState('')
-    const [interestRate, setInterestRate] = useState('')
-    const [paid, setPaid] = useState('')
-    const [years, setYears] = useState('')
-
-
+    const {theOne} = props.route.params
+    const [enteredGoal, setEnteredGoal] = useState(theOne.value)
+    const [interestRate, setInterestRate] = useState(theOne.interest)
+    const [paid, setPaid] = useState(theOne.paidOff.toString())
+    const [years, setYears] = useState(theOne.years.toString())
+    
     const goalInputHandler = (enteredText) => {
-        setEnteredGoal(enteredText)
+        if(enteredText !==enteredGoal ){
+          setEnteredGoal(enteredText)
+        }
       }    
 
       const interestInputHandler = (enteredText) =>{
-        setInterestRate(enteredText)
+        if(enteredText !==interestRate ){
+          setInterestRate(enteredText)
+        }
       }
 
       const yearsInputHandler = (enteredText) =>{
-        setYears(enteredText)
+        if(enteredText !==years ){
+          setYears(enteredText)
+        }
       }
       const paidInputHandler = (enteredText) =>{
-        setPaid(enteredText)
+        if(enteredText !==paid){
+          setPaid(enteredText)
+        }
       }
 
-      const addGoalHandler = () =>{
-        props.addGoalHandler(enteredGoal, interestRate, years, paid)
-        setEnteredGoal("")
+      const editGoalHandler = () =>{
+        
+        //props.addGoalHandler(enteredGoal, interestRate, years, paid)
+        //setEnteredGoal("")
+        console.log('in here')
+        props.navigation.goBack()
       }
 
       //const 
@@ -39,14 +50,14 @@ const EditGoalInput = props => {
   
         <Text> Loan Amount </Text>
         <TextInput
-          placeholder="Loan Amount"
+          placeholder= {enteredGoal}
           style={styles.input}
           onChangeText={goalInputHandler}
           value={enteredGoal}/>
 
         <Text> Interest Rate: </Text>
          <TextInput 
-          placeholder="Interest Rate"
+          placeholder={interestRate}
           style={styles.input}
           onChangeText={interestInputHandler}
           value={interestRate}
@@ -54,7 +65,7 @@ const EditGoalInput = props => {
 
         <Text> Number of Years </Text>
         <TextInput 
-          placeholder="Number of Years"
+          placeholder={years}
           style={styles.input}
           onChangeText={yearsInputHandler}
           value={years}
@@ -62,18 +73,18 @@ const EditGoalInput = props => {
 
         <Text> Paid So Far: </Text>
           <TextInput 
-          placeholder="Paid So Far"
+          placeholder={paid}
           style={styles.input}
           onChangeText={paidInputHandler}
-          value={paid }
+          value={paid}
          />
      
           <View style={styles.buttons}>
             <View style={styles.button}>
-              <Button title="CANCEL" color="red" onPress={props.onCancel} />
+              <Button title="CANCEL" color="red" onPress={props.navigation.goBack()} />
             </View>   
             <View style="button">          
-              <Button title="Update" onPress={addGoalHandler} />
+              <Button title="Update" onPress={() => editGoalHandler()} />
             </View>
       </View>
     </View>

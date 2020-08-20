@@ -135,7 +135,7 @@ const HomeScreen = (props) => {
 			let loan = newLoans[i]
 			let goalTitle=loan.substring(loan.indexOf(title)+title.length,loan.indexOf('Loan Disbursed Amount:'))
 			//console.log("goalTitle: " + goalTitle)
-			let interestRate = loan.substring(loan.indexOf(interest)+interest.length,loan.indexOf('Loan Repayment Plan Type'))
+			let interestRate = loan.substring(loan.indexOf(interest)+interest.length,loan.indexOf('Loan Repayment Plan Type')-1)
 			//console.log("Interest rate: "+ interestRate)
 			let years = 10
 			let paidOff = 50
@@ -264,6 +264,14 @@ const HomeScreen = (props) => {
 		
 		setIsEditMode(true)
 		const goals = existingDoc.data().goals
+		console.log('now i have goals: '+ goals)
+		var theOne = {}
+		for(let i =0; i < goals.length;i++){
+			if(goals[i].id == goalId){
+			  theOne = goals[i]
+			}
+		}
+		props.navigation.navigate('EditLoan',{theOne})
 		//setIsEditMode(false)
 		await loansRef.doc(userId).update({ goals });
 	}
@@ -420,7 +428,7 @@ const HomeScreen = (props) => {
 					<Text style={{
 						fontWeight: 'bold',
 						fontSize: 20,
-						color: '#32c090',
+						color: '#426FFE',
 						textAlign: 'center',
 						paddingTop: 20
 					}}>

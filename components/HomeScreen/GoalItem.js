@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         //flex: 1,
-        backgroundColor: '##ff392e',
+        backgroundColor: '#ff392e',
       },
 })
  //<TouchableOpacity onPress={props.onDelete}>
