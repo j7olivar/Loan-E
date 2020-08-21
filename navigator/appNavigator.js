@@ -26,7 +26,7 @@ const Stacker = (props) => {
 	return (
 		<Tab.Navigator
 			tabBarOptions={{
-				activeTintColor:'#086620'
+				activeTintColor:'#426FFE'
 			}}
 		>
 			<Tab.Screen 

@@ -1,11 +1,10 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import { StyleSheet, Text, View, Image } from 'react-native';
 import Icon from "react-native-vector-icons/MaterialIcons";
 import Emoji from 'react-native-emoji';
-import Settings from '../../components/Profile/Settings';
-import { createStackNavigator } from '@react-navigation/stack';
 import '../../components/Global.js'
 
+import { firebase } from '../../Constants/ApiKeys'; 
 
 function ProfilePage({ route, navigation }) {
 
@@ -14,6 +13,31 @@ function ProfilePage({ route, navigation }) {
     const onFooterLinkPress = () => {
       navigation.navigate('Settings')
     }
+
+    const [ userName, setUserName ] = useState('')
+  
+    const fetchUserName = async () => {
+      let user = firebase.auth().currentUser.uid
+      //console.log("hello" + user)
+      console.log(user)
+      try {
+        const userName1 = await firebase.firestore().collection('users').doc(user).get()
+        setUserName(userName1.data().fullName)
+        //console.log(userName.fullName)
+        //console.log(userName)
+        //return userName
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+    
+    useEffect(() => {
+      fetchUserName();
+    }
+    )
+    
+  
 
     return (    
       <View style={{backgroundColor: 'white'}}>
@@ -38,7 +62,7 @@ function ProfilePage({ route, navigation }) {
             <View>
 
               <Text style={styles.name}>
-                John Doe
+                {userName}
               </Text>
               <Text style={styles.award}>
                 Awards

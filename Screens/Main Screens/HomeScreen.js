@@ -16,6 +16,8 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { set } from 'react-native-reanimated';
 
 console.ignoredYellowBox = ['Warning:', '- node', 'Encountered', 'Failed'];
+console.disableYellowBox = true
+
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const Stack = createStackNavigator();
@@ -294,7 +296,7 @@ const HomeScreen = (props) => {
 		<ScrollView style={styles.screen}>
 
 			<Text style={styles.loanTitle}>
-				Student Loan Calculator
+				Loans
 			</Text> 
 
 			<View style={{ padding: 20, marginTop: 15 }}>
@@ -308,9 +310,18 @@ const HomeScreen = (props) => {
 					addNewLoan(itemData.item.value, itemData.item.paidOff, allLoans)
 				)}/>
 
-				<Text style={styles.totalLoan}> ${totalLoan} </Text>
-			
+				<Text style={{
+						fontSize: 16,
+						color: 'black',
+						textAlign: 'left',
+						paddingTop: 15,
+						marginLeft: 5}}> 
+					${totalLoan} 
+				</Text>
 
+				<View style={{paddingBottom: 15}}>
+				</View>
+			
 				<Text style={styles.title}>Loans:</Text>
 
 				<GoalInput visible={isAddMode} addGoalHandler={addGoalHandler} onCancel={cancelGoalAdditionHandler} />
@@ -330,7 +341,7 @@ const HomeScreen = (props) => {
 				/>
 				<Button title="Add New Loan" onPress={() => setIsAddMode(true)} />
 
-				<View style={{paddingBottom: 15}}>
+				<View style={{paddingBottom: 10}}>
 				</View>
 
 				<Text style={styles.title}>Graph:</Text>
@@ -449,7 +460,7 @@ const styles = StyleSheet.create({
 		//color: '#35CA96',
 		fontSize: 20,
 		marginLeft:5,
-		fontWeight: 'bold'
+		fontWeight: 'bold',
 	},
 	logout: {
 		//	position: 'absolute',
@@ -465,6 +476,7 @@ const styles = StyleSheet.create({
 		height: 58,
 		marginLeft: 5,
 		paddingRight: 18,
+		
 	}
 
 });

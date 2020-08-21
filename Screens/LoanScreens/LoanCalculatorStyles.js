@@ -7,7 +7,7 @@ export default StyleSheet.create({
         textAlign: 'left',
         marginLeft: 30,
         fontWeight: 'bold',
-        fontSize: 18,
+        fontSize: 16,
         color: '#426FFE'
     },
 
@@ -51,7 +51,7 @@ export default StyleSheet.create({
         marginLeft: 30,
         marginRight: 30,
         paddingLeft: 16,
-        fontSize: 18,
+        fontSize: 16,
         //color: 'white'
     },
     button: {

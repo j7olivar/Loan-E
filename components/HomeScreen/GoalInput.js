@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import {View, Text, TextInput, Button, StyleSheet, Modal} from 'react-native'
+import { TouchableOpacity } from 'react-native-gesture-handler'
 
 const GoalInput = props => {
 
@@ -36,46 +37,47 @@ const GoalInput = props => {
 
       <View style={styles.inputContainer}>
 
-  
-        <Text> Loan Amount </Text>
+
+        <Text style={styles.formatText}>Loan Amount: </Text>
         <TextInput
-          placeholder="Loan Amount"
+          placeholder="$"
           style={styles.input}
           onChangeText={goalInputHandler}
           value={enteredGoal}/>
 
-        <Text> Interest Rate: </Text>
+        <Text style={styles.formatText}>Interest Rate: </Text>
          <TextInput 
-          placeholder="Interest Rate"
+          placeholder="%"
           style={styles.input}
           onChangeText={interestInputHandler}
           value={interestRate}
          />  
 
-        <Text> Number of Years </Text>
+        <Text style={styles.formatText}>Number of Years: </Text>
         <TextInput 
-          placeholder="Number of Years"
+          placeholder="Years"
           style={styles.input}
           onChangeText={yearsInputHandler}
           value={years}
          />  
 
-        <Text> Paid So Far: </Text>
+        <Text style={styles.formatText}>Paid So Far: </Text>
           <TextInput 
-          placeholder="Paid So Far"
+          placeholder="Paid"
           style={styles.input}
           onChangeText={paidInputHandler}
           value={paid }
          />
      
           <View style={styles.buttons}>
-            <View style={styles.button}>
-              <Button title="CANCEL" color="red" onPress={props.onCancel} />
-            </View>   
-            <View style="button">          
-              <Button title="ADD" onPress={addGoalHandler} />
-            </View>
-      </View>
+            <TouchableOpacity style={styles.button} onPress={addGoalHandler} >
+              <Text style={styles.appButtonText}>Add</Text>
+            </TouchableOpacity>   
+            <TouchableOpacity style={styles.button1} onPress={props.onCancel} >          
+              <Text style={styles.appButtonText}>Cancel</Text>
+            </TouchableOpacity>
+          </View>
+          
     </View>
     </Modal>
 )
@@ -83,29 +85,76 @@ const GoalInput = props => {
 
 const styles = StyleSheet.create({
 inputContainer: {
-  flex:1,
+    flex:1,
     justifyContent: 'center',
-    alignItems: 'center',
-    padding: 30,
+    //padding: 30,
     marginBottom: 10,
     marginVertical:10
   },
   input: {
-    borderColor: 'black',
-    alignItems: 'center',
-    borderWidth: 1,
-    padding: 10,
-    marginVertical: 10,
-    width: '80%'
+    height: 48,
+    borderRadius: 5,
+    overflow: 'hidden',
+    backgroundColor: '#e7e7e7',
+    marginTop: 10,
+    marginBottom: 10,
+    marginLeft: 30,  
+    marginRight: 30,
+    paddingLeft: 16,
+    fontSize: 16,
   },
   buttons: {
-      flexDirection: 'row-reverse',
+      flexDirection: 'row',
       justifyContent: "space-between",
-      width: '60%',
+      width: '100%',
+      alignItems: 'center',
   },
   button:{
-    width: '40%'
-  }
+      height: 48,
+      borderRadius:5,
+      overflow: 'hidden',
+      backgroundColor: '#426FFE',
+      marginTop: 25,
+      marginBottom: 10,
+      marginLeft: 30,
+      marginRight: 30,
+      //paddingLeft: 50,
+      //paddingRight: 25,
+      //padding: 20,
+      paddingLeft: 35,
+      paddingRight: 35
+  },
+  button1:{
+    height: 48,
+    borderRadius:5,
+    overflow: 'hidden',
+    backgroundColor: '#ff443a',
+    marginTop: 25,
+    marginBottom: 10,
+    marginLeft: 30,
+    marginRight: 30,
+    //paddingLeft: 50,
+    //paddingRight: 25,
+    //padding: 20,
+    paddingLeft: 35,
+    paddingRight: 35
+},
+  appButtonText: {
+    fontSize: 16,
+    marginTop: 13,
+    color: "white",
+    fontWeight: "bold",
+    alignSelf: "center",
+  },
+  formatText: {
+    paddingTop: 25,
+    //textAlign: 'center',
+    textAlign: 'left',
+    marginLeft: 30,
+    fontWeight: 'bold',
+    fontSize: 16,
+    color: '#426FFE'
+},
 })
 
 export default GoalInput

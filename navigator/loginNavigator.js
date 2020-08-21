@@ -141,28 +141,28 @@ const LoginNavigator =  () => {
         component={ProfilePage} />
         <Stack.Screen name="Settings" 
         options={{
-              headerStyle:{backgroundColor:'#32c090',},
+              //headerStyle:{backgroundColor:'#32c090',},
               //headerTintColor: 'black',
-              headerTitleStyle: {fontWeight: 'bold',}
+              //headerTitleStyle: {fontWeight: 'bold',}
             }}
         component={Settings} />
         <Stack.Screen name="FAQ" 
         options={{
-              headerStyle:{backgroundColor:'#32c090',},
+              //headerStyle:{backgroundColor:'#32c090',},
               //headerTintColor: 'black',
-              headerTitleStyle: {fontWeight: 'bold',}
+              //headerTitleStyle: {fontWeight: 'bold',}
             }}
         component={Faq} />
         <Stack.Screen name="LINKS" 
         options={{
-              headerStyle:{backgroundColor:'#32c090',},
+              //headerStyle:{backgroundColor:'#32c090',},
               //headerTintColor: 'black',
-              headerTitleStyle: {fontWeight: 'bold',}
+              //headerTitleStyle: {fontWeight: 'bold',}
             }}
         component={Links} />
         <Stack.Screen name="ABOUT" 
         options={{
-              headerStyle:{backgroundColor:'#32c090',},
+              //headerStyle:{backgroundColor:'#32c090',},
               //headerTintColor: 'black',
               headerTitleStyle: {fontWeight: 'bold',}
             }}

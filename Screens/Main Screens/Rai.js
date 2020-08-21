@@ -2,10 +2,6 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Button, View, Text } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-
 import { Colors } from '../../components/Resources/Colors';
 
 function ResourcesPage({ navigation }) {
@@ -18,7 +14,7 @@ function ResourcesPage({ navigation }) {
 	}
 	const onFooterLinkPress3 = () => {
         navigation.navigate('ABOUT')
-    }
+	}
 
 	return (
 		<View style={{backgroundColor: 'white'}}>

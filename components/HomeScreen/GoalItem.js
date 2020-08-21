@@ -73,9 +73,9 @@ const styles = StyleSheet.create({
         width:Dimensions.get('window').width - 40,
         borderRadius:8,
         marginVertical: 3,
-        backgroundColor: 'black',
-        borderColor: 'black',
-        borderWidth:1,
+        backgroundColor: 'blue',
+        //borderColor: 'black',
+        //borderWidth:1,
         opacity:0.8
       },
       sub: {
