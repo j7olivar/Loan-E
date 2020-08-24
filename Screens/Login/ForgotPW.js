@@ -1,5 +1,5 @@
 import React,  {useState} from 'react'
-import {View,Text,StyleSheet, TextInput, Alert, TouchableOpacity} from 'react-native'
+import {View,Text,StyleSheet, TextInput, Alert, TouchableOpacity, Image, Dimensions} from 'react-native'
 import {firebase} from '../../Constants/ApiKeys'
 
 
@@ -26,8 +26,14 @@ export default function ForgotPW({navigation}){
         }
     }
 
+    const height = Dimensions.get('screen').height
+    const width = Dimensions.get('screen').width
+
     return (
-    <View style={{padding:15}}>
+    <View style={{padding:15, flex:1}}>
+        <Text style={{fontWeight: 'bold', fontSize: 33, marginLeft: 33, marginTop: 150}}>
+                Reset Password 
+        </Text>
         <TextInput 
                 style={styles.input}
                 placeholder='Email'
@@ -43,10 +49,19 @@ export default function ForgotPW({navigation}){
                 style = {styles.button}
                 onPress={()=>sendEmail()}>
                 <Text style = {styles.buttonText}>Send Email</Text>
-        </TouchableOpacity>
-        
+        </TouchableOpacity>   
     </View>)
 }
+
+/* TRYING TO PUT IMAGE AT BOTTOM OF SCREEN
+<View
+        style={{position:'absolute', bottom:height/2 }}>
+            <Image
+            source={require('../../assets/corgi.png')}
+            style={{backgroundColor:'transparent' }}
+            />
+        </View>
+*/
 
 const styles = StyleSheet.create({
     input: {
