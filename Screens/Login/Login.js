@@ -18,6 +18,11 @@ export default function Login({navigation}) {
         }catch(error){console.log(error)}
     }
 
+    const ForgotPWOnPress = () =>{
+        console.log('in this hoe')
+        navigation.navigate('ForgotPW')
+    }
+
 
     const onLoginPress = () => {
         savePW()
@@ -103,6 +108,13 @@ export default function Login({navigation}) {
                     </Text>
                 </View>
 
+                <View style= {{fontSize: 16,color: 'red'}}>
+                    <Text style = {styles.forgotText}
+                    onPress={()=>ForgotPWOnPress()} >
+                        Forgot Password? 
+                    </Text> 
+                </View>
+
             </KeyboardAwareScrollView>
             
         </View>
@@ -161,5 +173,12 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         fontSize: 14,
         paddingVertical:400
+    },
+    forgotText:{
+        flex: 1,
+        textAlign: 'center',
+        fontWeight: 'bold',
+        paddingTop: 20,
+        color:'#426FFE'
     }
   });
