@@ -6,6 +6,7 @@ import GoalInput from '../../components/HomeScreen/GoalInput';
 import Header from '../../components/Header';
 import { firebase } from '../../Constants/ApiKeys';
 import FavoriteMealScreen from './FavoriteMealScreen'
+import {allLoans, updateCounter} from '../LoanScreens/GlobalLoans'
 
 import { NavigationContainer } from '@react-navigation/native';
 import LoanCalculatorScreen from '../LoanScreens/LoanCalculator.js';
@@ -22,8 +23,6 @@ const HomeScreen = (props) => {
 	const userId = props.extraData.id;
 	const loansRef = firebase.firestore().collection('goals');
 
-	let allLoans = [0];
-
 	const onFooterLinkPress = () => {
 		props.navigation.navigate('Loan Calculator')
 	}
@@ -35,6 +34,7 @@ const HomeScreen = (props) => {
 	const onFooterLinkPress3 = (item, allLoans) => {
 		props.navigation.navigate('Individual Loan', 
 		{loan: item.value, interestRate: item.interest, timeLeft: item.years, paidSoFar: item.paidOff, allLoans: allLoans })
+		
     }
 	
 	const onDeleteAccountPress = () => {
@@ -90,6 +90,7 @@ const HomeScreen = (props) => {
 	};
 
 	const addGoalHandler = (goalTitle, interestRate, years, paidOff) => {
+		updateCounter(allLoans)
 		//setCourseGoals([...courseGoals, enteredGoal])
 		setCourseGoals((prevGoals) => [
 			...courseGoals,
@@ -133,37 +134,66 @@ const HomeScreen = (props) => {
 		});*/
 
 		//firebase.database().ref(goalId).remove()
+		setTotalLoan(allLoans.totalLoan);
 	};
 
 	function addNewLoan(loanToAdd, paidOff, arr){
-		arr.push(loanToAdd - paidOff);
 		var total = 0;
 
-		for(var i = 0; i < arr.length; i++){
-			total += arr[i]
-		}
+			if(arr.counter == 0){
+				arr.loan1 = (loanToAdd - paidOff);
+			}
+			else if(arr.counter == 1){
+				arr.loan2 = (loanToAdd - paidOff);
+			}
+			else if(arr.counter == 2){
+				arr.loan3 = (loanToAdd - paidOff);
+			}
+			else if(arr.counter == 3){
+				arr.loan4 = (loanToAdd - paidOff);
+			}
+			else if(arr.counter == 4){
+				arr.loan5 = (loanToAdd - paidOff);
+			}
+			else if(arr.counter == 5){
+				arr.loan6 = (loanToAdd - paidOff);
+			}
+			else if(arr.counter == 6){
+				arr.loan7 = (loanToAdd - paidOff);
+			}
+			else if(arr.counter == 7){
+				arr.loan8 = (loanToAdd - paidOff);
+			}
+			else if(arr.counter == 8){
+				arr.loan9 = (loanToAdd - paidOff);
+			}
+			else if(arr.counter == 9){
+				arr.loan10 = (loanToAdd - paidOff);
+			}
+			else{
+				console.log("Too many loans")
+			}
 
-		setTotalLoan(total);
+
+		arr.totalLoan = arr.loan1 + arr.loan2 + arr.loan3 + arr.loan4 +arr.loan5 + arr.loan6 +arr.loan7 + arr.loan8 + arr.loan9 + arr.loan10;
+
+		setTotalLoan(arr.totalLoan);
+		return
 	}
 
 	function getTotalLoan(arr){
-		var total = 0;
+		var total = 0; 
+
+		//console.log(arr.length)
 
 		for(var i = 0; i < arr.length; i++){
 			total += arr[i]
+			console.log(i)
 		}
 
 		return total;
 	}
-
-	function makePayment(totalLoan, payment){
-		totalLoan -= payment;
-		console.log(totalLoan)
-
-		setTotalLoan(totalLoan)
-		//this.forceUpdate()
-	}
-
+	
 	return (
 		<ScrollView style={styles.screen}>
 			<Header title="Student Loan Calculator" />
@@ -176,8 +206,8 @@ const HomeScreen = (props) => {
 				data={courseGoals}
 				renderItem={(itemData) => (
 					addNewLoan(itemData.item.value, itemData.item.paidOff, allLoans)
+					//setTotalLoan(getTotalLoan(allLoans))
 				)}/>
-
 				<Text style={styles.totalLoan}>${totalLoan}</Text>
 
 				<Text style={styles.title}> LOANS: </Text>
@@ -199,24 +229,6 @@ const HomeScreen = (props) => {
 					)}
 				/>
 				<Button title="Add New Loan" onPress={() => setIsAddMode(true)} />
-
-				<View style={{paddingTop: 60}}>
-				<TextInput placeholder="Input Payment"
-				style={styles.input} 
-				onChangeText ={ payment => setPayment(payment)}/>
-			 	</View>
-
-			<TouchableOpacity onPress={() => makePayment(getTotalLoan(allLoans), payment)}>
-				<Text style={{
-					fontWeight: 'bold',
-					fontSize: 20,
-					color: '#32c090',
-					textAlign: 'center',
-					paddingTop: 20
-				}}>
-					Make Payment
-				</Text>
-			</TouchableOpacity>
 
 				<Text style={styles.title}> SHINY GRAPH/SLIDER: </Text>
 				<FavoriteMealScreen/>
