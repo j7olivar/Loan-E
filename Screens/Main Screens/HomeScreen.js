@@ -324,6 +324,9 @@ const HomeScreen = (props) => {
 			
 				<Text style={styles.title}>Loans:</Text>
 
+				<View style={{paddingBottom: 15}}>
+				</View>
+
 				<GoalInput visible={isAddMode} addGoalHandler={addGoalHandler} onCancel={cancelGoalAdditionHandler} />
 				<FlatList
 					keyExtractor={(item, index) => item.id}
