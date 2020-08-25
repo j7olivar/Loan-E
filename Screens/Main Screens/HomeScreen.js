@@ -29,7 +29,8 @@ const HomeScreen = (props) => {
 	const [ isEditMode, setIsEditMode ] = useState(false)
  	const [goalCounter, setGoalCounter] = useState(0)
 	const [pw, setPW] = useState('')
-	const [userOut, setUserOut] = useState("")
+	//const [userOut, setUserOut] = useState("")
+	var userOut;
 
 	const [ totalLoan, setTotalLoan ] = useState(0);
 	const [ ifHalfPaid, setIfHalfPaid ] = useState(false);
@@ -91,15 +92,20 @@ const HomeScreen = (props) => {
 	const pickDocument = async () => {
 		console.log('pic Doc')
 		try {
+			
 			let input = await DocumentPicker.getDocumentAsync({
 				type: "text/plain",
 			})
-			setUserOut(await FileSystem.readAsStringAsync(input.uri))
+			//setUserOut(await FileSystem.readAsStringAsync(input.uri))
+			userOut = await FileSystem.readAsStringAsync(input.uri)
+			
 			createLoans()
+			
 		} catch (error) {
 			console.log(error);
 		}
 	}
+	
 
 	const fileParser = () => {
 		console.log('file parser')
@@ -108,7 +114,7 @@ const HomeScreen = (props) => {
 
 		if (newUserOut.length == 0) {
 			Alert.alert('wrong document','Try Again')
-			return;
+			return
 		}
 		//remove the grants
 		var grantPos = newUserOut.search("Grant Type:");
@@ -150,6 +156,13 @@ const HomeScreen = (props) => {
 
 	useEffect(() => {
 		getPW()
+		/*
+		async function letsDoThis(){
+			setUserOut(await FileSystem.readAsStringAsync(input.uri))
+		}
+		letsDoThis()
+		*/
+		
 		console.log('use effect')
 		let isMounted = true;
 
