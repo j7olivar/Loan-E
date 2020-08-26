@@ -1,36 +1,40 @@
-// @flow strict
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ * @flow strict
+ */
 
-import didYouMean from '../../jsutils/didYouMean';
+import type ValidationContext from '../ValidationContext';
+import { GraphQLError } from '../../error';
 import suggestionList from '../../jsutils/suggestionList';
-
-import { GraphQLError } from '../../error/GraphQLError';
-
-import { type FieldNode } from '../../language/ast';
-import { type ASTVisitor } from '../../language/visitor';
-
-import { type GraphQLSchema } from '../../type/schema';
+import quotedOrList from '../../jsutils/quotedOrList';
+import type { FieldNode } from '../../language/ast';
+import type { ASTVisitor } from '../../language/visitor';
+import type { GraphQLSchema } from '../../type/schema';
+import type { GraphQLOutputType } from '../../type/definition';
 import {
-  type GraphQLOutputType,
   isObjectType,
   isInterfaceType,
   isAbstractType,
 } from '../../type/definition';
 
-import { type ValidationContext } from '../ValidationContext';
-
 export function undefinedFieldMessage(
   fieldName: string,
   type: string,
-  suggestedTypeNames: $ReadOnlyArray<string>,
-  suggestedFieldNames: $ReadOnlyArray<string>,
+  suggestedTypeNames: Array<string>,
+  suggestedFieldNames: Array<string>,
 ): string {
-  const quotedTypeNames = suggestedTypeNames.map(x => `"${x}"`);
-  const quotedFieldNames = suggestedFieldNames.map(x => `"${x}"`);
-  return (
-    `Cannot query field "${fieldName}" on type "${type}".` +
-    (didYouMean('to use an inline fragment on', quotedTypeNames) ||
-      didYouMean(quotedFieldNames))
-  );
+  let message = `Cannot query field "${fieldName}" on type "${type}".`;
+  if (suggestedTypeNames.length !== 0) {
+    const suggestions = quotedOrList(suggestedTypeNames);
+    message += ` Did you mean to use an inline fragment on ${suggestions}?`;
+  } else if (suggestedFieldNames.length !== 0) {
+    message += ` Did you mean ${quotedOrList(suggestedFieldNames)}?`;
+  }
+  return message;
 }
 
 /**
@@ -70,7 +74,7 @@ export function FieldsOnCorrectType(context: ValidationContext): ASTVisitor {
                 suggestedTypeNames,
                 suggestedFieldNames,
               ),
-              node,
+              [node],
             ),
           );
         }
@@ -80,9 +84,10 @@ export function FieldsOnCorrectType(context: ValidationContext): ASTVisitor {
 }
 
 /**
- * Go through all of the implementations of type, as well as the interfaces that
- * they implement. If any of those types include the provided field, suggest
- * them, sorted by how often the type is referenced, starting with Interfaces.
+ * Go through all of the implementations of type, as well as the interfaces
+ * that they implement. If any of those types include the provided field,
+ * suggest them, sorted by how often the type is referenced,  starting
+ * with Interfaces.
  */
 function getSuggestedTypeNames(
   schema: GraphQLSchema,
@@ -92,21 +97,21 @@ function getSuggestedTypeNames(
   if (isAbstractType(type)) {
     const suggestedObjectTypes = [];
     const interfaceUsageCount = Object.create(null);
-    for (const possibleType of schema.getPossibleTypes(type)) {
+    schema.getPossibleTypes(type).forEach(possibleType => {
       if (!possibleType.getFields()[fieldName]) {
-        continue;
+        return;
       }
       // This object type defines this field.
       suggestedObjectTypes.push(possibleType.name);
-      for (const possibleInterface of possibleType.getInterfaces()) {
+      possibleType.getInterfaces().forEach(possibleInterface => {
         if (!possibleInterface.getFields()[fieldName]) {
-          continue;
+          return;
         }
         // This interface type defines this field.
         interfaceUsageCount[possibleInterface.name] =
           (interfaceUsageCount[possibleInterface.name] || 0) + 1;
-      }
-    }
+      });
+    });
 
     // Suggest interface types based on how common they are.
     const suggestedInterfaceTypes = Object.keys(interfaceUsageCount).sort(

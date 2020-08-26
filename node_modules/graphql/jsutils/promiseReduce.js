@@ -1,11 +1,13 @@
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = promiseReduce;
 
-var _isPromise = _interopRequireDefault(require("./isPromise"));
+var _isPromise = require('./isPromise');
+
+var _isPromise2 = _interopRequireDefault(_isPromise);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -18,8 +20,15 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  */
 function promiseReduce(values, callback, initialValue) {
   return values.reduce(function (previous, value) {
-    return (0, _isPromise.default)(previous) ? previous.then(function (resolved) {
+    return (0, _isPromise2.default)(previous) ? previous.then(function (resolved) {
       return callback(resolved, value);
     }) : callback(previous, value);
   }, initialValue);
-}
+} /**
+   * Copyright (c) 2015-present, Facebook, Inc.
+   *
+   * This source code is licensed under the MIT license found in the
+   * LICENSE file in the root directory of this source tree.
+   *
+   *  strict
+   */

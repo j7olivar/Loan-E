@@ -1,13 +1,10 @@
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.concatAST = concatAST;
 
-var _flatMap = _interopRequireDefault(require("../polyfills/flatMap"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * Provided a collection of ASTs, presumably each from different files,
@@ -15,10 +12,22 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * GraphQL source files which together represent one conceptual application.
  */
 function concatAST(asts) {
+  var batchDefinitions = [];
+  for (var i = 0; i < asts.length; i++) {
+    var definitions = asts[i].definitions;
+    for (var j = 0; j < definitions.length; j++) {
+      batchDefinitions.push(definitions[j]);
+    }
+  }
   return {
     kind: 'Document',
-    definitions: (0, _flatMap.default)(asts, function (ast) {
-      return ast.definitions;
-    })
+    definitions: batchDefinitions
   };
-}
+} /**
+   * Copyright (c) 2015-present, Facebook, Inc.
+   *
+   * This source code is licensed under the MIT license found in the
+   * LICENSE file in the root directory of this source tree.
+   *
+   *  strict
+   */

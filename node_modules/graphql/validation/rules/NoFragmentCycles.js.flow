@@ -1,21 +1,26 @@
-// @flow strict
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ * @flow strict
+ */
 
-import { GraphQLError } from '../../error/GraphQLError';
-
-import { type ASTVisitor } from '../../language/visitor';
-import { type FragmentDefinitionNode } from '../../language/ast';
-
-import { type ASTValidationContext } from '../ValidationContext';
+import type ValidationContext from '../ValidationContext';
+import { GraphQLError } from '../../error';
+import type { FragmentDefinitionNode } from '../../language/ast';
+import type { ASTVisitor } from '../../language/visitor';
 
 export function cycleErrorMessage(
   fragName: string,
-  spreadNames: $ReadOnlyArray<string>,
+  spreadNames: Array<string>,
 ): string {
   const via = spreadNames.length ? ' via ' + spreadNames.join(', ') : '';
   return `Cannot spread fragment "${fragName}" within itself${via}.`;
 }
 
-export function NoFragmentCycles(context: ASTValidationContext): ASTVisitor {
+export function NoFragmentCycles(context: ValidationContext): ASTVisitor {
   // Tracks already visited fragments to maintain O(N) and to ensure that cycles
   // are not redundantly reported.
   const visitedFrags = Object.create(null);
@@ -29,7 +34,9 @@ export function NoFragmentCycles(context: ASTValidationContext): ASTVisitor {
   return {
     OperationDefinition: () => false,
     FragmentDefinition(node) {
-      detectCycleRecursive(node);
+      if (!visitedFrags[node.name.value]) {
+        detectCycleRecursive(node);
+      }
       return false;
     },
   };
@@ -38,10 +45,6 @@ export function NoFragmentCycles(context: ASTValidationContext): ASTVisitor {
   // It does not terminate when a cycle was found but continues to explore
   // the graph to find all possible cycles.
   function detectCycleRecursive(fragment: FragmentDefinitionNode) {
-    if (visitedFrags[fragment.name.value]) {
-      return;
-    }
-
     const fragmentName = fragment.name.value;
     visitedFrags[fragmentName] = true;
 
@@ -52,27 +55,29 @@ export function NoFragmentCycles(context: ASTValidationContext): ASTVisitor {
 
     spreadPathIndexByName[fragmentName] = spreadPath.length;
 
-    for (const spreadNode of spreadNodes) {
+    for (let i = 0; i < spreadNodes.length; i++) {
+      const spreadNode = spreadNodes[i];
       const spreadName = spreadNode.name.value;
       const cycleIndex = spreadPathIndexByName[spreadName];
 
-      spreadPath.push(spreadNode);
       if (cycleIndex === undefined) {
-        const spreadFragment = context.getFragment(spreadName);
-        if (spreadFragment) {
-          detectCycleRecursive(spreadFragment);
+        spreadPath.push(spreadNode);
+        if (!visitedFrags[spreadName]) {
+          const spreadFragment = context.getFragment(spreadName);
+          if (spreadFragment) {
+            detectCycleRecursive(spreadFragment);
+          }
         }
+        spreadPath.pop();
       } else {
         const cyclePath = spreadPath.slice(cycleIndex);
-        const fragmentNames = cyclePath.slice(0, -1).map(s => s.name.value);
         context.reportError(
           new GraphQLError(
-            cycleErrorMessage(spreadName, fragmentNames),
-            cyclePath,
+            cycleErrorMessage(spreadName, cyclePath.map(s => s.name.value)),
+            cyclePath.concat(spreadNode),
           ),
         );
       }
-      spreadPath.pop();
     }
 
     spreadPathIndexByName[fragmentName] = undefined;

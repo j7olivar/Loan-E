@@ -1,4 +1,22 @@
-// @flow strict
+/**
+ * Copyright (c) 2017-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ * @flow strict
+ */
+
+/**
+ * fixes indentation by removing leading spaces and tabs from each line
+ */
+function fixIndent(str: string): string {
+  const trimmedStr = str
+    .replace(/^\n*/m, '') //  remove leading newline
+    .replace(/[ \t]*$/, ''); // remove trailing spaces and tabs
+  const indent = /^[ \t]*/.exec(trimmedStr)[0]; // figure out indent
+  return trimmedStr.replace(RegExp('^' + indent, 'mg'), ''); // remove indent
+}
 
 /**
  * An ES6 string tag that fixes indentation. Also removes leading newlines
@@ -9,33 +27,24 @@
  *   {
  *     test
  *   }
- * `;
+ * `
  * str === "{\n  test\n}\n";
  */
 export default function dedent(
-  strings: $ReadOnlyArray<string>,
-  ...values: $ReadOnlyArray<string>
+  strings: string | Array<string>,
+  ...values: Array<string>
 ): string {
-  let str = '';
+  // when used as an ordinary function, allow passing a singleton string
+  const strArray = typeof strings === 'string' ? [strings] : strings;
+  const numValues = values.length;
 
-  for (let i = 0; i < strings.length; ++i) {
-    str += strings[i];
-    if (i < values.length) {
-      str += values[i]; // interpolation
+  const str = strArray.reduce((prev, cur, index) => {
+    let next = prev + cur;
+    if (index < numValues) {
+      next += values[index]; // interpolation
     }
-  }
+    return next;
+  }, '');
 
-  const trimmedStr = str
-    .replace(/^\n*/m, '') //  remove leading newline
-    .replace(/[ \t]*$/, ''); // remove trailing spaces and tabs
-
-  // fixes indentation by removing leading spaces and tabs from each line
-  let indent = '';
-  for (const char of trimmedStr) {
-    if (char !== ' ' && char !== '\t') {
-      break;
-    }
-    indent += char;
-  }
-  return trimmedStr.replace(RegExp('^' + indent, 'mg'), ''); // remove indent
+  return fixIndent(str);
 }
