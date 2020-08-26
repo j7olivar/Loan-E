@@ -1,9 +1,18 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, Component } from 'react'
 import { Text, TextInput, Button, ScrollView, View } from 'react-native'
 import styles from './IndividualLoanStyles.js'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import {allLoans, updateCounter} from '../LoanScreens/GlobalLoans'
+
+
+class updating extends Component{
+	componentWillUnmount(){
+		alert("Test")
+	}
+
+	
+}
 
 
 export default function IndividualLoanScreen({route, navigation}) {
@@ -18,6 +27,10 @@ export default function IndividualLoanScreen({route, navigation}) {
 	const [ totalLoan, setTotalLoan ] = useState(info[0] - info[3])
 	const [ paidOff, setPaidOff ] = useState(info[3])
 	const [ monthlyPayment, setMonthlyPayment ] = useState(getMonthlyPayement(info[2]*12, info[1], info[0]))
+
+	const onFooterLinkPress = () => {
+		navigation.navigate('Home')
+	}
 
 	function getMonthlyPayement(months, interestRate, loanAmount){
 		var monthlyIR = (interestRate * .01)/12;
@@ -128,6 +141,8 @@ export default function IndividualLoanScreen({route, navigation}) {
 					Make Payment
 				</Text>
 			</TouchableOpacity>
+
+			<Button title='back' onPress={() => onFooterLinkPress()}/>
 
 		</View>
     )

@@ -71,6 +71,10 @@ const HomeScreen = (props) => {
 				}
 			);
 		}
+
+		allLoans.totalLoan = allLoans.loan1 + allLoans.loan2 + allLoans.loan3 + allLoans.loan4 + allLoans.loan5 + allLoans.loan6 + allLoans.loan7 + allLoans.loan8 + allLoans.loan9 + allLoans.loan10;
+		setTotalLoan(allLoans.totalLoan);
+
 		return () => {
 			isMounted = false;
 		};
@@ -197,7 +201,7 @@ const HomeScreen = (props) => {
 	return (
 		<ScrollView style={styles.screen}>
 			<Header title="Student Loan Calculator" />
-
+			
 			<View style={{ padding: 20 }}>
 				<Text style={styles.total}> Total Loans </Text>
 
