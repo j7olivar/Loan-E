@@ -17,7 +17,10 @@
       "**/*"
     ],
     "ios": {
-      "bundleIdentifier": "io.expo.client.test1"
+      "bundleIdentifier": "io.expo.client.test1",
+      "infoPlist": {
+        "NSFaceIDUsageDescription": "This app will optionally use Face ID or Touch ID to save login"
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"
