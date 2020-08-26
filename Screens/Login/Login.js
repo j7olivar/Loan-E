@@ -1,21 +1,92 @@
-import React, { useState} from 'react'
-import { Image, Text, TextInput, TouchableOpacity, View,StyleSheet } from 'react-native'
+import React, { useState, useEffect} from 'react'
+import { Button, Text, TextInput, TouchableOpacity, View,StyleSheet, Alert } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import {firebase} from '../../Constants/ApiKeys'
 import AsyncStorage from '@react-native-community/async-storage'
+import * as SecureStore from 'expo-secure-store'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+import * as LocalAuthentication from 'expo-local-authentication';
+import { set } from 'react-native-reanimated';
 
 export default function Login({navigation}) {
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-
+    //const [email, setEmail] = useState('')
+    //const [password, setPassword] = useState('')
+    var email
+    var password
+    //var bioAvail 
     const onFooterLinkPress = () => {
         navigation.navigate('Signup')
     }
-
+    /*
+    //trying to make biometrics dynamic
+    useEffect(() => {
+        const checkWhich = async ()=>{
+            ((await LocalAuthentication.supportedAuthenticationTypesAsync()).includes(2)? 
+            bioAvail='face-recognition': bioAvail='fingerprint')
+        }
+        checkWhich()
+    },[])
+    */
     const savePW = async () => {
         try {
-            await AsyncStorage.setItem('password',password)
+            await SecureStore.setItemAsync('password',password)
+            await SecureStore.setItemAsync('email', email)
         }catch(error){console.log(error)}
+    }
+
+    const bioLogin = async() => {
+        let isSupported = await LocalAuthentication.hasHardwareAsync()
+        if(!isSupported){
+            Alert.alert('Unsuccesful', 'Not a Compatabile Device')
+            return;
+        }
+        let savedOptions
+        let signin
+        //does have hardware for biometric login
+        let devices = await LocalAuthentication.supportedAuthenticationTypesAsync()
+        if(devices.length == 0){
+            Alert.alert('Unsuccesful', 'No Biometrics Available')  
+        }
+        else if(devices.includes(1)){
+            //touch-id
+            savedOptions = await LocalAuthentication.isEnrolledAsync()
+            //bioAvail='fingerprint'
+            if(!savedOptions){
+                Alert.alert('Unsuccesful', 'No Saved Fingerprints')
+                return
+            }
+            signin = await LocalAuthentication.authenticateAsync()
+        }
+        else if(devices.includes(2)){
+            //face-id
+            savedOptions= await LocalAuthentication.isEnrolledAsync()
+            //bioAvail='face-recognition'
+            if(!savedOptions){
+                Alert.alert('Unsuccesful', 'No Saved Faces')
+                return
+            }
+            signin = await LocalAuthentication.authenticateAsync()
+        }
+        //now time to sign in
+        //console.log(signin)
+        if(signin.success){
+            //first need to save email and password when they first log-in using SecureStore
+            //then check if thats available then call that to sign in
+            if(await SecureStore.getItemAsync('password')== null || 
+            await SecureStore.getItemAsync('email') == null ){
+                //no saved passwords
+                Alert.alert('No Saved Credentials', 'FaceID is disabled until you login once')
+                return;
+            }
+            
+            email = await SecureStore.getItemAsync('email')
+            password = await SecureStore.getItemAsync('password')
+            onLoginPress()
+        }
+        else if(signin.error){
+            console.log('something wrong here ')
+            Alert.alert('Unsuccesful','Unable to Login')
+        }
     }
 
     const ForgotPWOnPress = () =>{
@@ -45,6 +116,7 @@ export default function Login({navigation}) {
                         navigation.reset({index:0, routes:[{name:'Home'}]})
                     })
                     .catch(error => {
+                        console.log('heres the error')
                         alert(error)
                     });
             })
@@ -76,7 +148,8 @@ export default function Login({navigation}) {
                 style={styles.input}
                 placeholder='Email'
                 placeholderTextColor='gray'
-                onChangeText={(text) => setEmail(text)}
+                //onChangeText={(text) => setEmail(text)}
+                onChangeText= {(text) => email = text}
                 value={email}
                 underlineColorAndroid = 'transparent'
                 autoCapitalize='none'
@@ -87,7 +160,8 @@ export default function Login({navigation}) {
                 style={styles.input}
                 placeholder='Password'
                 placeholderTextColor='gray'
-                onChangeText={(text) => setPassword(text)}
+                //onChangeText={(text) => setPassword(text)}
+                onChangeText = {(text) => password = text}
                 value={password}
                 underlineColorAndroid = 'transparent'
                 autoCapitalize='none'
@@ -100,7 +174,19 @@ export default function Login({navigation}) {
                 <Text style = {styles.buttonText}>Login</Text>
                 </TouchableOpacity>
 
-                <View style= {{fontSize: 16,color: 'red'}}>
+                <View style = {{alignSelf:'center', paddingTop:10}}>
+                <Icon.Button
+                    //name = {bioAvail}
+                    name= 'face'
+                    onPress = {()=> bioLogin()}
+                    color = '#426FFE'
+                    backgroundColor='transparent'>
+                        Login with Biometrics
+                </Icon.Button>
+                </View>
+
+                <View style= {{fontSize: 16,color: 'red', paddingTop:170}}>
+              
                     <Text style = {styles.footerText}>
                         Don't have an account? 
                     <Text onPress={()=>onFooterLinkPress()} 

@@ -7,7 +7,8 @@ import GoalInput from '../../components/HomeScreen/GoalInput';
 import Header from '../../components/Header';
 import { firebase } from '../../Constants/ApiKeys';
 import FavoriteMealScreen from './FavoriteMealScreen'
-import AsyncStorage from '@react-native-community/async-storage'
+//import AsyncStorage from '@react-native-community/async-storage'
+import * as SecureStore from 'expo-secure-store'
 import * as DocumentPicker from 'expo-document-picker'
 import * as FileSystem from 'expo-file-system';
 
@@ -15,8 +16,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { set } from 'react-native-reanimated';
 
-console.ignoredYellowBox = ['Warning:', '- node', 'Encountered', 'Failed'];
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import AsyncStorage from '@react-native-community/async-storage';
 
 
 
@@ -57,7 +58,8 @@ const HomeScreen = (props) => {
 
 	const getPW = async () => {
 		try {
-			const currPW = await AsyncStorage.getItem('password')
+			//const currPW = await AsyncStorage.getItem('password')
+			const currPW = await SecureStore.getItemAsync('password')
 			if(currPW !== null){
 				setPW(currPW)
 			}	
@@ -66,7 +68,8 @@ const HomeScreen = (props) => {
 
 	const clearPW = async() => {
 		try{
-			await AsyncStorage.removeItem('password')
+			await SecureStore.deleteItemAsync('password')
+			//await AsyncStorage.removeItem('password')
 			console.log('removed successfully')
 		}catch(error){console.log(error)}
 	}
