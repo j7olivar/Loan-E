@@ -7,7 +7,8 @@ import GoalInput from '../../components/HomeScreen/GoalInput';
 import Header from '../../components/Header';
 import { firebase } from '../../Constants/ApiKeys';
 import FavoriteMealScreen from './FavoriteMealScreen'
-import AsyncStorage from '@react-native-community/async-storage'
+//import AsyncStorage from '@react-native-community/async-storage'
+import * as SecureStore from 'expo-secure-store'
 import * as DocumentPicker from 'expo-document-picker'
 import * as FileSystem from 'expo-file-system';
 
@@ -15,8 +16,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { set } from 'react-native-reanimated';
 
-console.ignoredYellowBox = ['Warning:', '- node', 'Encountered', 'Failed'];
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import AsyncStorage from '@react-native-community/async-storage';
 
 
 
@@ -29,7 +30,8 @@ const HomeScreen = (props) => {
 	const [ isEditMode, setIsEditMode ] = useState(false)
  	const [goalCounter, setGoalCounter] = useState(0)
 	const [pw, setPW] = useState('')
-	const [userOut, setUserOut] = useState("")
+	//const [userOut, setUserOut] = useState("")
+	var userOut;
 
 	const [ totalLoan, setTotalLoan ] = useState(0);
 	const [ ifHalfPaid, setIfHalfPaid ] = useState(false);
@@ -56,7 +58,8 @@ const HomeScreen = (props) => {
 
 	const getPW = async () => {
 		try {
-			const currPW = await AsyncStorage.getItem('password')
+			//const currPW = await AsyncStorage.getItem('password')
+			const currPW = await SecureStore.getItemAsync('password')
 			if(currPW !== null){
 				setPW(currPW)
 			}	
@@ -65,7 +68,8 @@ const HomeScreen = (props) => {
 
 	const clearPW = async() => {
 		try{
-			await AsyncStorage.removeItem('password')
+			await SecureStore.deleteItemAsync('password')
+			//await AsyncStorage.removeItem('password')
 			console.log('removed successfully')
 		}catch(error){console.log(error)}
 	}
@@ -91,15 +95,20 @@ const HomeScreen = (props) => {
 	const pickDocument = async () => {
 		console.log('pic Doc')
 		try {
+			
 			let input = await DocumentPicker.getDocumentAsync({
 				type: "text/plain",
 			})
-			setUserOut(await FileSystem.readAsStringAsync(input.uri))
+			//setUserOut(await FileSystem.readAsStringAsync(input.uri))
+			userOut = await FileSystem.readAsStringAsync(input.uri)
+			
 			createLoans()
+			
 		} catch (error) {
 			console.log(error);
 		}
 	}
+	
 
 	const fileParser = () => {
 		console.log('file parser')
@@ -108,7 +117,7 @@ const HomeScreen = (props) => {
 
 		if (newUserOut.length == 0) {
 			Alert.alert('wrong document','Try Again')
-			return;
+			return
 		}
 		//remove the grants
 		var grantPos = newUserOut.search("Grant Type:");
@@ -135,7 +144,7 @@ const HomeScreen = (props) => {
 			let loan = newLoans[i]
 			let goalTitle=loan.substring(loan.indexOf(title)+title.length,loan.indexOf('Loan Disbursed Amount:'))
 			//console.log("goalTitle: " + goalTitle)
-			let interestRate = loan.substring(loan.indexOf(interest)+interest.length,loan.indexOf('Loan Repayment Plan Type'))
+			let interestRate = loan.substring(loan.indexOf(interest)+interest.length,loan.indexOf('Loan Repayment Plan Type')-1)
 			//console.log("Interest rate: "+ interestRate)
 			let years = 10
 			let paidOff = 50
@@ -150,6 +159,13 @@ const HomeScreen = (props) => {
 
 	useEffect(() => {
 		getPW()
+		/*
+		async function letsDoThis(){
+			setUserOut(await FileSystem.readAsStringAsync(input.uri))
+		}
+		letsDoThis()
+		*/
+		
 		console.log('use effect')
 		let isMounted = true;
 
@@ -261,20 +277,19 @@ const HomeScreen = (props) => {
 
 	const editLoan = async (goalId) => {
 		const existingDoc = await loansRef.doc(userId).get();
-		
-		setIsEditMode(true)
+		//setIsEditMode(true)
 		const goals = existingDoc.data().goals
-		//setIsEditMode(false)
-		await loansRef.doc(userId).update({ goals });
+		//console.log('now i have goals: '+ goals)
+		var theOne = {}
+		for(let i =0; i < goals.length;i++){
+			if(goals[i].id == goalId){
+			  theOne = goals[i]
+			}
+		}
+		props.navigation.navigate('EditLoan',{theOne,userId})
+		//console.log('done boi')
 	}
 
-	const cancelGoalEditHandler = () => {
-		setIsEditMode(false);
-	}
-
-	const editGoalHandler = async (goalId) => {
-		
-	}
 
 	function deleteLoan(index, loans){
 		loans.splice(index, 1);
@@ -420,7 +435,7 @@ const HomeScreen = (props) => {
 					<Text style={{
 						fontWeight: 'bold',
 						fontSize: 20,
-						color: '#32c090',
+						color: '#426FFE',
 						textAlign: 'center',
 						paddingTop: 20
 					}}>
@@ -453,7 +468,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 26,
         paddingLeft: 23,
-        paddingTop: 34,
+        paddingTop: 55,
         color: '#426FFE'
       },
 	title: {

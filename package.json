@@ -16,9 +16,16 @@
     "@react-navigation/stack": "^5.9.0",
     "base-64": "^0.1.0",
     "expo": "^38.0.9",
+<<<<<<< HEAD
     "expo-cli": "^3.25.0",
     "expo-document-picker": "~8.2.1",
     "expo-file-system": "~9.0.1",
+=======
+    "expo-document-picker": "~8.2.1",
+    "expo-file-system": "~9.0.1",
+    "expo-local-authentication": "~9.1.1",
+    "expo-secure-store": "~9.0.1",
+>>>>>>> jacob4
     "expo-status-bar": "^1.0.0",
     "firebase": "7.9.0",
     "react": "16.11.0",

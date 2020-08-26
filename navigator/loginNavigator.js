@@ -11,6 +11,8 @@ import  LoanCalculatorScreen  from '../Screens/LoanScreens/LoanCalculator.js'
 import  LoanHomeScreen  from '../Screens/LoanScreens/LoanHome.js'
 import  LoanCalculatorResults from '../Screens/LoanScreens/LoanCalculatorResults.js'
 import BudgetScreen from '../Screens/BudgetScreens/Budget.js'
+import EditGoalInputScreen from '../components/HomeScreen/EditGoalInput'
+import ForgotPW from '../Screens/Login/ForgotPW'
 
 if (!global.btoa){global.btoa=encode}
 if(!global.atob){global.atob=decode}
@@ -72,6 +74,7 @@ const LoginNavigator =  () => {
 
             }}
             component={Signup} /> 
+            
           </>
           ) : (
           <>
@@ -92,10 +95,21 @@ const LoginNavigator =  () => {
               headerTitleStyle: {fontWeight: 'bold',},
               headerShown: false
             }}
-            component={Signup} />  
+            component={Signup} /> 
+           
           </>
 
         )}
+        <Stack.Screen name="ForgotPW" 
+            options={{
+              headerStyle:{backgroundColor:'#060320',},
+              headerTintColor: 'white',
+              headerTitleStyle: {fontWeight: 'bold',},
+              headerShown: false
+
+            }}
+        component={ForgotPW}/>  
+        
         <Stack.Screen name="Loan Calculator"
         options={{
           //headerStyle:{backgroundColor:'#32c090',},
@@ -124,6 +138,14 @@ const LoginNavigator =  () => {
               headerTitleStyle: {fontWeight: 'bold',}
             }}
         component={BudgetScreen} />
+
+        <Stack.Screen name = 'EditLoan'
+        options= {{
+          headerStyle:{backgroundColor:'#32c090',},
+              //headerTintColor: 'black',
+              headerTitleStyle: {fontWeight: 'bold',}
+        }}
+        component={EditGoalInputScreen}/>
       </Stack.Navigator>
     </NavigationContainer>
   )
