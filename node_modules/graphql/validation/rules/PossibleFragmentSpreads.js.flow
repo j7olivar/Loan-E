@@ -1,31 +1,39 @@
-// @flow strict
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ * @flow strict
+ */
 
-import inspect from '../../jsutils/inspect';
-
-import { GraphQLError } from '../../error/GraphQLError';
-
-import { type ASTVisitor } from '../../language/visitor';
-
-import { isCompositeType } from '../../type/definition';
-
-import { typeFromAST } from '../../utilities/typeFromAST';
+import type ValidationContext from '../ValidationContext';
+import { GraphQLError } from '../../error';
+import type { ASTVisitor } from '../../language/visitor';
 import { doTypesOverlap } from '../../utilities/typeComparators';
-
-import { type ValidationContext } from '../ValidationContext';
+import { typeFromAST } from '../../utilities/typeFromAST';
+import { isCompositeType } from '../../type/definition';
+import type { GraphQLType } from '../../type/definition';
 
 export function typeIncompatibleSpreadMessage(
   fragName: string,
-  parentType: string,
-  fragType: string,
+  parentType: GraphQLType,
+  fragType: GraphQLType,
 ): string {
-  return `Fragment "${fragName}" cannot be spread here as objects of type "${parentType}" can never be of type "${fragType}".`;
+  return (
+    `Fragment "${fragName}" cannot be spread here as objects of ` +
+    `type "${String(parentType)}" can never be of type "${String(fragType)}".`
+  );
 }
 
 export function typeIncompatibleAnonSpreadMessage(
-  parentType: string,
-  fragType: string,
+  parentType: GraphQLType,
+  fragType: GraphQLType,
 ): string {
-  return `Fragment cannot be spread here as objects of type "${parentType}" can never be of type "${fragType}".`;
+  return (
+    'Fragment cannot be spread here as objects of ' +
+    `type "${String(parentType)}" can never be of type "${String(fragType)}".`
+  );
 }
 
 /**
@@ -49,11 +57,8 @@ export function PossibleFragmentSpreads(
       ) {
         context.reportError(
           new GraphQLError(
-            typeIncompatibleAnonSpreadMessage(
-              inspect(parentType),
-              inspect(fragType),
-            ),
-            node,
+            typeIncompatibleAnonSpreadMessage(parentType, fragType),
+            [node],
           ),
         );
       }
@@ -69,12 +74,8 @@ export function PossibleFragmentSpreads(
       ) {
         context.reportError(
           new GraphQLError(
-            typeIncompatibleSpreadMessage(
-              fragName,
-              inspect(parentType),
-              inspect(fragType),
-            ),
-            node,
+            typeIncompatibleSpreadMessage(fragName, parentType, fragType),
+            [node],
           ),
         );
       }

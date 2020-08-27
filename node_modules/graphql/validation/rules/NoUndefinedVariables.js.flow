@@ -1,9 +1,15 @@
-// @flow strict
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ * @flow strict
+ */
 
-import { GraphQLError } from '../../error/GraphQLError';
-import { type ASTVisitor } from '../../language/visitor';
-
-import { type ValidationContext } from '../ValidationContext';
+import type ValidationContext from '../ValidationContext';
+import { GraphQLError } from '../../error';
+import type { ASTVisitor } from '../../language/visitor';
 
 export function undefinedVarMessage(varName: string, opName: ?string): string {
   return opName
@@ -28,7 +34,7 @@ export function NoUndefinedVariables(context: ValidationContext): ASTVisitor {
       leave(operation) {
         const usages = context.getRecursiveVariableUsages(operation);
 
-        for (const { node } of usages) {
+        usages.forEach(({ node }) => {
           const varName = node.name.value;
           if (variableNameDefined[varName] !== true) {
             context.reportError(
@@ -41,7 +47,7 @@ export function NoUndefinedVariables(context: ValidationContext): ASTVisitor {
               ),
             );
           }
-        }
+        });
       },
     },
     VariableDefinition(node) {

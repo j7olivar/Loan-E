@@ -1,7 +1,14 @@
-// @flow strict
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ * @flow strict
+ */
 
 import isPromise from './isPromise';
-import { type PromiseOrValue } from './PromiseOrValue';
+import type { MaybePromise } from './MaybePromise';
 
 /**
  * Similar to Array.prototype.reduce(), however the reducing callback may return
@@ -12,9 +19,9 @@ import { type PromiseOrValue } from './PromiseOrValue';
  */
 export default function promiseReduce<T, U>(
   values: $ReadOnlyArray<T>,
-  callback: (U, T) => PromiseOrValue<U>,
-  initialValue: PromiseOrValue<U>,
-): PromiseOrValue<U> {
+  callback: (U, T) => MaybePromise<U>,
+  initialValue: MaybePromise<U>,
+): MaybePromise<U> {
   return values.reduce(
     (previous, value) =>
       isPromise(previous)

@@ -1,8 +1,14 @@
-// @flow strict
+/**
+ * Copyright (c) 2017-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ * @flow strict
+ */
 
 import { $$asyncIterator, getAsyncIterator } from 'iterall';
-
-import { type PromiseOrValue } from '../jsutils/PromiseOrValue';
+import type { MaybePromise } from '../jsutils/MaybePromise';
 
 /**
  * Given an AsyncIterable and a callback function, return an AsyncIterator
@@ -10,8 +16,8 @@ import { type PromiseOrValue } from '../jsutils/PromiseOrValue';
  */
 export default function mapAsyncIterator<T, U>(
   iterable: AsyncIterable<T>,
-  callback: T => PromiseOrValue<U>,
-  rejectCallback?: any => PromiseOrValue<U>,
+  callback: T => MaybePromise<U>,
+  rejectCallback?: any => MaybePromise<U>,
 ): AsyncGenerator<U, void, void> {
   const iterator = getAsyncIterator(iterable);
   let $return;
@@ -65,7 +71,7 @@ export default function mapAsyncIterator<T, U>(
 
 function asyncMapValue<T, U>(
   value: T,
-  callback: T => PromiseOrValue<U>,
+  callback: T => MaybePromise<U>,
 ): Promise<U> {
   return new Promise(resolve => resolve(callback(value)));
 }

@@ -1,9 +1,15 @@
-// @flow strict
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ * @flow strict
+ */
 
-import { GraphQLError } from '../../error/GraphQLError';
-import { type ASTVisitor } from '../../language/visitor';
-
-import { type ValidationContext } from '../ValidationContext';
+import type ValidationContext from '../ValidationContext';
+import { GraphQLError } from '../../error';
+import type { ASTVisitor } from '../../language/visitor';
 
 export function unusedVariableMessage(
   varName: string,
@@ -33,21 +39,20 @@ export function NoUnusedVariables(context: ValidationContext): ASTVisitor {
         const usages = context.getRecursiveVariableUsages(operation);
         const opName = operation.name ? operation.name.value : null;
 
-        for (const { node } of usages) {
+        usages.forEach(({ node }) => {
           variableNameUsed[node.name.value] = true;
-        }
+        });
 
-        for (const variableDef of variableDefs) {
+        variableDefs.forEach(variableDef => {
           const variableName = variableDef.variable.name.value;
           if (variableNameUsed[variableName] !== true) {
             context.reportError(
-              new GraphQLError(
-                unusedVariableMessage(variableName, opName),
+              new GraphQLError(unusedVariableMessage(variableName, opName), [
                 variableDef,
-              ),
+              ]),
             );
           }
-        }
+        });
       },
     },
     VariableDefinition(def) {

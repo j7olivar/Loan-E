@@ -1,9 +1,10 @@
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = promiseForObject;
+
 
 /**
  * This function transforms a JS object `ObjMap<Promise<T>>` into
@@ -23,4 +24,11 @@ function promiseForObject(object) {
       return resolvedObject;
     }, Object.create(null));
   });
-}
+} /**
+   * Copyright (c) 2015-present, Facebook, Inc.
+   *
+   * This source code is licensed under the MIT license found in the
+   * LICENSE file in the root directory of this source tree.
+   *
+   *  strict
+   */

@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -6,20 +6,28 @@ Object.defineProperty(exports, "__esModule", {
 exports.anonOperationNotAloneMessage = anonOperationNotAloneMessage;
 exports.LoneAnonymousOperation = LoneAnonymousOperation;
 
-var _GraphQLError = require("../../error/GraphQLError");
+var _error = require('../../error');
 
-var _kinds = require("../../language/kinds");
+var _kinds = require('../../language/kinds');
 
 function anonOperationNotAloneMessage() {
   return 'This anonymous operation must be the only defined operation.';
 }
+
 /**
  * Lone anonymous operation
  *
  * A GraphQL document is only valid if when it contains an anonymous operation
  * (the query short-hand) that it contains only that one operation definition.
  */
-
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ *  strict
+ */
 
 function LoneAnonymousOperation(context) {
   var operationCount = 0;
@@ -31,7 +39,7 @@ function LoneAnonymousOperation(context) {
     },
     OperationDefinition: function OperationDefinition(node) {
       if (!node.name && operationCount > 1) {
-        context.reportError(new _GraphQLError.GraphQLError(anonOperationNotAloneMessage(), node));
+        context.reportError(new _error.GraphQLError(anonOperationNotAloneMessage(), [node]));
       }
     }
   };

@@ -1,16 +1,20 @@
-// @flow strict
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ * @flow strict
+ */
 
 import invariant from '../jsutils/invariant';
-import isPromise from '../jsutils/isPromise';
-
-import { parse } from '../language/parser';
+import { getIntrospectionQuery } from './introspectionQuery';
+import { GraphQLSchema } from '../type/schema';
 import { execute } from '../execution/execute';
-import { type GraphQLSchema } from '../type/schema';
-
-import {
-  type IntrospectionQuery,
-  type IntrospectionOptions,
-  getIntrospectionQuery,
+import { parse } from '../language/parser';
+import type {
+  IntrospectionQuery,
+  IntrospectionOptions,
 } from './introspectionQuery';
 
 /**
@@ -24,10 +28,10 @@ import {
  */
 export function introspectionFromSchema(
   schema: GraphQLSchema,
-  options?: IntrospectionOptions,
+  options: IntrospectionOptions,
 ): IntrospectionQuery {
   const queryAST = parse(getIntrospectionQuery(options));
   const result = execute(schema, queryAST);
-  invariant(!isPromise(result) && !result.errors && result.data);
+  invariant(!result.then && !result.errors && result.data);
   return (result.data: any);
 }
