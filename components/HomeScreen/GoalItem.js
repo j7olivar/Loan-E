@@ -44,8 +44,8 @@ const GoalItem = props =>{
 
     return(
       <Swipeable
-        onSwipeableLeftOpen = {() => console.log('Swiped left')}
-        onSwipeableRightOpen = {() => console.log('Swiped right')}
+        //onSwipeableLeftOpen = {() => console.log('Swiped left')}
+        //onSwipeableRightOpen = {() => console.log('Swiped right')}
         renderLeftActions = {(progress, dragX)=> (
           <LeftItem progress={progress} dragX={dragX}/>)}
         renderRightActions = {(progress, dragX)=> (
@@ -55,10 +55,10 @@ const GoalItem = props =>{
             <Text style={styles.title}> ${props.title} </Text>
           </View>
           <View style={styles.sub}>
-            <Text style={{color:'white'}}> {props.subInterest}% 
+            <Text style={{color:'black'}}> {props.subInterest}% 
             </Text>
-            <Text style={{color:'white'}}> , {props.subYears} Years, </Text>
-            <Text style={{color:'white'}}> Paid Off: ${props.subPaid} </Text>
+            <Text style={{color:'black'}}> , {props.subYears} Years, </Text>
+            <Text style={{color:'black'}}> Paid Off: ${props.subPaid} </Text>
           </View> 
        </View>
        </Swipeable>)
@@ -67,16 +67,24 @@ const GoalItem = props =>{
 
 const styles = StyleSheet.create({
     listItem: {
-        padding: 2,
-        flex: 2,
-        height:60,
-        width:Dimensions.get('window').width - 40,
-        borderRadius:8,
+        //padding: 2,
+        //flex: 2,
+        height:65,
+        //width:Dimensions.get('window').width - 40,
+        width: 330,
+        borderRadius:7,
         marginVertical: 3,
-        backgroundColor: 'black',
-        borderColor: 'black',
-        borderWidth:1,
-        opacity:0.8
+        backgroundColor: 'white',
+        //borderColor: 'black',
+        //borderWidth:1,
+        //opacity:0.8
+        shadowColor: "#000",
+		    shadowOffset: {
+          width: 2,
+          height:10
+		    },
+		    shadowOpacity: 0.15,
+            shadowRadius: 10,
       },
       sub: {
         flexDirection: "row",
@@ -88,17 +96,18 @@ const styles = StyleSheet.create({
       },
       title:{
         fontSize: 18,
-        color:'white'
+        color:'#426FFE',
+        fontWeight: 'bold'
       },
       leftItem: {
         borderRadius:8,
         marginVertical: 3,
         flex:1,
-        backgroundColor: '#32c090',
+        backgroundColor: '#426FFE',
         justifyContent: 'center',
       },
       leftItemText: {
-        fontSize: 20,
+        fontSize: 18,
         fontWeight: 'bold',
         //marginLeft:20,
         justifyContent: 'center',
@@ -106,7 +115,7 @@ const styles = StyleSheet.create({
         color: '#fff',
       },
       rightItemText: {
-        fontSize: 20,
+        fontSize: 18,
         fontWeight: 'bold',
         //marginRight:-20,
         justifyContent: 'center',
@@ -117,7 +126,7 @@ const styles = StyleSheet.create({
         borderRadius:8,
         marginVertical: 3,
         flex: 1,
-        backgroundColor: '#ff392e',
+        backgroundColor: '#ff443a',
         justifyContent: 'center',
       },
       deleteButton: {

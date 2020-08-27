@@ -1,12 +1,71 @@
-import React from "react";
-import { StyleSheet, Text, View, Image } from 'react-native';
+import React, {useState, useEffect} from "react";
+import { StyleSheet, Text, View, Image, Button } from 'react-native';
 import Icon from "react-native-vector-icons/MaterialIcons";
 import Emoji from 'react-native-emoji';
-import Settings from '../../components/Profile/Settings';
-import { createStackNavigator } from '@react-navigation/stack';
-import HomeScreen from './HomeScreen'
+import '../../components/Global.js'
+import * as ImagePicker from 'expo-image-picker';
+import Constants from 'expo-constants';
+import * as Permissions from 'expo-permissions';
+
+import { firebase } from '../../Constants/ApiKeys'; 
 
 function ProfilePage({ navigation }) {
+
+    const [image, setImage] = useState('')
+
+    const getPermissionAsync = async () => {
+      if (Constants.platform.ios) {
+        const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+        if (status !== 'granted') {
+          alert('Sorry, we need camera roll permissions to make this work!');
+        }
+      }
+    };
+
+    const pickImage = async () => {
+      try {
+        let result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.All,
+          allowsEditing: true,
+          aspect: [4, 3],
+          quality: 1,
+        });
+        if (!result.cancelled) {
+          //setImage({image: result.uri});
+          setImage(result.uri)
+          
+        }
+  
+        console.log(result);
+      } catch (E) {
+        console.log(E);
+      }
+    };
+
+    const onFooterLinkPress = () => {
+      navigation.navigate('Settings')
+    }
+
+
+    const [ userName, setUserName ] = useState('')
+  
+    const fetchUserName = async () => {
+      let user = firebase.auth().currentUser.uid
+      try {
+        const userName1 = await firebase.firestore().collection('users').doc(user).get()
+        setUserName(userName1.data().fullName)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    
+    useEffect(() => {
+      fetchUserName();
+      getPermissionAsync();
+    }
+    )
+    
+  
 
     return (    
       <View style={{backgroundColor: 'white'}}>
@@ -21,17 +80,23 @@ function ProfilePage({ navigation }) {
               style={styles.setting} 
               name={'settings'} 
               size={30}
-              onPress={() => navigation.navigate('Settings')}
+              onPress={onFooterLinkPress}
             />
 
         </View>
 
-            <Image style={styles.avatar}/>
+            <View>
+              <Image source={{uri: image}} style={styles.avatar} />
+            </View>
+
+            <View style={{paddingTop: 78}}>
+              <Button title="Edit" onPress={pickImage} />
+            </View>
             
             <View>
 
               <Text style={styles.name}>
-                John Doe
+                {userName}
               </Text>
               <Text style={styles.award}>
                 Awards
@@ -40,15 +105,14 @@ function ProfilePage({ navigation }) {
               <View style={styles.square}>
                 
                 <View style={styles.row}>
-                  <Emoji name="black_circle" style={styles.emoji} />
+                  <Emoji name="clown_face" style={styles.emoji} />
                   <Emoji name="sparkles" style={styles.emoji} />
                   <Emoji name="money_with_wings" style={styles.emoji} />
                   <Emoji name="money_mouth_face" style={styles.emoji} />
-                  
                 </View>
                 
                 <View style={styles.row}>
-                  <Emoji name="moneybag" style={styles.emoji} />
+                  <Emoji name={global.halfPaid ? "moneybag" : "black_circle"} style={styles.emoji} />
                   <Emoji name="100" style={styles.emoji} />
                   <Emoji name="burrito" style={styles.emoji} />
                   <Emoji name="video_game" style={styles.emoji} />
@@ -69,26 +133,6 @@ function ProfilePage({ navigation }) {
     );
 }
 
-function SettingsPage() {
-  return (
-
-  <Settings />
-
-  )
-}
-
-const Stack = createStackNavigator();
-
-function Pei() {
-	return (
-		//<NavigationContainer>
-		<Stack.Navigator>
-      <Stack.Screen name="Profile" component={ProfilePage} options={{headerShown: false}}/>
-			<Stack.Screen name="Settings" component={SettingsPage} />
-		</Stack.Navigator>
-		//	</NavigationContainer>
-	);
-}
 
 const styles = StyleSheet.create({
     header:{
@@ -105,29 +149,29 @@ const styles = StyleSheet.create({
       height: 120,
       borderRadius: 63,
       borderWidth: 1,
-      borderColor: "#696969",
+      borderColor: "#d1d1d6",
       marginBottom:10,
       alignSelf:'center',
       position: 'absolute',
-      marginTop: 86
+      marginTop: -40
     },
     name:{
         fontSize:25,
         color: "black",
-        marginTop: 94,
+        marginTop: 10,
         fontWeight: "600",
         alignSelf: 'center'
       },
     award:{
       fontSize:16,
       color: "black",
-      marginTop:17,
+      marginTop:12,
       alignSelf: 'center',
     
     },
     square:{
       width: 337,
-      height: 313,
+      height: 285,
       backgroundColor: "white",
       marginTop: 11,
       alignSelf: 'center',
@@ -180,4 +224,4 @@ const styles = StyleSheet.create({
     }
   });
 
-  export default Pei;
+  export default ProfilePage;

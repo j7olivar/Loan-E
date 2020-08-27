@@ -54,9 +54,9 @@ const FavoriteMealScreen = (props) => {
 					width={Dimensions.get('window').width - 20}
 					height={220}
 					chartConfig={{
-						backgroundColor: '#1cc910',
-						backgroundGradientFrom: '#eff3ff',
-						backgroundGradientTo: '#efefef',
+						//backgroundColor: '#1cc910',
+						backgroundGradientFrom: 'white',
+						backgroundGradientTo: 'white',
 						decimalPlaces: 2,
 						color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
 						style: {

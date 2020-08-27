@@ -14,6 +14,9 @@ function Settings() {
             <ThemeSwitch />
             <NotificationSwitch />
 
+            <View style={{paddingBottom: 24}}>
+            </View>
+
             <View style={styles.box}>
                 <Text style={styles.text}>Export to CSV</Text>
                 <Icon 
@@ -48,6 +51,9 @@ function Settings() {
                 color={Colors.DARKGRAY} 
                 />
             </View>
+
+            <View style={{paddingBottom: 24}}>
+            </View>
             
             <LogOut />
 
@@ -75,7 +81,7 @@ const styles = StyleSheet.create({
       alignItems:'center',
     },
     delete: {
-        color: 'red',
+        color: '#ff443a',
         fontWeight: 'bold',
         fontSize: 16
     },

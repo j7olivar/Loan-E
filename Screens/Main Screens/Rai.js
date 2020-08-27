@@ -2,17 +2,20 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Button, View, Text } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-
 import { Colors } from '../../components/Resources/Colors';
-import Faq from '../../components/Resources/Faq';
-import Links from '../../components/HomeScreen/Links';
-import About from '../../components/Resources/About';
-
 
 function ResourcesPage({ navigation }) {
+
+	const onFooterLinkPress1 = () => {
+        navigation.navigate('FAQ')
+	}
+	const onFooterLinkPress2 = () => {
+        navigation.navigate('LINKS')
+	}
+	const onFooterLinkPress3 = () => {
+        navigation.navigate('ABOUT')
+	}
+
 	return (
 		<View style={{backgroundColor: 'white'}}>
 			<Text style={styles.resourcesTitle}> 
@@ -25,7 +28,7 @@ function ResourcesPage({ navigation }) {
 					name={'keyboard-arrow-right'}
 					size={30}
 					color={Colors.DARKGRAY}
-					onPress={() => navigation.navigate('FAQ')}
+					onPress={onFooterLinkPress1}
 				/>
 			</View>
 			<View style={{ padding: 10 }} />
@@ -35,7 +38,7 @@ function ResourcesPage({ navigation }) {
 					name={'keyboard-arrow-right'}
 					size={30}
 					color={Colors.DARKGRAY}
-					onPress={() => navigation.navigate('Links')}
+					onPress={onFooterLinkPress2}
 				/>
 			</View>
 			<View style={{ padding: 10 }} />
@@ -45,39 +48,14 @@ function ResourcesPage({ navigation }) {
 					name={'keyboard-arrow-right'}
 					size={30}
 					color={Colors.DARKGRAY}
-					onPress={() => navigation.navigate('About')}
+					onPress={onFooterLinkPress3}
 				/>
 			</View>
 		</View>
 	);
 }
 
-function FaqPage() {
-	return <Faq />;
-}
 
-function LinksPage() {
-	return <Links />;
-}
-
-function AboutPage() {
-	return <About />;
-}
-
-const Stack = createStackNavigator();
-
-function Rai() {
-	return (
-		//<NavigationContainer>
-		<Stack.Navigator >
-			<Stack.Screen name="Resources" component={ResourcesPage} options={{headerShown: false}} />
-			<Stack.Screen name="FAQ" component={FaqPage} />
-			<Stack.Screen name="Links" component={LinksPage} />
-			<Stack.Screen name="About" component={AboutPage} />
-		</Stack.Navigator>
-		//	</NavigationContainer>
-	);
-}
 
 const styles = StyleSheet.create({
 	box: {
@@ -113,4 +91,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default Rai;
+export default ResourcesPage;
