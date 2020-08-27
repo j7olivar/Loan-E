@@ -24,6 +24,7 @@ function ProfilePage({ navigation }) {
 
     const pickImage = async () => {
       try {
+        let user = firebase.auth().currentUser.uid
         let result = await ImagePicker.launchImageLibraryAsync({
           mediaTypes: ImagePicker.MediaTypeOptions.All,
           allowsEditing: true,
@@ -33,14 +34,34 @@ function ProfilePage({ navigation }) {
         if (!result.cancelled) {
           //setImage({image: result.uri});
           setImage(result.uri)
-          
+          uploadImage(result.uri, user)
+          displayImage(user)
+          .then(() => {
+            console.log("success")
+          })
+          .catch((error) => {
+            console.log(error)
+          })
         }
-  
         console.log(result);
       } catch (E) {
         console.log(E);
       }
     };
+
+    const uploadImage = async (uri, imageName) => {
+      const response = await fetch(uri)
+      const blob = await response.blob();
+
+      var ref = firebase.storage().ref().child("images/" + imageName)
+      return ref.put(blob)
+    }
+
+    const displayImage = async (imageName) => {
+      var ref = firebase.storage().ref("images/" + imageName);
+      var image = await ref.getDownloadURL();
+      setImage(image)
+    }
 
     const onFooterLinkPress = () => {
       navigation.navigate('Settings')
@@ -60,8 +81,11 @@ function ProfilePage({ navigation }) {
     }
     
     useEffect(() => {
+      let user = firebase.auth().currentUser.uid
       fetchUserName();
       getPermissionAsync();
+      //setImage(firebase.storage().ref("images/" + user))
+      displayImage(user);
     }
     )
     

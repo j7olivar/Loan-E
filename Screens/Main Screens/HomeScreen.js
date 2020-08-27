@@ -423,8 +423,8 @@ const HomeScreen = (props) => {
 					<Text style={{
 						fontWeight: 'bold',
 						fontSize: 20,
-						color: '#32c090',
-						textAlign: 'center',
+						color: 'black',
+						textAlign: 'left',
 						paddingTop: 20
 					}}>
 						Upload Document
