@@ -77,7 +77,7 @@ const HomeScreen = (props) => {
 	}
 	
 	
-	const onFooterLinkPress3 = (item, allLoans) => {
+	const onFooterLinkPress4 = (item, allLoans) => {
 		props.navigation.navigate('Individual Loan', 
 		{loan: item.value, interestRate: item.interest, timeLeft: item.years, paidSoFar: item.paidOff, allLoans: allLoans })
 		
@@ -233,7 +233,7 @@ const HomeScreen = (props) => {
 			}
 		]);
 		//console.log(goalCounter)
-		await addToFB(goalTitle, interestRate,years,paidOff,id)
+		addToFB(goalTitle, interestRate,years,paidOff,id)
 		setIsAddMode(false);
 	}
 
@@ -279,9 +279,11 @@ const HomeScreen = (props) => {
 
 	const removeGoalHandler = async (goalId) => {
 		//console.log('remove goal handler')
+		onFooterLinkPress4(item, loans);
 		const existingDoc = await loansRef.doc(userId).get();
     	const goals = existingDoc.data().goals.filter(goal => goal.id !== goalId);
-    	await loansRef.doc(userId).update({ goals });
+		await loansRef.doc(userId).update({ goals });
+		setTotalLoan(allLoans.totalLoan);
 	}
 
 	const editLoan = async (goalId) => {
@@ -310,20 +312,6 @@ const HomeScreen = (props) => {
 
 		setTotalLoan(total)
 	}
-
-	const removeGoalHandler = (goalId, loans, item) => {
-		onFooterLinkPress3(item, loans);
-		//deleteLoan(1, loans);
-
-		/*setCourseGoals((currentGoals) => {
-			
-			loansRef.doc(goalId).delete().then(console.log('removed correctly'))
-			return currentGoals.filter((goal) => goal.id !== goalId);
-		});*/
-
-		//firebase.database().ref(goalId).remove()
-		setTotalLoan(allLoans.totalLoan);
-	};
 
 	function addNewLoan(loanToAdd, paidOff, arr){
 		var total = 0;

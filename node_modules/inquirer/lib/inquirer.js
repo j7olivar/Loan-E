@@ -1,4 +1,3 @@
-'use strict';
 /**
  * Inquirer.js
  * A collection of common interactive command line user interfaces.
@@ -22,8 +21,8 @@ inquirer.ui = {
 /**
  * Create a new self-contained prompt module.
  */
-inquirer.createPromptModule = function(opt) {
-  var promptModule = function(questions) {
+inquirer.createPromptModule = function (opt) {
+  var promptModule = function (questions) {
     var ui = new inquirer.ui.Prompt(promptModule.prompts, opt);
     var promise = ui.run(questions);
 
@@ -42,7 +41,7 @@ inquirer.createPromptModule = function(opt) {
    * @return {inquirer}
    */
 
-  promptModule.registerPrompt = function(name, prompt) {
+  promptModule.registerPrompt = function (name, prompt) {
     promptModule.prompts[name] = prompt;
     return this;
   };
@@ -51,7 +50,7 @@ inquirer.createPromptModule = function(opt) {
    * Register the defaults provider prompts
    */
 
-  promptModule.restoreDefaultPrompts = function() {
+  promptModule.restoreDefaultPrompts = function () {
     this.registerPrompt('list', require('./prompts/list'));
     this.registerPrompt('input', require('./prompts/input'));
     this.registerPrompt('confirm', require('./prompts/confirm'));
@@ -69,7 +68,7 @@ inquirer.createPromptModule = function(opt) {
 
 /**
  * Public CLI helper interface
- * @param  {Array|Object|Rx.Observable} questions - Questions settings array
+ * @param  {Array|Object|rx.Observable} questions - Questions settings array
  * @param  {Function} cb - Callback being passed the user answers
  * @return {inquirer.ui.Prompt}
  */
@@ -77,9 +76,9 @@ inquirer.createPromptModule = function(opt) {
 inquirer.prompt = inquirer.createPromptModule();
 
 // Expose helper functions on the top level for easiest usage by common users
-inquirer.registerPrompt = function(name, prompt) {
+inquirer.registerPrompt = function (name, prompt) {
   inquirer.prompt.registerPrompt(name, prompt);
 };
-inquirer.restoreDefaultPrompts = function() {
+inquirer.restoreDefaultPrompts = function () {
   inquirer.prompt.restoreDefaultPrompts();
 };
