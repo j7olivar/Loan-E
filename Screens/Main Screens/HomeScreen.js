@@ -388,7 +388,7 @@ const HomeScreen = (props) => {
 						fontSize: 16,
 						color: 'black',
 						textAlign: 'left',
-						paddingTop: 15,
+						paddingTop: 10,
 						marginLeft: 5,
 						paddingBottom:20}}> 
 					${totalLoan} 
@@ -399,7 +399,7 @@ const HomeScreen = (props) => {
 			
 				<Text style={styles.title}>Loans:</Text>
 
-				<View style={{paddingBottom:20}}>
+				<View style={{paddingBottom:10}}>
 				</View>
 
 				<GoalInput visible={isAddMode} addGoalHandler={addGoalHandler} onCancel={cancelGoalAdditionHandler} />
