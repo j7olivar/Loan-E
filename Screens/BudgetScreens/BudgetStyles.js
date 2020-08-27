@@ -31,10 +31,16 @@ export default StyleSheet.create({
         borderRadius: 25
       },
 
-      budgetBold: {
+      budgetBold1: {
         fontWeight: 'bold',
         fontSize: 15,
         paddingLeft: 20,
+        color: '#32c090'
+      },
+
+      budgetBold2: {
+        fontWeight: 'bold',
+        fontSize: 15,
         color: '#32c090'
       },
 

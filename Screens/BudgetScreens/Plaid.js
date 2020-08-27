@@ -7,7 +7,7 @@ import { WebView } from 'react-native-webview';
 // ...
 export default function PlaidScreen({navigation}){
     return (
-      <WebView source={{ uri: 'http://192.168.0.133:8080' }} />
+      <WebView source={{ uri: 'http://192.168.0.136:8080' }} />
     )
   }
 /*export default function PlaidScreen({navigation}){

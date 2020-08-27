@@ -3,25 +3,59 @@ import { Image, Animated, SafeAreaView, FlatList, StyleSheet, StatusBar, Text, T
 import styles from './BudgetStyles.js';
 import SlidingUpPanel from 'rn-sliding-up-panel';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { firebase } from '../../Constants/ApiKeys';
 
 export default function BudgetScreen({navigation}){
+    const [isLoading, setLoading] = useState(true);
+
+    var [allowDragging, setAllowDragging] = useState(true);
+
+    const [data, setData] = useState([]);
 
     const {width,height} = Dimensions.get('window')
 
+    const user = firebase.auth().currentUser.uid;
+    
     const ModalRef = useRef(null)
 
     const _draggedValue = new Animated.Value(180);
 
-    const Users = [
-        {
-          key: '1',
-          userImage: 'Image URL here',
-          userName: 'User Name here',
-          transactionDate: 'Date here',
-          amount: 'Amount here',
-          credit: true
-        },
-    ]
+    useEffect(() => {
+        firebase.auth().currentUser.getIdToken().then(function(idToken) {
+            console.log("idToken POST started");
+            fetch('http://192.168.0.136:8080/send_uid', {
+                method: 'POST',
+                headers: {
+                  'Content-type': 'application/json'
+                },
+                body: JSON.stringify({ idToken: idToken }),
+            });
+            console.log("idToken sent!");
+          }).catch(function(error) {
+            console.log("idToken not sent!");
+          });
+        firebase.firestore().collection('transactions').doc(user).onSnapshot(
+            (docSnapshot) => {
+                if (!docSnapshot.exists) {
+                    console.log('doc doesnt exist, start from scratch')
+                    fetch('http://192.168.0.136:8080/transactions')
+                        .then((response) => response.json())
+                        .then((json) => setData(json.transactions))
+                        .catch((error) => console.error(error))
+                        .finally(() => setLoading(false));
+                }
+                else {
+                    console.log('loaded successfully ' + docSnapshot.data())
+                    setData(docSnapshot.data())
+                }
+            },
+            (error) => {
+                console.log(error);
+            }
+        );
+    }, []);
+
+    console.log(data.transactions);
 
     return(
     <View style={{backgroundColor: '#000', flex: 1}}>
@@ -36,11 +70,11 @@ export default function BudgetScreen({navigation}){
         <View style={styles.budgetBox1}>
 
             <View style={{flexDirection: 'row'}}>
-                <Text style={styles.budgetBold}>Total Income: </Text>
+                <Text style={styles.budgetBold1}>Total Income: </Text>
                 <Text style={styles.budgetNormal}>$0</Text>
             </View>
             
-            <Text style={styles.budgetBold}>Spendings:</Text>
+            <Text style={styles.budgetBold1}>Spendings:</Text>
 
             <View style={{flexDirection: 'row'}}>
                 <Text style={styles.budgetBlue}>Food: </Text>
@@ -63,7 +97,7 @@ export default function BudgetScreen({navigation}){
             </View>
 
             <View style={{flexDirection: 'row'}}>
-                <Text style={styles.budgetBold}>+ </Text>
+                <Text style={styles.budgetBold1}>+ </Text>
                 <Text style={styles.budgetNormal}>Add Category</Text>
             </View>
         
@@ -77,6 +111,8 @@ export default function BudgetScreen({navigation}){
             backdropOpacity={0}
             height={height + 20}
             friction={0.9}
+            onDragEnd={() => setAllowDragging(true)}
+            allowDragging={allowDragging}
             >
 
                 <View style={{flex: 1, backgroundColor: '#161616', borderRadius: 25, padding: 14}}>
@@ -85,19 +121,32 @@ export default function BudgetScreen({navigation}){
                         <Text style={{marginVertical: 16, color: '#32c090', fontWeight: 'bold'}}>Recent Transactions</Text>
                     </View>
 
-                    <View style = {{height : 500, paddingBottom: 10}}>
+                    <ScrollView
+                    onTouchStart={() => setAllowDragging(false)}
+                    onTouchEnd={() => setAllowDragging(true)}
+                    >
+                    <View style = {{height : 450, paddingBottom: 10}}>
                         <FlatList
-                        data={Users}
-                        keyExtractor={item => item.key}
+                        data={data.transactions}
+                        keyExtractor={item => item.transaction_id}
                         renderItem={({item}) => {
                             return(
                                 <View style={styles.panelItemContainer}>
-                                    <Text style={styles.budgetNormal}>More to come!</Text>
+                                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                        <View>
+                                            <Text style={styles.budgetBold2}>{item.category[0]} - {item.merchant_name}</Text>
+                                            <Text style={styles.budgetNormal}>{item.date}</Text>
+                                        </View>
+                                    </View>
+                                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                        <Text style={styles.budgetBlue}>${item.amount}</Text>
+                                    </View>
                                 </View>
                             )
                         }}
                         />
                     </View>
+                    </ScrollView>
                 </View>
 
 
