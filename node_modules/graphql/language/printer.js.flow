@@ -1,19 +1,21 @@
-// @flow strict
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
 
 import { visit } from './visitor';
-import { type ASTNode } from './ast';
-import { printBlockString } from './blockString';
 
 /**
  * Converts an AST into a string, using one set of reasonable
  * formatting rules.
  */
-export function print(ast: ASTNode): string {
+export function print(ast) {
   return visit(ast, { leave: printDocASTReducer });
 }
 
-// TODO: provide better type coverage in future
-const printDocASTReducer: any = {
+const printDocASTReducer = {
   Name: node => node.value,
   Variable: node => '$' + node.name,
 
@@ -34,12 +36,9 @@ const printDocASTReducer: any = {
       : join([op, join([name, varDefs]), directives, selectionSet], ' ');
   },
 
-  VariableDefinition: ({ variable, type, defaultValue, directives }) =>
-    variable +
-    ': ' +
-    type +
-    wrap(' = ', defaultValue) +
-    wrap(' ', join(directives, ' ')),
+  VariableDefinition: ({ variable, type, defaultValue }) =>
+    variable + ': ' + type + wrap(' = ', defaultValue),
+
   SelectionSet: ({ selections }) => block(selections),
 
   Field: ({ alias, name, arguments: args, directives, selectionSet }) =>
@@ -84,7 +83,7 @@ const printDocASTReducer: any = {
   FloatValue: ({ value }) => value,
   StringValue: ({ value, block: isBlockString }, key) =>
     isBlockString
-      ? printBlockString(value, key === 'description' ? '' : '  ')
+      ? printBlockString(value, key === 'description')
       : JSON.stringify(value),
   BooleanValue: ({ value }) => (value ? 'true' : 'false'),
   NullValue: () => 'null',
@@ -132,9 +131,7 @@ const printDocASTReducer: any = {
   FieldDefinition: addDescription(
     ({ name, arguments: args, type, directives }) =>
       name +
-      (hasMultilineItems(args)
-        ? wrap('(\n', indent(join(args, '\n')), '\n)')
-        : wrap('(', join(args, ', '), ')')) +
+      wrap('(', join(args, ', '), ')') +
       ': ' +
       type +
       wrap(' ', join(directives, ' ')),
@@ -176,21 +173,6 @@ const printDocASTReducer: any = {
     join(['input', name, join(directives, ' '), block(fields)], ' '),
   ),
 
-  DirectiveDefinition: addDescription(
-    ({ name, arguments: args, repeatable, locations }) =>
-      'directive @' +
-      name +
-      (hasMultilineItems(args)
-        ? wrap('(\n', indent(join(args, '\n')), '\n)')
-        : wrap('(', join(args, ', '), ')')) +
-      (repeatable ? ' repeatable' : '') +
-      ' on ' +
-      join(locations, ' | '),
-  ),
-
-  SchemaExtension: ({ directives, operationTypes }) =>
-    join(['extend schema', join(directives, ' '), block(operationTypes)], ' '),
-
   ScalarTypeExtension: ({ name, directives }) =>
     join(['extend scalar', name, join(directives, ' ')], ' '),
 
@@ -225,6 +207,15 @@ const printDocASTReducer: any = {
 
   InputObjectTypeExtension: ({ name, directives, fields }) =>
     join(['extend input', name, join(directives, ' '), block(fields)], ' '),
+
+  DirectiveDefinition: addDescription(
+    ({ name, arguments: args, locations }) =>
+      'directive @' +
+      name +
+      wrap('(', join(args, ', '), ')') +
+      ' on ' +
+      join(locations, ' | '),
+  ),
 };
 
 function addDescription(cb) {
@@ -261,10 +252,14 @@ function indent(maybeString) {
   return maybeString && '  ' + maybeString.replace(/\n/g, '\n  ');
 }
 
-function isMultiline(string) {
-  return string.indexOf('\n') !== -1;
-}
-
-function hasMultilineItems(maybeArray) {
-  return maybeArray && maybeArray.some(isMultiline);
+/**
+ * Print a block string in the indented block form by adding a leading and
+ * trailing blank line. However, if a block string starts with whitespace and is
+ * a single-line, adding a leading blank line would strip that whitespace.
+ */
+function printBlockString(value, isDescription) {
+  const escaped = value.replace(/"""/g, '\\"""');
+  return (value[0] === ' ' || value[0] === '\t') && value.indexOf('\n') === -1
+    ? `"""${escaped.replace(/"$/, '"\n')}"""`
+    : `"""\n${isDescription ? escaped : indent(escaped)}\n"""`;
 }

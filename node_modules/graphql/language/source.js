@@ -1,15 +1,24 @@
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Source = void 0;
+exports.Source = undefined;
 
-var _devAssert = _interopRequireDefault(require("../jsutils/devAssert"));
+var _invariant = require('../jsutils/invariant');
 
-var _defineToStringTag = _interopRequireDefault(require("../jsutils/defineToStringTag"));
+var _invariant2 = _interopRequireDefault(_invariant);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } } /**
+                                                                                                                                                           * Copyright (c) 2015-present, Facebook, Inc.
+                                                                                                                                                           *
+                                                                                                                                                           * This source code is licensed under the MIT license found in the
+                                                                                                                                                           * LICENSE file in the root directory of this source tree.
+                                                                                                                                                           *
+                                                                                                                                                           *  strict
+                                                                                                                                                           */
 
 /**
  * A representation of source input to GraphQL.
@@ -19,17 +28,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * be "Foo.graphql" and location to be `{ line: 40, column: 0 }`.
  * line and column in locationOffset are 1-indexed
  */
-var Source = function Source(body, name, locationOffset) {
+var Source = exports.Source = function Source(body, name, locationOffset) {
+  _classCallCheck(this, Source);
+
   this.body = body;
   this.name = name || 'GraphQL request';
-  this.locationOffset = locationOffset || {
-    line: 1,
-    column: 1
-  };
-  this.locationOffset.line > 0 || (0, _devAssert.default)(0, 'line in locationOffset is 1-indexed and must be positive');
-  this.locationOffset.column > 0 || (0, _devAssert.default)(0, 'column in locationOffset is 1-indexed and must be positive');
-}; // Conditionally apply `[Symbol.toStringTag]` if `Symbol`s are supported
-
-
-exports.Source = Source;
-(0, _defineToStringTag.default)(Source);
+  this.locationOffset = locationOffset || { line: 1, column: 1 };
+  !(this.locationOffset.line > 0) ? (0, _invariant2.default)(0, 'line in locationOffset is 1-indexed and must be positive') : void 0;
+  !(this.locationOffset.column > 0) ? (0, _invariant2.default)(0, 'column in locationOffset is 1-indexed and must be positive') : void 0;
+};

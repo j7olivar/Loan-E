@@ -11,6 +11,7 @@ import FavoriteMealScreen from './FavoriteMealScreen'
 import * as SecureStore from 'expo-secure-store'
 import * as DocumentPicker from 'expo-document-picker'
 import * as FileSystem from 'expo-file-system';
+import {allLoans, updateCounter} from '../LoanScreens/GlobalLoans'
 
 import { createStackNavigator } from '@react-navigation/stack';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -76,6 +77,11 @@ const HomeScreen = (props) => {
 	}
 	
 	
+	const onFooterLinkPress3 = (item, allLoans) => {
+		props.navigation.navigate('Individual Loan', 
+		{loan: item.value, interestRate: item.interest, timeLeft: item.years, paidSoFar: item.paidOff, allLoans: allLoans })
+		
+    }
 	
 	const onDeleteAccountPress = () => {
 		var userReauth = firebase.auth().currentUser
@@ -190,20 +196,32 @@ const HomeScreen = (props) => {
 				}
 			);
 		}
+
+		allLoans.totalLoan = allLoans.loan1 + allLoans.loan2 + allLoans.loan3 + allLoans.loan4 + allLoans.loan5 + allLoans.loan6 + allLoans.loan7 + allLoans.loan8 + allLoans.loan9 + allLoans.loan10;
+		setTotalLoan(allLoans.totalLoan);
+
 		return () => {
 			isMounted = false;
 		};
 	}, []);
 
-	const addGoalHandler = async (goalTitle, interestRate, years, paidOff,id) => {
-		//console.log('add goal handler')
-		if(id==undefined){
-			id = 0
-		}
-		//console.log('num1: '+ (goalCounter+id).toString())
-		//console.log(goalCounter)
-		setGoalCounter(goalCounter+1)
-		setCourseGoals((courseGoals) => [
+	const onLogoutPress = () => {
+		firebase
+			.auth()
+			.signOut()
+			.then(() => {
+				props.navigation.navigate('Login');
+				props.navigation.reset({ index: 0, routes: [ { name: 'Login' } ] });
+			})
+			.catch((error) => {
+				alert(error);
+			});
+	};
+
+	const addGoalHandler = (goalTitle, interestRate, years, paidOff) => {
+		updateCounter(allLoans)
+		//setCourseGoals([...courseGoals, enteredGoal])
+		setCourseGoals((prevGoals) => [
 			...courseGoals,
 			{
 				//id: userId + (goalCounter+id).toString(),
@@ -293,36 +311,90 @@ const HomeScreen = (props) => {
 		setTotalLoan(total)
 	}
 
+	const removeGoalHandler = (goalId, loans, item) => {
+		onFooterLinkPress3(item, loans);
+		//deleteLoan(1, loans);
+
+		/*setCourseGoals((currentGoals) => {
+			
+			loansRef.doc(goalId).delete().then(console.log('removed correctly'))
+			return currentGoals.filter((goal) => goal.id !== goalId);
+		});*/
+
+		//firebase.database().ref(goalId).remove()
+		setTotalLoan(allLoans.totalLoan);
+	};
+
 	function addNewLoan(loanToAdd, paidOff, arr){
-		arr.push(loanToAdd - paidOff);
 		var total = 0;
+
+			if(arr.counter == 0){
+				arr.loan1 = (loanToAdd - paidOff);
+			}
+			else if(arr.counter == 1){
+				arr.loan2 = (loanToAdd - paidOff);
+			}
+			else if(arr.counter == 2){
+				arr.loan3 = (loanToAdd - paidOff);
+			}
+			else if(arr.counter == 3){
+				arr.loan4 = (loanToAdd - paidOff);
+			}
+			else if(arr.counter == 4){
+				arr.loan5 = (loanToAdd - paidOff);
+			}
+			else if(arr.counter == 5){
+				arr.loan6 = (loanToAdd - paidOff);
+			}
+			else if(arr.counter == 6){
+				arr.loan7 = (loanToAdd - paidOff);
+			}
+			else if(arr.counter == 7){
+				arr.loan8 = (loanToAdd - paidOff);
+			}
+			else if(arr.counter == 8){
+				arr.loan9 = (loanToAdd - paidOff);
+			}
+			else if(arr.counter == 9){
+				arr.loan10 = (loanToAdd - paidOff);
+			}
+			else{
+				console.log("Too many loans")
+			}
+
+
+		arr.totalLoan = arr.loan1 + arr.loan2 + arr.loan3 + arr.loan4 +arr.loan5 + arr.loan6 +arr.loan7 + arr.loan8 + arr.loan9 + arr.loan10;
+
+		setTotalLoan(arr.totalLoan);
+		return
+	}
+
+	function getTotalLoan(arr){
+		var total = 0; 
+
+		//console.log(arr.length)
 
 		for(var i = 0; i < arr.length; i++){
 			total += arr[i]
+			console.log(i)
 		}
 
-		setTotalLoan(total);
+		return total;
 	}
-
 	
-
-
 	return (
 		<ScrollView style={styles.screen}>
-
-			<Text style={styles.loanTitle}>
-				Loans
-			</Text> 
-
-			<View style={{ padding: 20, marginTop: 15 }}>
-
-				<Text style={styles.title}>Total Loans:</Text>
+			<Header title="Student Loan Calculator" />
+			
+			<View style={{ padding: 20 }}>
+				<Text style={styles.total}> Total Loans </Text>
 
 				<FlatList
 				keyExtractor={(item, index) => item.id}
 				data={courseGoals}
 				renderItem={(itemData) => (
 					addNewLoan(itemData.item.value, itemData.item.paidOff, allLoans)
+					//setTotalLoan(getTotalLoan(allLoans))
 				)}/>
 
 				<Text style={{

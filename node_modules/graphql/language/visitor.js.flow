@@ -1,10 +1,14 @@
-// @flow strict
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ * @flow strict
+ */
 
-import inspect from '../jsutils/inspect';
-
-import { type TypeInfo } from '../utilities/TypeInfo';
-
-import { type ASTNode, type ASTKindToNode } from './ast';
+import type { ASTNode, ASTKindToNode } from './ast';
+import type { TypeInfo } from '../utilities/TypeInfo';
 
 /**
  * A visitor is provided to visit, it contains the collection of
@@ -36,9 +40,9 @@ export type VisitFn<TAnyNode, TVisitedNode: TAnyNode = TAnyNode> = (
   parent: TAnyNode | $ReadOnlyArray<TAnyNode> | void,
   // The key path to get to this node from the root node.
   path: $ReadOnlyArray<string | number>,
-  // All nodes and Arrays visited before reaching parent of this node.
+  // All nodes and Arrays visited before reaching this node.
   // These correspond to array indices in `path`.
-  // Note: ancestors includes arrays which contain the parent of visited node.
+  // Note: ancestors includes arrays which contain the visited node.
   ancestors: $ReadOnlyArray<TAnyNode | $ReadOnlyArray<TAnyNode>>,
 ) => any;
 
@@ -60,7 +64,7 @@ export const QueryDocumentKeys = {
     'directives',
     'selectionSet',
   ],
-  VariableDefinition: ['variable', 'type', 'defaultValue', 'directives'],
+  VariableDefinition: ['variable', 'type', 'defaultValue'],
   Variable: ['name'],
   SelectionSet: ['selections'],
   Field: ['alias', 'name', 'arguments', 'directives', 'selectionSet'],
@@ -119,19 +123,17 @@ export const QueryDocumentKeys = {
   EnumValueDefinition: ['description', 'name', 'directives'],
   InputObjectTypeDefinition: ['description', 'name', 'directives', 'fields'],
 
-  DirectiveDefinition: ['description', 'name', 'arguments', 'locations'],
-
-  SchemaExtension: ['directives', 'operationTypes'],
-
   ScalarTypeExtension: ['name', 'directives'],
   ObjectTypeExtension: ['name', 'interfaces', 'directives', 'fields'],
   InterfaceTypeExtension: ['name', 'directives', 'fields'],
   UnionTypeExtension: ['name', 'directives', 'types'],
   EnumTypeExtension: ['name', 'directives', 'values'],
   InputObjectTypeExtension: ['name', 'directives', 'fields'],
+
+  DirectiveDefinition: ['description', 'name', 'arguments', 'locations'],
 };
 
-export const BREAK = Object.freeze({});
+export const BREAK = {};
 
 /**
  * visit() will walk through an AST using a depth first traversal, calling
@@ -251,8 +253,10 @@ export function visit(
           node = node.slice();
         } else {
           const clone = {};
-          for (const k of Object.keys(node)) {
-            clone[k] = node[k];
+          for (const k in node) {
+            if (node.hasOwnProperty(k)) {
+              clone[k] = node[k];
+            }
           }
           node = clone;
         }
@@ -290,7 +294,7 @@ export function visit(
     let result;
     if (!Array.isArray(node)) {
       if (!isNode(node)) {
-        throw new Error('Invalid AST Node: ' + inspect(node));
+        throw new Error('Invalid AST Node: ' + JSON.stringify(node));
       }
       const visitFn = getVisitFn(visitor, node.kind, isLeaving);
       if (visitFn) {
@@ -356,7 +360,7 @@ function isNode(maybeNode): boolean %checks {
  * If a prior visitor edits a node, no following visitors will see that node.
  */
 export function visitInParallel(
-  visitors: $ReadOnlyArray<Visitor<ASTKindToNode>>,
+  visitors: Array<Visitor<ASTKindToNode>>,
 ): Visitor<ASTKindToNode> {
   const skipping = new Array(visitors.length);
 

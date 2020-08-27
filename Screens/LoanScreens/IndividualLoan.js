@@ -1,7 +1,18 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, Component } from 'react'
 import { Text, TextInput, Button, ScrollView, View } from 'react-native'
 import styles from './IndividualLoanStyles.js'
 import { TouchableOpacity } from 'react-native-gesture-handler';
+
+import {allLoans, updateCounter} from '../LoanScreens/GlobalLoans'
+
+
+class updating extends Component{
+	componentWillUnmount(){
+		alert("Test")
+	}
+
+	
+}
 
 
 export default function IndividualLoanScreen({route, navigation}) {
@@ -13,13 +24,12 @@ export default function IndividualLoanScreen({route, navigation}) {
 	let info = [loan, interestRate, timeLeft, paidSoFar];
 
 	const [ payment, setPayment ] = useState(0);
-	const [ totalLoan, setTotalLoan ] = useState(info[0] - info[2])
+	const [ totalLoan, setTotalLoan ] = useState(info[0] - info[3])
 	const [ paidOff, setPaidOff ] = useState(info[3])
 	const [ monthlyPayment, setMonthlyPayment ] = useState(getMonthlyPayement(info[2]*12, info[1], info[0]))
 
-	const onFooterLinkPress3 = (info) => {
-		navigation.navigate('Individual Loan', 
-		{loan: info[0], interestRate: info[1], timeLeft: info[2], paidSoFar: info[3] })
+	const onFooterLinkPress = () => {
+		navigation.navigate('Home')
 	}
 
 	function getMonthlyPayement(months, interestRate, loanAmount){
@@ -32,13 +42,58 @@ export default function IndividualLoanScreen({route, navigation}) {
         return monthlyPayments.toFixed(2);
 	}
 
-	function makePayment(totalLoan, payment, paidOff, interestRate, months){
+	function makePayment(totalLoan, payment, paidOff, interestRate, months, allLoans){
+
+		if(allLoans.loan1 == totalLoan){
+			allLoans.loan1 -= payment;
+		}
+		else if(allLoans.loan2 == totalLoan){
+			allLoans.loan2 -= payment;
+		}
+		else if(allLoans.loan3 == totalLoan){
+			allLoans.loan3 -= payment;
+		}
+		else if(allLoans.loan4 == totalLoan){
+			allLoans.loan4 -= payment;
+		}
+		else if(allLoans.loan5 == totalLoan){
+			allLoans.loan5 -= payment;
+		}
+		else if(allLoans.loan6 == totalLoan){
+			allLoans.loan6 -= payment;
+		}
+		else if(allLoans.loan7 == totalLoan){
+			allLoans.loan7 -= payment;
+		}
+		else if(allLoans.loan8 == totalLoan){
+			allLoans.loan8 -= payment;
+		}
+		else if(allLoans.loan9 == totalLoan){
+			allLoans.loan9 -= payment;
+		}
+		else if(allLoans.loan10 == totalLoan){
+			allLoans.loan10 -= payment;
+		}
+		else{
+			console.log("Too many loans")
+		}
+
 		totalLoan -= payment;
+		allLoans.totalLoan -= payment;
+
+
+		//Code to update the total loans amount
+		console.log(allLoans.loan1)
+		console.log(allLoans.loan2)
+		console.log(allLoans.loan3)
+		console.log(allLoans.totalLoan)
 		setTotalLoan(totalLoan)
 
+		//Code to update the amount paid off
 		paidOff = parseFloat(payment) + parseFloat(paidOff)
 		setPaidOff(paidOff)
 
+		//Code to update monthly payments
 		var payments = getMonthlyPayement(months, interestRate, totalLoan)
 		setMonthlyPayment(payments)
 		
@@ -75,7 +130,7 @@ export default function IndividualLoanScreen({route, navigation}) {
 				onChangeText ={ payment => setPayment(payment)}/>
 			 </View>
 
-			<TouchableOpacity onPress={() => makePayment(totalLoan, payment, paidOff, info[1], info[2]*12)}>
+			<TouchableOpacity onPress={() => makePayment(totalLoan, payment, paidOff, info[1], info[2]*12, allLoans)}>
 				<Text style={{
 					fontWeight: 'bold',
 					fontSize: 20,
@@ -86,6 +141,8 @@ export default function IndividualLoanScreen({route, navigation}) {
 					Make Payment
 				</Text>
 			</TouchableOpacity>
+
+			<Button title='back' onPress={() => onFooterLinkPress()}/>
 
 		</View>
     )
