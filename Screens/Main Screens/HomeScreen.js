@@ -372,10 +372,9 @@ const HomeScreen = (props) => {
 	
 	return (
 		<ScrollView style={styles.screen}>
-			<Header title="Student Loan Calculator" />
-			
+			<Text style = {styles.loanTitle}> Student Loan Calculator</Text>
 			<View style={{ padding: 20 }}>
-				<Text style={styles.total}> Total Loans </Text>
+				<Text style={styles.title}> Total Loans: </Text>
 
 				<FlatList
 				keyExtractor={(item, index) => item.id}
@@ -390,7 +389,8 @@ const HomeScreen = (props) => {
 						color: 'black',
 						textAlign: 'left',
 						paddingTop: 15,
-						marginLeft: 5}}> 
+						marginLeft: 5,
+						paddingBottom:20}}> 
 					${totalLoan} 
 				</Text>
 
@@ -399,7 +399,7 @@ const HomeScreen = (props) => {
 			
 				<Text style={styles.title}>Loans:</Text>
 
-				<View style={{paddingBottom: 15}}>
+				<View style={{paddingBottom:20}}>
 				</View>
 
 				<GoalInput visible={isAddMode} addGoalHandler={addGoalHandler} onCancel={cancelGoalAdditionHandler} />
@@ -417,12 +417,34 @@ const HomeScreen = (props) => {
 						/>
 					)}
 				/>
-				<Button title="Add New Loan" onPress={() => setIsAddMode(true)} />
+				
+				<TouchableOpacity title= 'Add New Loan' onPress={() => setIsAddMode(true)}>
+					<Text style={{
+						fontWeight: 'bold',
+						fontSize: 20,
+						color: '#426FFE',
+						textAlign: 'center',
+						paddingTop: 20
+					}}>
+						Add New Loan
+					</Text>
+				</TouchableOpacity>
+				<TouchableOpacity title= 'Upload Doc' onPress={pickDocument}>
+					<Text style={{
+						fontWeight: 'bold',
+						fontSize: 20,
+						color: '#426FFE',
+						textAlign: 'center',
+						paddingTop: 20
+					}}>
+						Upload Document
+					</Text>
+				</TouchableOpacity>
 
-				<View style={{paddingBottom: 10}}>
+				<View style={{paddingTop: 10}}>
 				</View>
 
-				<Text style={styles.title}>Graph:</Text>
+				<Text style={styles.graphTitle}>Graph:</Text>
 				<FavoriteMealScreen/>
 
 				<View style={{paddingBottom: 15}}>
@@ -494,17 +516,7 @@ const HomeScreen = (props) => {
 				
 				*/}
 
-				<TouchableOpacity title= 'Upload Doc' onPress={pickDocument}>
-					<Text style={{
-						fontWeight: 'bold',
-						fontSize: 20,
-						color: '#426FFE',
-						textAlign: 'center',
-						paddingTop: 20
-					}}>
-						Upload Document
-					</Text>
-				</TouchableOpacity>
+				
 
 			</View>
 
@@ -536,9 +548,16 @@ const styles = StyleSheet.create({
       },
 	title: {
 		//color: '#35CA96',
-		fontSize: 20,
+		fontSize: 22,
+		marginLeft:0,
+		fontWeight: 'bold',
+	},
+	graphTitle: {
+		//color: '#35CA96',
+		fontSize: 22,
 		marginLeft:5,
 		fontWeight: 'bold',
+		paddingTop:15
 	},
 	logout: {
 		//	position: 'absolute',
@@ -555,6 +574,14 @@ const styles = StyleSheet.create({
 		marginLeft: 5,
 		paddingRight: 18,
 		
+	},
+	loanTitle: {
+		fontWeight: 'bold',
+		fontSize: 26,
+		paddingLeft: 23,
+		paddingTop: 50,
+	  color: '#426FFE',
+	  padding: 20
 	}
 
 });
