@@ -36,7 +36,6 @@ const HomeScreen = (props) => {
 	const [ totalLoan, setTotalLoan ] = useState(0);
 	const [ ifHalfPaid, setIfHalfPaid ] = useState(false);
 
-
 	const userId = props.extraData.id;
 	const loansRef = firebase.firestore().collection('goals');
 
@@ -158,8 +157,8 @@ const HomeScreen = (props) => {
 			//console.log("goalTitle: " + goalTitle)
 			let interestRate = loan.substring(loan.indexOf(interest)+interest.length,loan.indexOf('Loan Repayment Plan Type')-1)
 			//console.log("Interest rate: "+ interestRate)
-			let years = 10
-			let paidOff = 50
+			let years = 0
+			let paidOff = 0
 			setGoalCounter(goalCounter+1)
 			let id =i
 			addGoalHandler(goalTitle,interestRate,years,paidOff,id)
