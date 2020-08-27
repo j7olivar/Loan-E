@@ -16,17 +16,10 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { set } from 'react-native-reanimated';
 
-<<<<<<< HEAD
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import AsyncStorage from '@react-native-community/async-storage';
-
-
-=======
 console.ignoredYellowBox = ['Warning:', '- node', 'Encountered', 'Failed'];
 console.disableYellowBox = true
->>>>>>> rain
-
-import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const Stack = createStackNavigator();
 
@@ -76,16 +69,10 @@ const HomeScreen = (props) => {
 
 	const clearPW = async() => {
 		try{
-<<<<<<< HEAD
 			await SecureStore.deleteItemAsync('password')
 			//await AsyncStorage.removeItem('password')
 			console.log('removed successfully')
 		}catch(error){console.log(error)}
-=======
-			await AsyncStorage.removeItem('password')
-			//console.log('removed successfully')
-		}catch(error) {console.log(JSON.stringify(error))}
->>>>>>> rain
 	}
 	
 	
@@ -178,7 +165,6 @@ const HomeScreen = (props) => {
 
 	useEffect(() => {
 		getPW()
-<<<<<<< HEAD
 		/*
 		async function letsDoThis(){
 			setUserOut(await FileSystem.readAsStringAsync(input.uri))
@@ -187,9 +173,6 @@ const HomeScreen = (props) => {
 		*/
 		
 		console.log('use effect')
-=======
-		//console.log('use effect')
->>>>>>> rain
 		let isMounted = true;
 
 		if (isMounted) {
