@@ -228,6 +228,7 @@ const HomeScreen = (props) => {
 			}
 		]);
 		//console.log(goalCounter)
+		id =0
 		addToFB(goalTitle, interestRate,years,paidOff,id)
 		setIsAddMode(false);
 	}
