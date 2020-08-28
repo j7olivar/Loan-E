@@ -1,6 +1,5 @@
 import React, {useState} from 'react'
-import {View, Text, TextInput, Button, StyleSheet, Modal} from 'react-native'
-import { TouchableOpacity } from 'react-native-gesture-handler'
+import {View, Text, TextInput, Button, StyleSheet, Modal, TouchableOpacity} from 'react-native'
 
 const GoalInput = props => {
 
