@@ -11,6 +11,7 @@ import  LoanCalculatorScreen  from '../Screens/LoanScreens/LoanCalculator.js'
 import  LoanHomeScreen  from '../Screens/LoanScreens/LoanHome.js'
 import  LoanCalculatorResults from '../Screens/LoanScreens/LoanCalculatorResults.js'
 import BudgetScreen from '../Screens/BudgetScreens/Budget.js'
+<<<<<<< HEAD
 import EditGoalInputScreen from '../components/HomeScreen/EditGoalInput'
 import ForgotPW from '../Screens/Login/ForgotPW'
 import ProfilePage from '../Screens/Main Screens/Pei.js'
@@ -19,6 +20,9 @@ import Settings from '../components/Profile/Settings.js';
 import Faq from '../components/Resources/Faq.js';
 import About from '../components/Resources/About.js';
 import Links from '../components/HomeScreen/Links.js';
+=======
+import PlaidScreen from '../Screens/BudgetScreens/Plaid.js'
+>>>>>>> bobranch
 
 if (!global.btoa){global.btoa=encode}
 if(!global.atob){global.atob=decode}
@@ -144,6 +148,7 @@ const LoginNavigator =  () => {
               headerTitleStyle: {fontWeight: 'bold',}
             }}
         component={BudgetScreen} />
+<<<<<<< HEAD
 
         <Stack.Screen name = 'EditLoan'
         options= {{
@@ -188,12 +193,19 @@ const LoginNavigator =  () => {
             }}
         component={About} />
         <Stack.Screen name="Individual Loan" 
+=======
+        <Stack.Screen name="Plaid Link" 
+>>>>>>> bobranch
         options={{
               headerStyle:{backgroundColor:'#32c090',},
               headerTintColor: 'black',
               headerTitleStyle: {fontWeight: 'bold',}
             }}
+<<<<<<< HEAD
         component={IndividualLoanScreen} />
+=======
+        component={PlaidScreen} />
+>>>>>>> bobranch
       </Stack.Navigator>
     </NavigationContainer>
   )
