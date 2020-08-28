@@ -39,10 +39,6 @@ const HomeScreen = (props) => {
 	const userId = props.extraData.id;
 	const loansRef = firebase.firestore().collection('goals');
 
-	let allLoans = [0];
-
-	
-
 	const onFooterLinkPress = () => {
 		props.navigation.navigate('Loan Calculator')
 	}
