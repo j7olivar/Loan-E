@@ -184,6 +184,9 @@ const HomeScreen = (props) => {
 						console.log('loaded successfully '+JSON.stringify(docSnapshot.data().goals))
 						setCourseGoals(docSnapshot.data().goals)
 						setGoalCounter(docSnapshot.data().goals.length)
+						for(let i = 0; i < courseGoals.length; i++){
+							allLoans.totalLoan += parseFloat(courseGoals[i].value)
+						}
 					}
 				},
 				(error) => {
@@ -192,7 +195,6 @@ const HomeScreen = (props) => {
 			);
 		}
 
-		allLoans.totalLoan = allLoans.loan1 + allLoans.loan2 + allLoans.loan3 + allLoans.loan4 + allLoans.loan5 + allLoans.loan6 + allLoans.loan7 + allLoans.loan8 + allLoans.loan9 + allLoans.loan10;
 		setTotalLoan(allLoans.totalLoan);
 
 		return () => {
@@ -297,18 +299,6 @@ const HomeScreen = (props) => {
 		//console.log('done boi')
 	}
 
-
-	function deleteLoan(index, loans){
-		loans.splice(index, 1);
-		var total = 0;
-
-		for(var i = 0; i < loans.length; i++){
-			total += loans[i]
-		}
-
-		setTotalLoan(total)
-	}
-
 	function addNewLoan(loanToAdd, paidOff, arr){
 		var total = 0;
 
@@ -351,19 +341,6 @@ const HomeScreen = (props) => {
 
 		setTotalLoan(arr.totalLoan);
 		return
-	}
-
-	function getTotalLoan(arr){
-		var total = 0; 
-
-		//console.log(arr.length)
-
-		for(var i = 0; i < arr.length; i++){
-			total += arr[i]
-			console.log(i)
-		}
-
-		return total;
 	}
 	
 	return (

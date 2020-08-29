@@ -46,11 +46,3 @@ function updateCounter(allLoans){
 
 
 export {allLoans, updateCounter}
-
-/*let allLoans = [0]
-
-function Push(value) {
-    return allLoans.push(value)
-  }
-
-export {allLoans, Push}*/
