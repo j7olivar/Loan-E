@@ -11,7 +11,7 @@ import FavoriteMealScreen from './FavoriteMealScreen'
 import * as SecureStore from 'expo-secure-store'
 import * as DocumentPicker from 'expo-document-picker'
 import * as FileSystem from 'expo-file-system';
-import {allLoans, updateCounter} from '../LoanScreens/GlobalLoans'
+import {allLoans} from '../LoanScreens/GlobalLoans'
 
 import { createStackNavigator } from '@react-navigation/stack';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -72,9 +72,9 @@ const HomeScreen = (props) => {
 	}
 	
 	
-	const onFooterLinkPress4 = (item, allLoans) => {
+	const onFooterLinkPress4 = (item) => {
 		props.navigation.navigate('Individual Loan', 
-		{loan: item.value, interestRate: item.interest, timeLeft: item.years, paidSoFar: item.paidOff, allLoans: allLoans })
+		{loan: item.value, interestRate: item.interest, timeLeft: item.years, paidSoFar: item.paidOff})
 		
     }
 	
@@ -166,6 +166,7 @@ const HomeScreen = (props) => {
 
 	useEffect(() => {
 		getPW()
+		let total = 0;
 		/*
 		async function letsDoThis(){
 			setUserOut(await FileSystem.readAsStringAsync(input.uri))
@@ -185,8 +186,9 @@ const HomeScreen = (props) => {
 						setCourseGoals(docSnapshot.data().goals)
 						setGoalCounter(docSnapshot.data().goals.length)
 						for(let i = 0; i < courseGoals.length; i++){
-							allLoans.totalLoan += parseFloat(courseGoals[i].value)
+							total += parseInt(courseGoals[i].value, 10)
 						}
+						setTotalLoan(total);
 					}
 				},
 				(error) => {
@@ -194,8 +196,6 @@ const HomeScreen = (props) => {
 				}
 			);
 		}
-
-		setTotalLoan(allLoans.totalLoan);
 
 		return () => {
 			isMounted = false;
@@ -216,7 +216,6 @@ const HomeScreen = (props) => {
 	};
 
 	const addGoalHandler = (goalTitle, interestRate, years, paidOff) => {
-		updateCounter(allLoans)
 		//setCourseGoals([...courseGoals, enteredGoal])
 		setCourseGoals((prevGoals) => [
 			...courseGoals,
@@ -275,13 +274,13 @@ const HomeScreen = (props) => {
 		}
 	}
 
-	const removeGoalHandler = async (goalId) => {
-		//console.log('remove goal handler')
-		onFooterLinkPress4(item, loans);
+	const removeGoalHandler = async (goalId, item) => {
+		console.log('remove goal handler')
+		onFooterLinkPress4(item);
 		const existingDoc = await loansRef.doc(userId).get();
     	const goals = existingDoc.data().goals.filter(goal => goal.id !== goalId);
 		await loansRef.doc(userId).update({ goals });
-		setTotalLoan(allLoans.totalLoan);
+		//setTotalLoan(allLoans.totalLoan);
 	}
 
 	const editLoan = async (goalId) => {
@@ -299,49 +298,13 @@ const HomeScreen = (props) => {
 		//console.log('done boi')
 	}
 
-	function addNewLoan(loanToAdd, paidOff, arr){
-		var total = 0;
-
-			if(arr.counter == 0){
-				arr.loan1 = (loanToAdd - paidOff);
-			}
-			else if(arr.counter == 1){
-				arr.loan2 = (loanToAdd - paidOff);
-			}
-			else if(arr.counter == 2){
-				arr.loan3 = (loanToAdd - paidOff);
-			}
-			else if(arr.counter == 3){
-				arr.loan4 = (loanToAdd - paidOff);
-			}
-			else if(arr.counter == 4){
-				arr.loan5 = (loanToAdd - paidOff);
-			}
-			else if(arr.counter == 5){
-				arr.loan6 = (loanToAdd - paidOff);
-			}
-			else if(arr.counter == 6){
-				arr.loan7 = (loanToAdd - paidOff);
-			}
-			else if(arr.counter == 7){
-				arr.loan8 = (loanToAdd - paidOff);
-			}
-			else if(arr.counter == 8){
-				arr.loan9 = (loanToAdd - paidOff);
-			}
-			else if(arr.counter == 9){
-				arr.loan10 = (loanToAdd - paidOff);
-			}
-			else{
-				console.log("Too many loans")
-			}
-
+	/*function addNewLoan(loanToAdd, paidOff, arr){
 
 		arr.totalLoan = arr.loan1 + arr.loan2 + arr.loan3 + arr.loan4 +arr.loan5 + arr.loan6 +arr.loan7 + arr.loan8 + arr.loan9 + arr.loan10;
 
 		setTotalLoan(arr.totalLoan);
 		return
-	}
+	}*/
 	
 	return (
 		<ScrollView style={styles.screen}>
@@ -349,13 +312,12 @@ const HomeScreen = (props) => {
 			<View style={{ padding: 20 }}>
 				<Text style={styles.title}> Total Loans: </Text>
 
-				<FlatList
+				{/*<FlatList
 				keyExtractor={(item, index) => item.id}
 				data={courseGoals}
 				renderItem={(itemData) => (
 					addNewLoan(itemData.item.value, itemData.item.paidOff, allLoans)
-					//setTotalLoan(getTotalLoan(allLoans))
-				)}/>
+				)}/>*/}
 
 				<Text style={{
 						fontSize: 16,
@@ -381,7 +343,7 @@ const HomeScreen = (props) => {
 					data={courseGoals}
 					renderItem={(itemData) => (
 						<GoalItem
-							onDelete={removeGoalHandler.bind(this, itemData.item.id)}
+							onDelete={removeGoalHandler.bind(this, itemData.item.id, itemData.item)}
 							onEdit = {editLoan.bind(this,itemData.item.id)}
 							title={itemData.item.value}
 							subInterest={itemData.item.interest}

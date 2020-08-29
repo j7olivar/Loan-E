@@ -1,13 +1,7 @@
 
 var allLoans = {
 
-  totalLoan : 0,
-
-  loan1  : 0, loan2 : 0, loan3  : 0, loan4  : 0, loan5 : 0,
-  loan6  : 0, loan7  : 0, loan8 : 0, loan9  : 0, loan10  : 0,
-
-  index : 0,
-  counter : 0
+  totalLoan : 0
 };
 
 function updateCounter(allLoans){
