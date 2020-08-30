@@ -40,13 +40,14 @@ const EditGoalInput = props => {
 
       const editGoalHandler = async () =>{
         const {userId} = props.route.params
+        console.log(userId)
         const existingDoc = await loansRef.doc(userId).get();
         const goals = existingDoc.data().goals
         const newGoals = goals.slice()
         //time to replace the old goal with new one
         for(let i =0; i < goals.length;i++){
           if(goals[i].id == theOne.id){
-            console.log('doing this bro')
+            console.log('doing this bro');
             newGoals[i] = {
               id: theOne.id,
               value: enteredGoal,

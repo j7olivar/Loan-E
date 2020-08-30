@@ -74,7 +74,7 @@ const HomeScreen = (props) => {
 	
 	const onFooterLinkPress4 = (item) => {
 		props.navigation.navigate('Individual Loan', 
-		{loan: item.value, interestRate: item.interest, timeLeft: item.years, paidSoFar: item.paidOff})
+		{loan: item.value, interestRate: item.interest, timeLeft: item.years, paidSoFar: item.paidOff, item: item})
 		
     }
 	
@@ -166,7 +166,7 @@ const HomeScreen = (props) => {
 
 	useEffect(() => {
 		getPW()
-		let total = 0;
+		let total = 0
 		/*
 		async function letsDoThis(){
 			setUserOut(await FileSystem.readAsStringAsync(input.uri))
@@ -188,6 +188,7 @@ const HomeScreen = (props) => {
 						for(let i = 0; i < courseGoals.length; i++){
 							total += parseInt(courseGoals[i].value, 10)
 						}
+						console.log(total)
 						setTotalLoan(total);
 					}
 				},
@@ -342,6 +343,7 @@ const HomeScreen = (props) => {
 					keyExtractor={(item, index) => item.id}
 					data={courseGoals}
 					renderItem={(itemData) => (
+						<TouchableOpacity onPress={() => onFooterLinkPress4(itemData.item)}>
 						<GoalItem
 							onDelete={removeGoalHandler.bind(this, itemData.item.id, itemData.item)}
 							onEdit = {editLoan.bind(this,itemData.item.id)}
@@ -350,6 +352,7 @@ const HomeScreen = (props) => {
 							subPaid={itemData.item.paidOff}
 							subYears={itemData.item.years}
 						/>
+						</TouchableOpacity>
 					)}
 				/>
 				
