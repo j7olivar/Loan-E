@@ -12,7 +12,7 @@ export default function IndividualLoanScreen({route, navigation}) {
 	const loansRef = firebase.firestore().collection('goals');
 
 	const [ payment, setPayment ] = useState(0);
-	const [ totalLoan, setTotalLoan ] = useState(parseInt(item.value) - parseInt(item.paidOff))
+	const [ totalLoan, setTotalLoan ] = useState(parseInt(item.value))
 	const [ paidOff, setPaidOff ] = useState(parseInt(item.paidOff))
 	const [ monthlyPayment, setMonthlyPayment ] = useState(getMonthlyPayement(parseInt(item.years)*12, parseInt(item.interest), parseInt(item.value)))
 
@@ -37,6 +37,7 @@ export default function IndividualLoanScreen({route, navigation}) {
 
 		//Code to update the total loans amount
 		setTotalLoan(totalLoan)
+		console.log(totalLoan)
 
 		//Code to update the amount paid off
 		paidOff = parseFloat(payment) + parseFloat(paidOff)
@@ -48,27 +49,27 @@ export default function IndividualLoanScreen({route, navigation}) {
 
 		
 		console.log(item.id.substr(0,28))
-		editGoalHandler(item.id.substr(0,28))
+		editGoalHandler(item.id.substr(0,28), payment)
 		
 	}
 
-	const editGoalHandler = async (id) =>{
+	const editGoalHandler = async (id, payment) =>{
 		let userId = id
-		console.log(userId)
         const existingDoc = await loansRef.doc(userId).get();
         const goals = existingDoc.data().goals
         const newGoals = goals.slice()
         //time to replace the old goal with new one
-        for(let i =0; i < goals.length;i++){
+        for(let i = 0; i < goals.length;i++){
           if(goals[i].id == item.id){
             console.log('doing this bro')
             newGoals[i] = {
               id: item.id,
-              value: totalLoan,
-              interest: parseInt(item.interest),
-              years: parseInt(item.years),
-              paidOff: paidOff
-            }
+              value: totalLoan-payment,
+              interest: item.interest,
+              years: item.years,
+              paidOff: parseInt(paidOff)+parseInt(payment)
+			}
+			console.log(newGoals[i])
           }
         }
         //rewrite to firestore

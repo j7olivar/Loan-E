@@ -277,11 +277,9 @@ const HomeScreen = (props) => {
 
 	const removeGoalHandler = async (goalId, item) => {
 		console.log('remove goal handler')
-		onFooterLinkPress4(item);
 		const existingDoc = await loansRef.doc(userId).get();
     	const goals = existingDoc.data().goals.filter(goal => goal.id !== goalId);
 		await loansRef.doc(userId).update({ goals });
-		//setTotalLoan(allLoans.totalLoan);
 	}
 
 	const editLoan = async (goalId) => {
@@ -299,13 +297,16 @@ const HomeScreen = (props) => {
 		//console.log('done boi')
 	}
 
-	/*function addNewLoan(loanToAdd, paidOff, arr){
+	function getTotalLoan(){
+		let total = 0;
 
-		arr.totalLoan = arr.loan1 + arr.loan2 + arr.loan3 + arr.loan4 +arr.loan5 + arr.loan6 +arr.loan7 + arr.loan8 + arr.loan9 + arr.loan10;
-
-		setTotalLoan(arr.totalLoan);
+		for(let i = 0; i < courseGoals.length; i++){
+			total += parseInt(courseGoals[i].value, 10)
+		}
+		console.log(total)
+		setTotalLoan(total);
 		return
-	}*/
+	}
 	
 	return (
 		<ScrollView style={styles.screen}>
@@ -313,12 +314,12 @@ const HomeScreen = (props) => {
 			<View style={{ padding: 20 }}>
 				<Text style={styles.title}> Total Loans: </Text>
 
-				{/*<FlatList
+				<FlatList
 				keyExtractor={(item, index) => item.id}
 				data={courseGoals}
-				renderItem={(itemData) => (
-					addNewLoan(itemData.item.value, itemData.item.paidOff, allLoans)
-				)}/>*/}
+				renderItem={() => (
+					getTotalLoan()
+				)}/>
 
 				<Text style={{
 						fontSize: 16,
@@ -343,10 +344,11 @@ const HomeScreen = (props) => {
 					keyExtractor={(item, index) => item.id}
 					data={courseGoals}
 					renderItem={(itemData) => (
-						<TouchableOpacity onPress={() => onFooterLinkPress4(itemData.item)}>
+						<TouchableOpacity >
 						<GoalItem
 							onDelete={removeGoalHandler.bind(this, itemData.item.id, itemData.item)}
 							onEdit = {editLoan.bind(this,itemData.item.id)}
+							individualLoan = {() => onFooterLinkPress4(itemData.item)}
 							title={itemData.item.value}
 							subInterest={itemData.item.interest}
 							subPaid={itemData.item.paidOff}

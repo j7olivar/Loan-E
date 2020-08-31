@@ -50,17 +50,19 @@ const GoalItem = props =>{
           <LeftItem progress={progress} dragX={dragX}/>)}
         renderRightActions = {(progress, dragX)=> (
           <RightItem progress={progress} dragX={dragX} />)}>
-      <View style={styles.listItem} >
-          <View style={styles.main}>
-            <Text style={styles.title}> ${props.title} </Text>
-          </View>
-          <View style={styles.sub}>
-            <Text style={{color:'black'}}> {props.subInterest}% 
-            </Text>
-            <Text style={{color:'black'}}> , {props.subYears} Years, </Text>
-            <Text style={{color:'black'}}> Paid Off: ${props.subPaid} </Text>
-          </View> 
-       </View>
+          <TouchableOpacity onPress={props.individualLoan}>
+            <View style={styles.listItem} >
+                <View style={styles.main}>
+                  <Text style={styles.title}> ${props.title} </Text>
+                </View>
+                <View style={styles.sub}>
+                  <Text style={{color:'black'}}> {props.subInterest}% 
+                  </Text>
+                  <Text style={{color:'black'}}> , {props.subYears} Years, </Text>
+                  <Text style={{color:'black'}}> Paid Off: ${props.subPaid} </Text>
+                </View> 
+            </View>
+          </TouchableOpacity>
        </Swipeable>)
 }
 
