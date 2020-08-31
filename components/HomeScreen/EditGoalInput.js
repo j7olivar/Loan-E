@@ -107,7 +107,7 @@ const EditGoalInput = props => {
             <View style={styles.button}>
               <Button title="CANCEL" color="red" onPress={() => props.navigation.goBack()} />
             </View>   
-            <View style="button">          
+            <View style={styles.button}>          
               <Button title="Update" onPress={editGoalHandler} />
             </View>
       </View>
@@ -126,12 +126,21 @@ inputContainer: {
     marginVertical:10
   },
   input: {
-    borderColor: 'black',
     alignItems: 'center',
-    borderWidth: 1,
     padding: 10,
     marginVertical: 10,
-    width: '80%'
+    width: '80%',
+    height: 48,
+    borderRadius: 5,
+    overflow: 'hidden',
+    backgroundColor: '#e7e7e7',
+    marginTop: 10,
+    marginBottom: 10,
+    marginLeft: 30,
+    marginRight: 30,
+    paddingLeft: 16,
+    fontSize: 20,
+    color: 'black',
   },
   buttons: {
       flexDirection: 'row-reverse',
