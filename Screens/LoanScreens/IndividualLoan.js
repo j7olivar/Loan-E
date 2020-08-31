@@ -79,8 +79,7 @@ export default function IndividualLoanScreen({route, navigation}) {
       }
 
     return(
-        <View style={{backgroundColor: '#060320', flex: 1}}>
-			<Text style={styles.leftText}>Loan Name</Text>
+        <View style={{backgroundColor: 'white', flex: 1}}>
 			<Text style={styles.totalLoan}>${totalLoan}</Text>
 
 			<View style={{flexDirection: 'row'}}>
@@ -113,38 +112,14 @@ export default function IndividualLoanScreen({route, navigation}) {
 				<Text style={{
 					fontWeight: 'bold',
 					fontSize: 20,
-					color: '#32c090',
+					color: '#426FFE',
 					textAlign: 'center',
 					paddingTop: 20
 				}}>
 					Make Payment
 				</Text>
 			</TouchableOpacity>
-
-			<Button title='back' onPress={() => onFooterLinkPress()}/>
 
 		</View>
     )
 }
-
-//VgqTx6ap19OnAcpZu8m0ceB4gTp2
-
-/* Code that adds the functionality to make payments to the individual loan screen
-<View style={{paddingTop: 60}}>
-				<TextInput placeholder="Input Payment"
-				style={styles.input} 
-				onChangeText ={ payment => setPayment(payment)}/>
-			 </View>
-
-			<TouchableOpacity onPress={() => makePayment(totalLoan, payment, route)}>
-				<Text style={{
-					fontWeight: 'bold',
-					fontSize: 20,
-					color: '#32c090',
-					textAlign: 'center',
-					paddingTop: 20
-				}}>
-					Make Payment
-				</Text>
-			</TouchableOpacity>
-*/
