@@ -329,13 +329,24 @@ const HomeScreen = (props) => {
 					${totalLoan} 
 				</Text>
 
-				<View style={{paddingBottom: 15}}>
+				<View style={{paddingBottom: 10}}>
 				</View>
-			
-
-				<View style={{paddingBottom:10}}>
-				</View>
-
+		
+				<Button
+					icon={
+						<Icon
+							name='plus'
+							size={16}
+							color='#426FFE'
+						/>
+					}
+					type='clear'
+					iconRight
+					buttonStyle={{alignSelf:'flex-end'}}
+					onPress={() => setIsAddMode(true)}
+					title='New Loan    '
+					titleStyle={{fontSize:20, fontWeight:'bold',color:'#426FFE', alignSelf:'flex-end'}}
+				/>
 				<GoalInput visible={isAddMode} addGoalHandler={addGoalHandler} onCancel={cancelGoalAdditionHandler} />
 				<FlatList
 					keyExtractor={(item, index) => item.id}
@@ -355,21 +366,7 @@ const HomeScreen = (props) => {
 					)}
 				/>
 
-				<Button
-					icon={
-						<Icon
-							name='plus'
-							size={16}
-							color='#426FFE'
-						/>
-					}
-					type='clear'
-					iconRight
-					buttonStyle={{alignSelf:'center'}}
-					onPress={() => setIsAddMode(true)}
-					title='Add New Loan    '
-					titleStyle={{fontSize:20, fontWeight:'bold',color:'#426FFE', alignSelf:'flex-end'}}
-				/>
+				
 				<Button
 					icon={
 						<Icon
