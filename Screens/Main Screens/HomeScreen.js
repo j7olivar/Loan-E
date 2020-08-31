@@ -4,10 +4,8 @@ import { StyleSheet, Text, View, TextInput, Modal, ScrollView, FlatList, Alert }
 import GoalItem from '../../components/HomeScreen/GoalItem';
 import EditGoalInput from '../../components/HomeScreen/EditGoalInput';
 import GoalInput from '../../components/HomeScreen/GoalInput';
-import Header from '../../components/Header';
 import { firebase } from '../../Constants/ApiKeys';
 import FavoriteMealScreen from './FavoriteMealScreen'
-//import AsyncStorage from '@react-native-community/async-storage'
 import * as SecureStore from 'expo-secure-store'
 import * as DocumentPicker from 'expo-document-picker'
 import * as FileSystem from 'expo-file-system'
