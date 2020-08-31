@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TextInput, Button, Modal, ScrollView, FlatList, Alert } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Modal, ScrollView, FlatList, Alert } from 'react-native';
 import GoalItem from '../../components/HomeScreen/GoalItem';
 import EditGoalInput from '../../components/HomeScreen/EditGoalInput';
 import GoalInput from '../../components/HomeScreen/GoalInput';
@@ -10,14 +10,14 @@ import FavoriteMealScreen from './FavoriteMealScreen'
 //import AsyncStorage from '@react-native-community/async-storage'
 import * as SecureStore from 'expo-secure-store'
 import * as DocumentPicker from 'expo-document-picker'
-import * as FileSystem from 'expo-file-system';
-import {allLoans} from '../LoanScreens/GlobalLoans'
+import * as FileSystem from 'expo-file-system'
+import {Button} from 'react-native-elements'
 
 import { createStackNavigator } from '@react-navigation/stack';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { set } from 'react-native-reanimated';
 
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import Icon from 'react-native-vector-icons/AntDesign';
 import AsyncStorage from '@react-native-community/async-storage';
 console.ignoredYellowBox = ['Warning:', '- node', 'Encountered', 'Failed'];
 console.disableYellowBox = true
@@ -312,7 +312,7 @@ const HomeScreen = (props) => {
 		<ScrollView style={styles.screen}>
 			<Text style = {styles.loanTitle}> Student Loan Calculator</Text>
 			<View style={{ padding: 20 }}>
-				<Text style={styles.title}> Total Loans: </Text>
+				<Text style={styles.title}> Loans</Text>
 
 				<FlatList
 				keyExtractor={(item, index) => item.id}
@@ -322,19 +322,18 @@ const HomeScreen = (props) => {
 				)}/>
 
 				<Text style={{
-						fontSize: 16,
+						fontSize: 24,
 						color: 'black',
 						textAlign: 'left',
+						fontWeight:'bold',
 						paddingTop: 10,
-						marginLeft: 5,
-						paddingBottom:20}}> 
+						marginLeft: 5,}}> 
 					${totalLoan} 
 				</Text>
 
 				<View style={{paddingBottom: 15}}>
 				</View>
 			
-				<Text style={styles.title}>Loans:</Text>
 
 				<View style={{paddingBottom:10}}>
 				</View>
@@ -377,46 +376,45 @@ const HomeScreen = (props) => {
 						textAlign: 'center',
 						paddingTop: 20
 					}}>
-						Upload Document
+						Upload FAFSA Document
 					</Text>
 				</TouchableOpacity>
 
-				<View style={{paddingTop: 10}}>
+				<View style={{paddingTop: 10, paddingBottom:10}}>
+				</View>
+				<View
+				style={{borderBottomColor:'#ededed', borderBottomWidth:3}}>
 				</View>
 
-				<Text style={styles.graphTitle}>Graph:</Text>
+				<Text style={styles.graphTitle}>Future Payments</Text>
 				<FavoriteMealScreen/>
 
 				<View style={{paddingBottom: 15}}>
 				</View>
-
-				<View style={styles.box} title='Loan Calculator' onPress={onFooterLinkPress}>
-					<Text 
-						style={{
-							fontWeight: 'bold',
-							fontSize: 20,
-							color: 'black',
-							textAlign: 'left',
-							marginTop: 10,
-							flexDirection: 'row'
-						}}>
-							Loan Calculator
-					</Text>
-
-					<Icon
-					name={'keyboard-arrow-right'}
-					size={30}
-					color="grey"
-					onPress={onFooterLinkPress}
-					style={{marginTop: 7}}
-					/>
-					
+				<View
+				style={{borderBottomColor:'#ededed', borderBottomWidth:3,paddingBottom:8}}>
 				</View>
-
+				<View style={{paddingTop:15}}>
+				<Button
+					icon={
+						<Icon
+							name='doubleright'
+							size={22}
+							color='black'
+						/>
+					}
+					type='clear'
+					iconRight
+					buttonStyle={{alignSelf:'flex-start'}}
+					onPress={onFooterLinkPress}
+					title='Calculate New Loan    '
+					titleStyle={{fontSize:25, fontWeight:'bold',color:'black', alignSelf:'flex-end'}}
+				/>
+				</View>
 				<TouchableOpacity title='Loan Calculator' onPress={onFooterLinkPress2}> 
 					<Text style={{
 						fontWeight: 'bold',
-						fontSize: 20,
+						fontSize: 25,
 						color: 'black',
 						textAlign: 'left',
 						paddingTop: 20
@@ -481,20 +479,20 @@ const styles = StyleSheet.create({
 	},
 	loanTitle: {
         fontWeight: 'bold',
-        fontSize: 26,
+        fontSize: 28,
         paddingLeft: 23,
         paddingTop: 55,
         color: '#426FFE'
       },
 	title: {
 		//color: '#35CA96',
-		fontSize: 22,
+		fontSize: 25,
 		marginLeft:0,
 		fontWeight: 'bold',
 	},
 	graphTitle: {
 		//color: '#35CA96',
-		fontSize: 22,
+		fontSize: 25,
 		marginLeft:5,
 		fontWeight: 'bold',
 		paddingTop:15
@@ -527,6 +525,7 @@ const styles = StyleSheet.create({
 });
 //onDelete={removeGoalHandler.bind(this, itemData.item.id)}
 //<EditGoalInput visible={isEditMode} editGoalHandler={editGoalHandler} onCancel={cancelGoalEditHandler} />
+//<Text style={styles.title}>Loans:</Text>
 
 export default HomeScreen;
 
