@@ -354,29 +354,52 @@ const HomeScreen = (props) => {
 						</TouchableOpacity>
 					)}
 				/>
-				
-				<TouchableOpacity title= 'Add New Loan' onPress={() => setIsAddMode(true)}>
-					<Text style={{
-						fontWeight: 'bold',
-						fontSize: 20,
-						color: '#426FFE',
-						textAlign: 'center',
-						paddingTop: 20
-					}}>
-						Add New Loan
-					</Text>
-				</TouchableOpacity>
-				<TouchableOpacity title= 'Upload Doc' onPress={pickDocument}>
-					<Text style={{
-						fontWeight: 'bold',
-						fontSize: 20,
-						color: '#426FFE',
-						textAlign: 'center',
-						paddingTop: 20
-					}}>
-						Upload FAFSA Document
-					</Text>
-				</TouchableOpacity>
+
+				<Button
+					icon={
+						<Icon
+							name='plus'
+							size={16}
+							color='#426FFE'
+						/>
+					}
+					type='clear'
+					iconRight
+					buttonStyle={{alignSelf:'center'}}
+					onPress={() => setIsAddMode(true)}
+					title='Add New Loan    '
+					titleStyle={{fontSize:20, fontWeight:'bold',color:'#426FFE', alignSelf:'flex-end'}}
+				/>
+				<Button
+					icon={
+						<Icon
+							name='addfile'
+							size={16}
+							color='#426FFE'
+						/>
+					}
+					type='clear'
+					iconRight
+					buttonStyle={{alignSelf:'center'}}
+					onPress={pickDocument}
+					title='Upload FAFSA Document    '
+					titleStyle={{fontSize:20, fontWeight:'bold',color:'#426FFE', alignSelf:'flex-end'}}
+				/>
+				<Button
+					icon={
+						<Icon
+							name='doubleright'
+							size={14}
+							color='#426FFE'
+						/>
+					}
+					type='clear'
+					iconRight
+					buttonStyle={{alignSelf:'center'}}
+					onPress={onFooterLinkPress}
+					title='Calculate New Loan    '
+					titleStyle={{fontSize:20, fontWeight:'bold',color:'#426FFE', alignSelf:'flex-end'}}
+				/>
 
 				<View style={{paddingTop: 10, paddingBottom:10}}>
 				</View>
@@ -388,71 +411,7 @@ const HomeScreen = (props) => {
 				<FavoriteMealScreen/>
 
 				<View style={{paddingBottom: 15}}>
-				</View>
-				<View
-				style={{borderBottomColor:'#ededed', borderBottomWidth:3,paddingBottom:8}}>
-				</View>
-				<View style={{paddingTop:15}}>
-				<Button
-					icon={
-						<Icon
-							name='doubleright'
-							size={22}
-							color='black'
-						/>
-					}
-					type='clear'
-					iconRight
-					buttonStyle={{alignSelf:'flex-start'}}
-					onPress={onFooterLinkPress}
-					title='Calculate New Loan    '
-					titleStyle={{fontSize:25, fontWeight:'bold',color:'black', alignSelf:'flex-end'}}
-				/>
-				</View>
-				<TouchableOpacity title='Loan Calculator' onPress={onFooterLinkPress2}> 
-					<Text style={{
-						fontWeight: 'bold',
-						fontSize: 25,
-						color: 'black',
-						textAlign: 'left',
-						paddingTop: 20
-					}}>
-						Loan Home Screen Prototype
-					</Text>
-				</TouchableOpacity>
-
-				
-				{/*}
-				<TouchableOpacity title='Budget Page' onPress={onFooterLinkPress3}> 
-					<Text style={{
-						fontWeight: 'bold',
-						fontSize: 20,
-						color: '#32c090',
-						textAlign: 'center',
-						paddingTop: 20
-					}}>
-						Budgeting
-					</Text>
-				</TouchableOpacity>
-				*/}
-
-				{/*
-			
-				<TouchableOpacity title= 'Delete User' onPress={onDeleteAccountPress}>
-					<Text style={{
-						fontWeight: 'bold',
-						fontSize: 20,
-						color: '#32c090',
-						textAlign: 'center',
-						paddingTop: 20
-					}}>
-						Delete Account
-					</Text>
-				</TouchableOpacity>
-				
-				*/}
-
-				
+				</View>		
 
 			</View>
 
@@ -524,6 +483,52 @@ const styles = StyleSheet.create({
 //onDelete={removeGoalHandler.bind(this, itemData.item.id)}
 //<EditGoalInput visible={isEditMode} editGoalHandler={editGoalHandler} onCancel={cancelGoalEditHandler} />
 //<Text style={styles.title}>Loans:</Text>
+/*
+<TouchableOpacity title='Loan Calculator' onPress={onFooterLinkPress2}> 
+					<Text style={{
+						fontWeight: 'bold',
+						fontSize: 25,
+						color: 'black',
+						textAlign: 'left',
+						paddingTop: 20
+					}}>
+						Loan Home Screen Prototype
+					</Text>
+				</TouchableOpacity>
+
+
+{/*}
+				<TouchableOpacity title='Budget Page' onPress={onFooterLinkPress3}> 
+					<Text style={{
+						fontWeight: 'bold',
+						fontSize: 20,
+						color: '#32c090',
+						textAlign: 'center',
+						paddingTop: 20
+					}}>
+						Budgeting
+					</Text>
+				</TouchableOpacity>
+				*/
+
+				/*
+			
+				<TouchableOpacity title= 'Delete User' onPress={onDeleteAccountPress}>
+					<Text style={{
+						fontWeight: 'bold',
+						fontSize: 20,
+						color: '#32c090',
+						textAlign: 'center',
+						paddingTop: 20
+					}}>
+						Delete Account
+					</Text>
+				</TouchableOpacity>
+				
+				*/
+
+				
+ 
 
 export default HomeScreen;
 
