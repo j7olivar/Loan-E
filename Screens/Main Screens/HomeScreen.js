@@ -72,7 +72,7 @@ const HomeScreen = (props) => {
 	}
 	
 	
-	
+	/*
 	const onDeleteAccountPress = () => {
 		var userReauth = firebase.auth().currentUser
 		const credential = firebase.auth.EmailAuthProvider.credential(userReauth.email,pw)
@@ -90,6 +90,7 @@ const HomeScreen = (props) => {
 		})
 		clearPW()
 	}
+	*/
 
 	
 

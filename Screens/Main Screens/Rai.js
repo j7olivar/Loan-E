@@ -10,10 +10,10 @@ function ResourcesPage({ navigation }) {
         navigation.navigate('FAQ')
 	}
 	const onFooterLinkPress2 = () => {
-        navigation.navigate('LINKS')
+        navigation.navigate('Links')
 	}
 	const onFooterLinkPress3 = () => {
-        navigation.navigate('ABOUT')
+        navigation.navigate('About')
 	}
 
 	return (

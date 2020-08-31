@@ -8,13 +8,13 @@ export default StyleSheet.create({
       },
 
       loanBoxes: {
-        width: 350,
+        width: 340,
         height: 120,
         marginTop: 50,
         marginLeft: 30,
-        borderColor: '#32c090',
-        borderWidth: 1,
-        backgroundColor: '#060320',
+        //borderColor: '#32c090',
+        //borderWidth: 1,
+        backgroundColor: 'white',
       },
 
       loanInside1: {
@@ -22,7 +22,7 @@ export default StyleSheet.create({
         fontSize: 25,
         paddingLeft: 10,
         paddingTop: 5,
-        color: '#32c090'
+        color: '#426FFE'
       },
 
       loanInside2: {
@@ -30,33 +30,33 @@ export default StyleSheet.create({
         fontSize: 25,
         paddingLeft: 80,
         paddingTop: 5,
-        color: '#32c090'
+        color: '#426FFE'
       },
 
       loanInside3: {
         paddingLeft: 18,
         fontSize: 17,
-        color: '#32c090'
+        color: '#426FFE'
       },
 
       loanInside4: {
         paddingLeft: 28,
         fontSize: 17,
-        color: '#32c090'
+        color: '#426FFE'
       },
 
       loanInside5: {
         paddingLeft: 18,
         fontSize: 17,
         paddingTop: 7,
-        color: '#32c090'
+        color: '#426FFE'
       },
 
       loanInside6: {
         paddingLeft: 28,
         fontSize: 17,
         paddingTop: 7,
-        color: '#32c090'
+        color: '#426FFE'
       },
 
     na: {

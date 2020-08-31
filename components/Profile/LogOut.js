@@ -29,7 +29,7 @@ const LogOut = () => {
                 style={{
                   padding: 1,
                   margin: 11,
-                  borderBottomColor: 'gray',
+                  borderBottomColor: '#d1d1d6',
                   borderBottomWidth: 1,
                   width: 240
                 }}
@@ -58,7 +58,7 @@ const LogOut = () => {
                 style={{
                   padding: 2,
                   margin: 11,
-                  borderBottomColor: 'gray',
+                  borderBottomColor: '#d1d1d6',
                   borderBottomWidth: 1,
                   width: 240
                 }}
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
     textStyle: {
       fontSize: 16,
       paddingTop: 8,
-      color: "#ff443a",
+      color: "#ff3a30",
       fontWeight: 'bold',
       textAlign: "center"
     },

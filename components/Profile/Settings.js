@@ -5,27 +5,22 @@ import NotificationSwitch from './NotificationSwitch'
 import { Colors } from './Colors1'
 import Icon from "react-native-vector-icons/MaterialIcons";
 import LogOut from './LogOut';
+import DeleteAccount from './DeleteAccount'
 
 
 function Settings() {
     return (
         <View style={{backgroundColor: 'white'}}>
+
+            <View style={{paddingBottom: 15}}>
+            </View>
             
             <ThemeSwitch />
-            <NotificationSwitch />
+            {/* <NotificationSwitch /> */}
 
-            <View style={{paddingBottom: 24}}>
+            <View style={{paddingBottom: 5}}>
             </View>
 
-            <View style={styles.box}>
-                <Text style={styles.text}>Export to CSV</Text>
-                <Icon 
-                name={'keyboard-arrow-right'} 
-                size={30} 
-                color={Colors.DARKGRAY} 
-                />
-            </View>
-            
             <View style={styles.box}>
                 <Text style={styles.text}>Bank Account</Text>
                 <Icon 
@@ -36,7 +31,7 @@ function Settings() {
             </View>
             
             <View style={styles.box}>
-                <Text style={styles.text}>Anonymous Data</Text>
+                <Text style={styles.text}>Feedback Form</Text>
                 <Icon 
                 name={'keyboard-arrow-right'} 
                 size={30} 
@@ -52,15 +47,14 @@ function Settings() {
                 />
             </View>
 
-            <View style={{paddingBottom: 24}}>
+            <View style={{paddingBottom: 150}}>
             </View>
             
             <LogOut />
 
+            <DeleteAccount />
+
             <View style={styles.box}>
-                <Text style={styles.delete}>
-                    Delete Account
-                </Text>
             </View>
 
         </View>

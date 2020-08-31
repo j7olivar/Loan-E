@@ -88,6 +88,8 @@ function ProfilePage({ navigation }) {
       displayImage(user);
     }
     )
+
+    
     
   
 

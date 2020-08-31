@@ -6,7 +6,7 @@ export default function LoanHomeScreen({navigation}){
     
     
     return(
-    <ScrollView style={{backgroundColor: '#060320', flex: 1}}>
+    <ScrollView style={{backgroundColor: 'white', flex: 1}}>
         
         <View style={styles.loanBoxes}>
 
@@ -17,7 +17,7 @@ export default function LoanHomeScreen({navigation}){
             
             <Text style={{
                 textAlign: 'center',
-                color: '#32c090'
+                color: '#426FFE'
             }}>
                 ___________________________________________________
             
@@ -46,7 +46,7 @@ export default function LoanHomeScreen({navigation}){
             
             <Text style={{
                 textAlign: 'center',
-                color: '#32c090'
+                color: '#426FFE'
             }}>
                 ___________________________________________________
             

@@ -153,14 +153,14 @@ const LoginNavigator =  () => {
               //headerTitleStyle: {fontWeight: 'bold',}
             }}
         component={Faq} />
-        <Stack.Screen name="LINKS" 
+        <Stack.Screen name="Links" 
         options={{
               //headerStyle:{backgroundColor:'#32c090',},
               //headerTintColor: 'black',
               //headerTitleStyle: {fontWeight: 'bold',}
             }}
         component={Links} />
-        <Stack.Screen name="ABOUT" 
+        <Stack.Screen name="About" 
         options={{
               //headerStyle:{backgroundColor:'#32c090',},
               //headerTintColor: 'black',

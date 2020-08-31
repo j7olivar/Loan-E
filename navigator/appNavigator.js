@@ -18,6 +18,7 @@ import FilterScreen from '../Screens/Old/FilterScreen';
 import {Ionicons} from '@expo/vector-icons'
 import BudgetScreen from '../Screens/BudgetScreens/Budget';
 import ResourcesPage from '../Screens/Main Screens/Rai';
+import LoanHome from '../Screens/LoanScreens/LoanHome';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -29,6 +30,12 @@ const Stacker = (props) => {
 				activeTintColor:'#426FFE'
 			}}
 		>
+			{/*
+			<Tab.Screen 
+				name="Home" 
+				component={() => <LoanHome {...props} />} 
+			options={{tabBarIcon: (props)=> <Ionicons name = 'ios-calculator' size={props.size} color = {props.color}/>}}/> 
+			*/}
 			<Tab.Screen 
 				name="Loans" 
 				component={() => <HomeScreen {...props} />} 
