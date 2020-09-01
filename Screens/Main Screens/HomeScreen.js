@@ -319,6 +319,8 @@ const HomeScreen = (props) => {
 					getTotalLoan()
 				)}/>
 
+				
+				{/*
 				<Text style={{
 						fontSize: 24,
 						color: 'black',
@@ -328,7 +330,8 @@ const HomeScreen = (props) => {
 						marginLeft: 5,}}> 
 					${totalLoan} 
 				</Text>
-
+				*/}
+				
 				<View style={{paddingBottom: 10}}>
 				</View>
 		
@@ -366,7 +369,7 @@ const HomeScreen = (props) => {
 					)}
 				/>
 
-				
+				{/*
 				<Button
 					icon={
 						<Icon
@@ -397,6 +400,7 @@ const HomeScreen = (props) => {
 					title='Calculate New Loan    '
 					titleStyle={{fontSize:20, fontWeight:'bold',color:'#426FFE', alignSelf:'flex-end'}}
 				/>
+				*/}
 
 				<View style={{paddingTop: 10, paddingBottom:10}}>
 				</View>
@@ -404,7 +408,8 @@ const HomeScreen = (props) => {
 				style={{borderBottomColor:'#ededed', borderBottomWidth:3}}>
 				</View>
 
-				<Text style={styles.graphTitle}>Future Payments</Text>
+				<Text style={styles.graphTitle}>Payment Plan</Text>
+			<Text style={styles.subHeading}> Total Due: ${totalLoan}</Text>
 				<FavoriteMealScreen/>
 
 				<View style={{paddingBottom: 15}}>
@@ -430,6 +435,10 @@ const styles = StyleSheet.create({
 	screen: {
 		flex: 1,
 		backgroundColor: 'white'
+	},
+	subHeading:{
+		fontSize: 16,
+		paddingTop: 5
 	},
 	loanTitle: {
         fontWeight: 'bold',

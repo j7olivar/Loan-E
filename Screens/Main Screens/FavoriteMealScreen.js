@@ -15,11 +15,12 @@ import Slider from '@react-native-community/slider';
 const FavoriteMealScreen = (props) => {
 	const [ sliderValue, setSliderValue ] = useState(10);
 	const [ currentDebt, setCurrentDept ] = useState(100000);
-	const [ list, setList ] = useState([ 100000, 90000, 70000, 50000, 30000, 0]);
+	const [ list, setList ] = useState([ 100000, 90000, 70000, 50000, 30000, 0 ]);
 
 	return (
 		<View style={styles.screen}>
-			<View >
+			<View>
+				{/*}
 				<Text style={{
 					//fontWeight: 'bold',
 					fontSize: 16,
@@ -29,18 +30,17 @@ const FavoriteMealScreen = (props) => {
 					marginLeft: 18,
 					marginBottom: 10
 				}}>You currently owe {currentDebt}. In how many years would you want to pay it off?</Text>
-				
+			*/}
 				<Slider
-					style={{ width: 200, height: 40, justifyContent:'center', marginLeft: 18}}
 					minimumValue={1}
 					maximumValue={30}
 					step={1}
-					minimumTrackTintColor="#FFFFFF"
+					minimumTrackTintColor="#000000"
 					maximumTrackTintColor="#000000"
 					onValueChange={(value) => setSliderValue(value)}
 				/>
 
-				<Text style={{textAlign:'center'}}> Years = {sliderValue}</Text>
+				<Text style={{ textAlign: 'center' }}> Years = {sliderValue}</Text>
 				<LineChart
 					data={{
 						labels: [ '1', '5', '10', '15', '20', '25' ],
@@ -60,8 +60,8 @@ const FavoriteMealScreen = (props) => {
 						decimalPlaces: 2,
 						color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
 						style: {
-              borderRadius: 16,
-              justifyContent:'center'
+							borderRadius: 16,
+							justifyContent: 'center'
 						}
 					}}
 					style={{
@@ -77,11 +77,11 @@ const styles = StyleSheet.create({
 	screen: {
 		flex: 1,
 		justifyContent: 'center',
-		alignItems: 'center',
-  },
-text:{
-  textAlign:'center'
-},
+		alignItems: 'center'
+	},
+	text: {
+		textAlign: 'center'
+	}
 });
 
 export default FavoriteMealScreen;
