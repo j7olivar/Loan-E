@@ -310,15 +310,16 @@ const HomeScreen = (props) => {
 	return (
 		<ScrollView style={styles.screen}>
 			<Text style={styles.loanTitle}> Student Loan Calculator</Text>
-			<View style={{ padding: 20 }}>
+			<View style={{ padding: 20, marginTop: -20}}>
 				<Text style={styles.title}> Loans</Text>
 
-				<FlatList
+
+				<FlatList 
 					keyExtractor={(item, index) => item.id}
 					data={courseGoals}
 					renderItem={() => getTotalLoan()}
 				/>
-
+	
 				{/*
 				<Text style={{
 						fontSize: 24,
@@ -329,10 +330,10 @@ const HomeScreen = (props) => {
 						marginLeft: 5,}}> 
 					${totalLoan} 
 				</Text>
-				*/}
+				
 
 				<View style={{ paddingBottom: 10 }} />
-
+				*/}
 				<Button
 					icon={<Icon name="plus" size={16} color="#426FFE" />}
 					type="clear"
@@ -460,7 +461,7 @@ const styles = StyleSheet.create({
 		fontWeight: 'bold',
 		fontSize: 26,
 		paddingLeft: 23,
-		paddingTop: 50,
+		paddingTop: 34,
 		color: '#426FFE',
 		padding: 20
 	}
@@ -469,6 +470,14 @@ const styles = StyleSheet.create({
 //<EditGoalInput visible={isEditMode} editGoalHandler={editGoalHandler} onCancel={cancelGoalEditHandler} />
 //<Text style={styles.title}>Loans:</Text>
 /*
+
+		fontWeight: 'bold',
+		fontSize: 26,
+		paddingLeft: 23,
+		paddingTop: 50,
+		color: '#426FFE',
+		padding: 20
+	}
 <TouchableOpacity title='Loan Calculator' onPress={onFooterLinkPress2}> 
 					<Text style={{
 						fontWeight: 'bold',
