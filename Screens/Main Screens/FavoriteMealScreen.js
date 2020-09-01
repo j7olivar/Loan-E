@@ -15,7 +15,19 @@ import Slider from '@react-native-community/slider';
 const FavoriteMealScreen = (props) => {
 	const [ sliderValue, setSliderValue ] = useState(10);
 	const [ currentDebt, setCurrentDept ] = useState(100000);
-	const [ list, setList ] = useState([ 100000, 90000, 70000, 50000, 30000, 0 ]);
+	const [ list, setList ] = useState([ 300, 500, 300, 30, 200, 70 ]);
+	const [interest, setInterest] = useState(500);
+
+
+	const changeGraph = (value) => {
+		const total = currentDebt;
+		setSliderValue(value);
+		if(value%5==0){
+		setList([interest *Math.random(), interest/1.5*Math.random(),interest/2*Math.random(), interest/3*Math.random(),interest/4*Math.random(),interest/10*Math.random()])
+		}
+		
+		setInterest(value*60)
+	};
 
 	return (
 		<View style={styles.screen}>
@@ -32,15 +44,18 @@ const FavoriteMealScreen = (props) => {
 				}}>You currently owe {currentDebt}. In how many years would you want to pay it off?</Text>
 			*/}
 				<Slider
+					style={{ width: 200, height: 40, justifyContent:'center', marginLeft: 18, marginTop:5}}
 					minimumValue={1}
 					maximumValue={30}
 					step={1}
 					minimumTrackTintColor="#000000"
 					maximumTrackTintColor="#000000"
-					onValueChange={(value) => setSliderValue(value)}
+					onValueChange={(value) => changeGraph(value)}
 				/>
-
-				<Text style={{ textAlign: 'center' }}> Years = {sliderValue}</Text>
+				<View style={styles.mid}>
+				<Text style={{ textAlign: 'left', marginLeft:18}}> Years = {sliderValue}</Text>
+				<Text style={{ textAlign: 'left', marginLeft:18}}> Interest = ${interest}</Text>
+				</View>
 				<LineChart
 					data={{
 						labels: [ '1', '5', '10', '15', '20', '25' ],
@@ -66,7 +81,9 @@ const FavoriteMealScreen = (props) => {
 					}}
 					style={{
 						marginVertical: 8,
-						borderRadius: 16
+						marginLeft:18,
+						marginTop:20,
+					
 					}}
 				/>
 			</View>
@@ -78,6 +95,10 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: 'center',
 		alignItems: 'center'
+	},
+	mid:{
+		flex:1,
+		flexDirection: "row"
 	},
 	text: {
 		textAlign: 'center'
