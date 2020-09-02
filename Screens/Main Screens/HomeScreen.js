@@ -322,9 +322,9 @@ const HomeScreen = (props) => {
 				)}/>
 
 				<Text style={{
-						fontSize: 16,
+						fontSize: 26,
 						color: 'black',
-						textAlign: 'left',
+						textAlign: 'center',
 						paddingTop: 10,
 						marginLeft: 5,
 						paddingBottom:20}}> 
@@ -413,7 +413,8 @@ const HomeScreen = (props) => {
 					
 				</View>
 
-				<TouchableOpacity title='Loan Calculator' onPress={onFooterLinkPress2}> 
+				{//Code to go to the loan home screen prototype
+					/*<TouchableOpacity title='Loan Calculator' onPress={onFooterLinkPress2}> 
 					<Text style={{
 						fontWeight: 'bold',
 						fontSize: 20,
@@ -423,7 +424,7 @@ const HomeScreen = (props) => {
 					}}>
 						Loan Home Screen Prototype
 					</Text>
-				</TouchableOpacity>
+				</TouchableOpacity>*/}
 
 				
 				{/*}
