@@ -1,32 +1,67 @@
 import React, {useState} from 'react'
 import {View, Text, TextInput, Button, StyleSheet, Modal} from 'react-native'
+import { firebase } from '../../Constants/ApiKeys';
 
 const EditGoalInput = props => {
-
-    const [enteredGoal, setEnteredGoal] = useState('')
-    const [interestRate, setInterestRate] = useState('')
-    const [paid, setPaid] = useState('')
-    const [years, setYears] = useState('')
-
+    const {theOne} = props.route.params
+    
+    const [enteredGoal, setEnteredGoal] = useState(theOne.value)
+    const [interestRate, setInterestRate] = useState(theOne.interest)
+    const [paid, setPaid] = useState(theOne.paidOff.toString())
+    const [years, setYears] = useState(theOne.years.toString())
+    
+    
+	const loansRef = firebase.firestore().collection('goals');
 
     const goalInputHandler = (enteredText) => {
-        setEnteredGoal(enteredText)
+        if(enteredText !==enteredGoal ){
+          setEnteredGoal(enteredText)
+        }
+        
       }    
 
       const interestInputHandler = (enteredText) =>{
-        setInterestRate(enteredText)
+        if(enteredText !==interestRate ){
+          setInterestRate(enteredText)
+        }
       }
 
       const yearsInputHandler = (enteredText) =>{
-        setYears(enteredText)
+        if(enteredText !==years ){
+          setYears(enteredText)
+        }
+        
       }
       const paidInputHandler = (enteredText) =>{
-        setPaid(enteredText)
+        if(enteredText !==paid){
+          setPaid(enteredText)
+        }
       }
 
-      const addGoalHandler = () =>{
-        props.addGoalHandler(enteredGoal, interestRate, years, paid)
-        setEnteredGoal("")
+      const editGoalHandler = async () =>{
+        const {userId} = props.route.params
+        console.log(userId)
+        const existingDoc = await loansRef.doc(userId).get();
+        const goals = existingDoc.data().goals
+        const newGoals = goals.slice()
+        //time to replace the old goal with new one
+        for(let i =0; i < goals.length;i++){
+          if(goals[i].id == theOne.id){
+            console.log('doing this bro');
+            newGoals[i] = {
+              id: theOne.id,
+              value: enteredGoal,
+              interest: interestRate,
+              years: years,
+              paidOff: paid
+            }
+          }
+        }
+        //rewrite to firestore
+        await loansRef.doc(userId).update({goals:newGoals})
+        console.log('did this')
+        //now can go back to home screen
+        props.navigation.goBack()
       }
 
       //const 
@@ -39,14 +74,14 @@ const EditGoalInput = props => {
   
         <Text> Loan Amount </Text>
         <TextInput
-          placeholder="Loan Amount"
+          placeholder= {enteredGoal}
           style={styles.input}
           onChangeText={goalInputHandler}
           value={enteredGoal}/>
 
         <Text> Interest Rate: </Text>
          <TextInput 
-          placeholder="Interest Rate"
+          placeholder={interestRate}
           style={styles.input}
           onChangeText={interestInputHandler}
           value={interestRate}
@@ -54,7 +89,7 @@ const EditGoalInput = props => {
 
         <Text> Number of Years </Text>
         <TextInput 
-          placeholder="Number of Years"
+          placeholder={years}
           style={styles.input}
           onChangeText={yearsInputHandler}
           value={years}
@@ -62,18 +97,18 @@ const EditGoalInput = props => {
 
         <Text> Paid So Far: </Text>
           <TextInput 
-          placeholder="Paid So Far"
+          placeholder={paid}
           style={styles.input}
           onChangeText={paidInputHandler}
-          value={paid }
+          value={paid}
          />
      
           <View style={styles.buttons}>
             <View style={styles.button}>
-              <Button title="CANCEL" color="red" onPress={props.onCancel} />
+              <Button title="CANCEL" color="red" onPress={() => props.navigation.goBack()} />
             </View>   
-            <View style="button">          
-              <Button title="Update" onPress={addGoalHandler} />
+            <View style={styles.button}>          
+              <Button title="Update" onPress={editGoalHandler} />
             </View>
       </View>
     </View>
@@ -91,12 +126,21 @@ inputContainer: {
     marginVertical:10
   },
   input: {
-    borderColor: 'black',
     alignItems: 'center',
-    borderWidth: 1,
     padding: 10,
     marginVertical: 10,
-    width: '80%'
+    width: '80%',
+    height: 48,
+    borderRadius: 5,
+    overflow: 'hidden',
+    backgroundColor: '#e7e7e7',
+    marginTop: 10,
+    marginBottom: 10,
+    marginLeft: 30,
+    marginRight: 30,
+    paddingLeft: 16,
+    fontSize: 20,
+    color: 'black',
   },
   buttons: {
       flexDirection: 'row-reverse',

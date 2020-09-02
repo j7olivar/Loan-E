@@ -51,7 +51,7 @@ const LogOut = () => {
                 }}
                 title="Logout"
               >
-                <Text style={styles.textStyle}>Log Out</Text>
+                <Text style={styles.textStyle2}>Log Out</Text>
               </TouchableHighlight>
 
               <View
@@ -128,13 +128,21 @@ const styles = StyleSheet.create({
       fontSize: 16,
       paddingTop: 8,
       color: "#ff3a30",
-      fontWeight: 'bold',
-      textAlign: "center"
+      //fontWeight: 'bold',
+      textAlign: "center",
+      marginLeft: 3
     },
     textStyle1: {
       fontSize: 16,
       paddingTop: 8,
       color: "black",
+      textAlign: "center",
+    },
+    textStyle2: {
+      fontSize: 16,
+      paddingTop: 8,
+      color: "#ff3a30",
+      fontWeight: 'bold',
       textAlign: "center"
     },
     modalText: {

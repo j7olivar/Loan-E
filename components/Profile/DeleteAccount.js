@@ -132,7 +132,8 @@ const styles = StyleSheet.create({
       paddingTop: 8,
       color: "#ff3a30",
       fontWeight: 'bold',
-      textAlign: "center"
+      textAlign: "center",
+      marginLeft: 3
     },
     textStyle1: {
       fontSize: 16,

@@ -1,11 +1,16 @@
 import React, {useState, useEffect} from "react";
-import { StyleSheet, Text, View, Image, Button } from 'react-native';
+import { StyleSheet, Text, View, Image, Button, Linking } from 'react-native';
 import Icon from "react-native-vector-icons/MaterialIcons";
 import Emoji from 'react-native-emoji';
 import '../../components/Global.js'
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
+import { Colors } from '../../components/Resources/Colors';
+
+import LogOut from '../../components/Profile/LogOut';
+import DeleteAccount from '../../components/Profile/DeleteAccount'
+
 
 import { firebase } from '../../Constants/ApiKeys'; 
 
@@ -88,9 +93,7 @@ function ProfilePage({ navigation }) {
       displayImage(user);
     }
     )
-
-    
-    
+  
   
 
     return (    
@@ -102,14 +105,19 @@ function ProfilePage({ navigation }) {
               Profile
             </Text>
 
+            {/*
             <Icon 
               style={styles.setting} 
               name={'settings'} 
               size={30}
               onPress={onFooterLinkPress}
             />
+            */}
 
         </View>
+
+            <View style={{marginTop: -9}}>             
+            </View>
 
             <View>
               <Image source={{uri: image}} style={styles.avatar} />
@@ -124,34 +132,64 @@ function ProfilePage({ navigation }) {
               <Text style={styles.name}>
                 {userName}
               </Text>
-              <Text style={styles.award}>
-                Awards
-              </Text>
 
-              <View style={styles.square}>
-                
-                <View style={styles.row}>
-                  <Emoji name="clown_face" style={styles.emoji} />
-                  <Emoji name="sparkles" style={styles.emoji} />
-                  <Emoji name="money_with_wings" style={styles.emoji} />
-                  <Emoji name="money_mouth_face" style={styles.emoji} />
-                </View>
-                
-                <View style={styles.row}>
-                  <Emoji name={global.halfPaid ? "moneybag" : "black_circle"} style={styles.emoji} />
-                  <Emoji name="100" style={styles.emoji} />
-                  <Emoji name="burrito" style={styles.emoji} />
-                  <Emoji name="video_game" style={styles.emoji} />
-                </View>
-
-                <View style={styles.row}>
-                  <Emoji name="coffee" style={styles.emoji} />
-                  <Emoji name="socks" style={styles.emoji} />
-                  <Emoji name="call_me_hand" style={styles.emoji} />
-                  <Emoji name="tada" style={styles.emoji} />
-                </View>
-
+              <View style={{padding: 13}}>
               </View>
+
+              <View style={styles.box}>
+              <Text style={styles.text}>Bank Account</Text>
+                <Icon
+                  name={'keyboard-arrow-right'}
+                  size={30}
+                  color={Colors.DARKGRAY}
+                  //onPress={onFooterLinkPress2}
+                />
+              </View>
+
+              <View style={{padding: 7}}>
+              </View>
+
+              <View style={styles.box}>
+              <Text style={styles.text}>Feedback Form</Text>
+                <Icon
+                  name={'keyboard-arrow-right'}
+                  size={30}
+                  color={Colors.DARKGRAY}
+                  onPress={() => Linking.openURL('https://forms.gle/fRL9R4ATkCexESYz9')}
+                />
+              </View>
+
+              <View style={{padding: 7}}>
+              </View>
+
+              <View style={styles.box}>
+              <Text style={styles.text}>Replay Tutorial</Text>
+                <Icon
+                  name={'keyboard-arrow-right'}
+                  size={30}
+                  color={Colors.DARKGRAY}
+                  //onPress={onFooterLinkPress2}
+                />
+              </View>
+
+              <View style={{marginTop: 7}}>
+              </View>
+
+              <LogOut />
+
+              <View style={{marginTop: -15}}>
+              </View>
+
+              <DeleteAccount />
+
+              <View style={{padding: 7}}>
+              </View>
+
+
+
+            </View>
+
+            <View style={{padding: 100, backgroundColor: 'white'}}>
 
             </View>
 
@@ -188,14 +226,26 @@ const styles = StyleSheet.create({
         fontWeight: "600",
         alignSelf: 'center'
       },
-    award:{
-      fontSize:16,
-      color: "black",
-      marginTop:12,
-      alignSelf: 'center',
-    
-    },
-    square:{
+      box: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        height: 58,
+        paddingLeft: 24.5,
+        paddingRight: 18,
+        borderRadius: 9,
+        alignItems: 'center',
+        backgroundColor: Colors.WHITE,
+        
+        shadowColor: "#000",
+        shadowOffset: {
+          width: 1,
+          height: 7
+        },
+        shadowOpacity: 0.13,
+        shadowRadius: 6,
+        
+      },
+    /*square:{
       width: 337,
       height: 285,
       backgroundColor: "white",
@@ -213,40 +263,22 @@ const styles = StyleSheet.create({
 	      },
       shadowOpacity: 0.17,
       shadowRadius: 5,
-    },
-    emoji: {
-      fontSize: 42,
-      marginRight: 37.8,
-      marginBottom: 30,
-      flexDirection: 'row',
-      marginTop: 12
-    },
-    emojiGone: {
-      opacity: 0
-    },
-    emojiHide: {
-      width: 44,
-      height: 44,
-      borderRadius: 44 / 2,
-      backgroundColor: 'grey',
-      //borderColor: 'black',
-      //borderWidth: 3,
-      overflow: 'hidden',
-      marginRight: 37.8,
-      marginBottom: 30,
-      flexDirection: 'row',
-      marginTop: 15
-    },
+    },*/
     row: {
       flexDirection: 'row'
+    },
+    text: {
+      //fontWeight: 'bold',
+      color: 'black',
+      fontSize: 15
     },
     profileTitle: {
       fontWeight: 'bold',
       fontSize: 26,
       paddingLeft: 23,
       paddingTop: 34,
-    color: '#426FFE',
-    padding: 20
+      color: '#426FFE',
+      padding: 20
     }
   });
 

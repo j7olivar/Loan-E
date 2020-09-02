@@ -11,14 +11,15 @@ import  LoanCalculatorScreen  from '../Screens/LoanScreens/LoanCalculator.js'
 import  LoanHomeScreen  from '../Screens/LoanScreens/LoanHome.js'
 import  LoanCalculatorResults from '../Screens/LoanScreens/LoanCalculatorResults.js'
 import BudgetScreen from '../Screens/BudgetScreens/Budget.js'
+import EditGoalInputScreen from '../components/HomeScreen/EditGoalInput'
+import ForgotPW from '../Screens/Login/ForgotPW'
 import ProfilePage from '../Screens/Main Screens/Pei.js'
 import  IndividualLoanScreen from '../Screens/LoanScreens/IndividualLoan.js'
 import Settings from '../components/Profile/Settings.js';
 import Faq from '../components/Resources/Faq.js';
 import About from '../components/Resources/About.js';
 import Links from '../components/HomeScreen/Links.js';
-
-
+import PlaidScreen from '../Screens/BudgetScreens/Plaid.js'
 
 if (!global.btoa){global.btoa=encode}
 if(!global.atob){global.atob=decode}
@@ -80,6 +81,7 @@ const LoginNavigator =  () => {
 
             }}
             component={Signup} /> 
+            
           </>
           ) : (
           <>
@@ -100,10 +102,21 @@ const LoginNavigator =  () => {
               headerTitleStyle: {fontWeight: 'bold',},
               headerShown: false
             }}
-            component={Signup} />  
+            component={Signup} /> 
+           
           </>
 
         )}
+        <Stack.Screen name="ForgotPW" 
+            options={{
+              headerStyle:{backgroundColor:'#060320',},
+              headerTintColor: 'white',
+              headerTitleStyle: {fontWeight: 'bold',},
+              headerShown: false
+
+            }}
+        component={ForgotPW}/>  
+        
         <Stack.Screen name="Loan Calculator"
         options={{
           //headerStyle:{backgroundColor:'#32c090',},
@@ -132,6 +145,14 @@ const LoginNavigator =  () => {
               headerTitleStyle: {fontWeight: 'bold',}
             }}
         component={BudgetScreen} />
+
+        <Stack.Screen name = 'EditLoan'
+        options= {{
+          headerStyle:{backgroundColor:'#32c090',},
+              //headerTintColor: 'black',
+              headerTitleStyle: {fontWeight: 'bold',}
+        }}
+        component={EditGoalInputScreen}/>
         <Stack.Screen name="Pei" 
         options={{
               headerStyle:{backgroundColor:'#32c090',},
@@ -167,13 +188,14 @@ const LoginNavigator =  () => {
               headerTitleStyle: {fontWeight: 'bold',}
             }}
         component={About} />
-        <Stack.Screen name="Individual Loan" 
+        <Stack.Screen name="Individual Loan" component={IndividualLoanScreen} />
+        <Stack.Screen name="Plaid Link" 
         options={{
               headerStyle:{backgroundColor:'#32c090',},
               headerTintColor: 'black',
               headerTitleStyle: {fontWeight: 'bold',}
             }}
-        component={IndividualLoanScreen} />
+        component={PlaidScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   )
@@ -190,3 +212,6 @@ const styles = StyleSheet.create({
 });
 
 export default LoginNavigator
+
+
+

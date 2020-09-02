@@ -50,17 +50,19 @@ const GoalItem = props =>{
           <LeftItem progress={progress} dragX={dragX}/>)}
         renderRightActions = {(progress, dragX)=> (
           <RightItem progress={progress} dragX={dragX} />)}>
-      <View style={styles.listItem} >
-          <View style={styles.main}>
-            <Text style={styles.title}> ${props.title} </Text>
-          </View>
-          <View style={styles.sub}>
-            <Text style={{color:'black'}}> {props.subInterest}% 
-            </Text>
-            <Text style={{color:'black'}}> , {props.subYears} Years, </Text>
-            <Text style={{color:'black'}}> Paid Off: ${props.subPaid} </Text>
-          </View> 
-       </View>
+          <TouchableOpacity onPress={props.individualLoan}>
+            <View style={styles.listItem} >
+                <View style={styles.main}>
+                  <Text style={styles.title}> ${props.title} </Text>
+                </View>
+                <View style={styles.sub}>
+                  <Text style={{color:'black'}}> {props.subInterest}% 
+                  </Text>
+                  <Text style={{color:'black'}}> , {props.subYears} Years, </Text>
+                  <Text style={{color:'black'}}> Paid Off: ${props.subPaid} </Text>
+                </View> 
+            </View>
+          </TouchableOpacity>
        </Swipeable>)
 }
 
@@ -70,11 +72,11 @@ const styles = StyleSheet.create({
         //padding: 2,
         //flex: 2,
         height:65,
-        //width:Dimensions.get('window').width - 40,
-        width: 330,
+        width:Dimensions.get('window').width - 52,
+        //width: 330,
         borderRadius:7,
         marginVertical: 3,
-        backgroundColor: 'white',
+        backgroundColor: '#aeb0b2',
         //borderColor: 'black',
         //borderWidth:1,
         //opacity:0.8

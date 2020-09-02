@@ -1,24 +1,24 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TextInput, Button, Modal, ScrollView, FlatList, Alert } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Modal, ScrollView, FlatList, Alert } from 'react-native';
 import GoalItem from '../../components/HomeScreen/GoalItem';
 import EditGoalInput from '../../components/HomeScreen/EditGoalInput';
 import GoalInput from '../../components/HomeScreen/GoalInput';
-import Header from '../../components/Header';
 import { firebase } from '../../Constants/ApiKeys';
 import FavoriteMealScreen from './FavoriteMealScreen'
-import AsyncStorage from '@react-native-community/async-storage'
+import * as SecureStore from 'expo-secure-store'
 import * as DocumentPicker from 'expo-document-picker'
-import * as FileSystem from 'expo-file-system';
+import * as FileSystem from 'expo-file-system'
+import {Button} from 'react-native-elements'
 
 import { createStackNavigator } from '@react-navigation/stack';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { set } from 'react-native-reanimated';
 
+import Icon from 'react-native-vector-icons/AntDesign';
+import AsyncStorage from '@react-native-community/async-storage';
 console.ignoredYellowBox = ['Warning:', '- node', 'Encountered', 'Failed'];
 console.disableYellowBox = true
-
-import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const Stack = createStackNavigator();
 
@@ -28,18 +28,14 @@ const HomeScreen = (props) => {
 	const [ isEditMode, setIsEditMode ] = useState(false)
  	const [goalCounter, setGoalCounter] = useState(0)
 	const [pw, setPW] = useState('')
-	const [userOut, setUserOut] = useState("")
+	//const [userOut, setUserOut] = useState("")
+	var userOut;
 
 	const [ totalLoan, setTotalLoan ] = useState(0);
 	const [ ifHalfPaid, setIfHalfPaid ] = useState(false);
 
-
 	const userId = props.extraData.id;
 	const loansRef = firebase.firestore().collection('goals');
-
-	let allLoans = [0];
-
-	
 
 	const onFooterLinkPress = () => {
 		props.navigation.navigate('Loan Calculator')
@@ -56,7 +52,8 @@ const HomeScreen = (props) => {
 	
 	const getPW = async () => {
 		try {
-			const currPW = await AsyncStorage.getItem('password')
+			//const currPW = await AsyncStorage.getItem('password')
+			const currPW = await SecureStore.getItemAsync('password')
 			if(currPW !== null){
 				setPW(currPW)
 			}	
@@ -66,13 +63,20 @@ const HomeScreen = (props) => {
 
 	const clearPW = async() => {
 		try{
-			await AsyncStorage.removeItem('password')
-			//console.log('removed successfully')
-		}catch(error) {console.log(JSON.stringify(error))}
+			await SecureStore.deleteItemAsync('password')
+			//await AsyncStorage.removeItem('password')
+			console.log('removed successfully')
+		}catch(error){console.log(error)}
 	}
 	
 	
 	/*
+	const onFooterLinkPress4 = (item) => {
+		props.navigation.navigate('Individual Loan', 
+		{loan: item.value, interestRate: item.interest, timeLeft: item.years, paidSoFar: item.paidOff, item: item})
+		
+    }
+	
 	const onDeleteAccountPress = () => {
 		var userReauth = firebase.auth().currentUser
 		const credential = firebase.auth.EmailAuthProvider.credential(userReauth.email,pw)
@@ -97,15 +101,20 @@ const HomeScreen = (props) => {
 	const pickDocument = async () => {
 		//console.log('pic Doc')
 		try {
+			
 			let input = await DocumentPicker.getDocumentAsync({
 				type: "text/plain",
 			})
-			setUserOut(await FileSystem.readAsStringAsync(input.uri))
+			//setUserOut(await FileSystem.readAsStringAsync(input.uri))
+			userOut = await FileSystem.readAsStringAsync(input.uri)
+			
 			createLoans()
+			
 		} catch (error) {
 			console.log(JSON.stringify(error));
 		}
 	}
+	
 
 	const fileParser = () => {
 		//console.log('file parser')
@@ -114,7 +123,7 @@ const HomeScreen = (props) => {
 
 		if (newUserOut.length == 0) {
 			Alert.alert('wrong document','Try Again')
-			return;
+			return
 		}
 		//remove the grants
 		var grantPos = newUserOut.search("Grant Type:");
@@ -142,10 +151,10 @@ const HomeScreen = (props) => {
 			let loan = newLoans[i]
 			let goalTitle=loan.substring(loan.indexOf(title)+title.length,loan.indexOf('Loan Disbursed Amount:'))
 			//console.log("goalTitle: " + goalTitle)
-			let interestRate = loan.substring(loan.indexOf(interest)+interest.length,loan.indexOf('Loan Repayment Plan Type'))
+			let interestRate = loan.substring(loan.indexOf(interest)+interest.length,loan.indexOf('Loan Repayment Plan Type')-1)
 			//console.log("Interest rate: "+ interestRate)
-			let years = 10
-			let paidOff = 50
+			let years = 0
+			let paidOff = 0
 			setGoalCounter(goalCounter+1)
 			let id =i
 			addGoalHandler(goalTitle,interestRate,years,paidOff,id)
@@ -157,7 +166,15 @@ const HomeScreen = (props) => {
 
 	useEffect(() => {
 		getPW()
-		//console.log('use effect')
+		let total = 0
+		/*
+		async function letsDoThis(){
+			setUserOut(await FileSystem.readAsStringAsync(input.uri))
+		}
+		letsDoThis()
+		*/
+		
+		console.log('use effect')
 		let isMounted = true;
 
 		if (isMounted) {
@@ -168,6 +185,11 @@ const HomeScreen = (props) => {
 						console.log('loaded successfully '+JSON.stringify(docSnapshot.data().goals))
 						setCourseGoals(docSnapshot.data().goals)
 						setGoalCounter(docSnapshot.data().goals.length)
+						for(let i = 0; i < courseGoals.length; i++){
+							total += parseInt(courseGoals[i].value, 10)
+						}
+						console.log(total)
+						setTotalLoan(total);
 					}
 				},
 				(error) => {
@@ -175,20 +197,28 @@ const HomeScreen = (props) => {
 				}
 			);
 		}
+
 		return () => {
 			isMounted = false;
 		};
 	}, []);
 
-	const addGoalHandler = async (goalTitle, interestRate, years, paidOff,id) => {
-		//console.log('add goal handler')
-		if(id==undefined){
-			id = 0
-		}
-		//console.log('num1: '+ (goalCounter+id).toString())
-		//console.log(goalCounter)
-		setGoalCounter(goalCounter+1)
-		setCourseGoals((courseGoals) => [
+	const onLogoutPress = () => {
+		firebase
+			.auth()
+			.signOut()
+			.then(() => {
+				props.navigation.navigate('Login');
+				props.navigation.reset({ index: 0, routes: [ { name: 'Login' } ] });
+			})
+			.catch((error) => {
+				alert(error);
+			});
+	};
+
+	const addGoalHandler = (goalTitle, interestRate, years, paidOff) => {
+		//setCourseGoals([...courseGoals, enteredGoal])
+		setCourseGoals((prevGoals) => [
 			...courseGoals,
 			{
 				//id: userId + (goalCounter+id).toString(),
@@ -200,7 +230,8 @@ const HomeScreen = (props) => {
 			}
 		]);
 		//console.log(goalCounter)
-		await addToFB(goalTitle, interestRate,years,paidOff,id)
+		id =0
+		addToFB(goalTitle, interestRate,years,paidOff,id)
 		setIsAddMode(false);
 	}
 
@@ -244,181 +275,139 @@ const HomeScreen = (props) => {
 		}
 	}
 
-	const removeGoalHandler = async (goalId) => {
-		//console.log('remove goal handler')
+	const removeGoalHandler = async (goalId, item) => {
+		console.log('remove goal handler')
 		const existingDoc = await loansRef.doc(userId).get();
     	const goals = existingDoc.data().goals.filter(goal => goal.id !== goalId);
-    	await loansRef.doc(userId).update({ goals });
+		await loansRef.doc(userId).update({ goals });
 	}
 
 	const editLoan = async (goalId) => {
 		const existingDoc = await loansRef.doc(userId).get();
-		
-		setIsEditMode(true)
+		//setIsEditMode(true)
 		const goals = existingDoc.data().goals
-		//setIsEditMode(false)
-		await loansRef.doc(userId).update({ goals });
-	}
-
-	const cancelGoalEditHandler = () => {
-		setIsEditMode(false);
-	}
-
-	const editGoalHandler = async (goalId) => {
-		
-	}
-
-	function deleteLoan(index, loans){
-		loans.splice(index, 1);
-		var total = 0;
-
-		for(var i = 0; i < loans.length; i++){
-			total += loans[i]
+		//console.log('now i have goals: '+ goals)
+		var theOne = {}
+		for(let i =0; i < goals.length;i++){
+			if(goals[i].id == goalId){
+			  theOne = goals[i]
+			}
 		}
-
-		setTotalLoan(total)
+		props.navigation.navigate('EditLoan',{theOne,userId})
+		//console.log('done boi')
 	}
 
-	function addNewLoan(loanToAdd, paidOff, arr){
-		arr.push(loanToAdd - paidOff);
-		var total = 0;
+	function getTotalLoan(){
+		let total = 0;
 
-		for(var i = 0; i < arr.length; i++){
-			total += arr[i]
+		for(let i = 0; i < courseGoals.length; i++){
+			total += parseInt(courseGoals[i].value, 10)
 		}
-
+		console.log(total)
 		setTotalLoan(total);
+		return
 	}
-
 	
-
-
 	return (
 		<ScrollView style={styles.screen}>
-
-			<Text style={styles.loanTitle}>
-				Loans
-			</Text> 
-
-			<View style={{ padding: 20, marginTop: 15 }}>
-
-				<Text style={styles.title}>Total Loans:</Text>
+			<Text style = {styles.loanTitle}>Student Loan Calculator</Text>
+			<View style={{ padding: 20 }}>
+				<Text style={styles.title}> Loans</Text>
 
 				<FlatList
 				keyExtractor={(item, index) => item.id}
 				data={courseGoals}
-				renderItem={(itemData) => (
-					addNewLoan(itemData.item.value, itemData.item.paidOff, allLoans)
+				renderItem={() => (
+					getTotalLoan()
 				)}/>
 
 				<Text style={{
-						fontSize: 16,
+						fontSize: 24,
 						color: 'black',
 						textAlign: 'left',
-						paddingTop: 15,
-						marginLeft: 5}}> 
+						fontWeight:'bold',
+						paddingTop: 10,
+						marginLeft: 5,}}> 
 					${totalLoan} 
 				</Text>
 
-				<View style={{paddingBottom: 15}}>
+				<View style={{paddingBottom: 10}}>
 				</View>
-			
-				<Text style={styles.title}>Loans:</Text>
-
-				<View style={{paddingBottom: 15}}>
-				</View>
-
+		
+				<Button
+					icon={
+						<Icon
+							name='plus'
+							size={16}
+							color='#426FFE'
+						/>
+					}
+					type='clear'
+					iconRight
+					buttonStyle={{alignSelf:'flex-end'}}
+					onPress={() => setIsAddMode(true)}
+					title='New Loan    '
+					titleStyle={{fontSize:20, fontWeight:'bold',color:'#426FFE', alignSelf:'flex-end'}}
+				/>
 				<GoalInput visible={isAddMode} addGoalHandler={addGoalHandler} onCancel={cancelGoalAdditionHandler} />
 				<FlatList
 					keyExtractor={(item, index) => item.id}
 					data={courseGoals}
 					renderItem={(itemData) => (
+						<TouchableOpacity >
 						<GoalItem
-							onDelete={removeGoalHandler.bind(this, itemData.item.id)}
+							onDelete={removeGoalHandler.bind(this, itemData.item.id, itemData.item)}
 							onEdit = {editLoan.bind(this,itemData.item.id)}
+							individualLoan = {() => onFooterLinkPress4(itemData.item)}
 							title={itemData.item.value}
 							subInterest={itemData.item.interest}
 							subPaid={itemData.item.paidOff}
 							subYears={itemData.item.years}
 						/>
+						</TouchableOpacity>
 					)}
 				/>
-				<Button title="Add New Loan" onPress={() => setIsAddMode(true)} />
 
-				<View style={{paddingBottom: 10}}>
-				</View>
-
-				<Text style={styles.title}>Graph:</Text>
-				<FavoriteMealScreen/>
-
-				<View style={{paddingBottom: 15}}>
-				</View>
-
-				<View style={styles.box} title='Loan Calculator' onPress={onFooterLinkPress}>
-					<Text 
-						style={{
-							fontWeight: 'bold',
-							fontSize: 20,
-							color: 'black',
-							textAlign: 'left',
-							marginTop: 10,
-							flexDirection: 'row'
-						}}>
-							Loan Calculator
-					</Text>
-
-					<Icon
-					name={'keyboard-arrow-right'}
-					size={30}
-					color="grey"
+				
+				<Button
+					icon={
+						<Icon
+							name='addfile'
+							size={16}
+							color='#426FFE'
+						/>
+					}
+					type='clear'
+					iconRight
+					buttonStyle={{alignSelf:'center'}}
+					onPress={pickDocument}
+					title='Upload FAFSA Document    '
+					titleStyle={{fontSize:20, fontWeight:'bold',color:'#426FFE', alignSelf:'flex-end'}}
+				/>
+				<Button
+					icon={
+						<Icon
+							name='doubleright'
+							size={14}
+							color='#426FFE'
+						/>
+					}
+					type='clear'
+					iconRight
+					buttonStyle={{alignSelf:'center'}}
 					onPress={onFooterLinkPress}
-					style={{marginTop: 7}}
-					/>
-					
+					title='Calculate New Loan    '
+					titleStyle={{fontSize:20, fontWeight:'bold',color:'#426FFE', alignSelf:'flex-end'}}
+				/>
+
+				<View style={{paddingTop: 10, paddingBottom:10}}>
+				</View>
+				<View
+				style={{borderBottomColor:'#ededed', borderBottomWidth:3}}>
 				</View>
 
-				<TouchableOpacity title='Loan Calculator' onPress={onFooterLinkPress2}> 
-					<Text style={{
-						fontWeight: 'bold',
-						fontSize: 20,
-						color: 'black',
-						textAlign: 'left',
-						paddingTop: 20
-					}}>
-						Loan Home Screen Prototype
-					</Text>
-				</TouchableOpacity>
-
-				
-				{/*}
-				<TouchableOpacity title='Budget Page' onPress={onFooterLinkPress3}> 
-					<Text style={{
-						fontWeight: 'bold',
-						fontSize: 20,
-						color: '#32c090',
-						textAlign: 'center',
-						paddingTop: 20
-					}}>
-						Budgeting
-					</Text>
-				</TouchableOpacity>
-				*/}
-
-				{/*
-			
-				<TouchableOpacity title= 'Delete User' onPress={onDeleteAccountPress}>
-					<Text style={{
-						fontWeight: 'bold',
-						fontSize: 20,
-						color: '#32c090',
-						textAlign: 'center',
-						paddingTop: 20
-					}}>
-						Delete Account
-					</Text>
-				</TouchableOpacity>
-				
-				*/}
+				<Text style={styles.graphTitle}>Future Payments</Text>
+				<FavoriteMealScreen/>
 
 				<TouchableOpacity title= 'Upload Doc' onPress={pickDocument}>
 					<Text style={{
@@ -455,16 +444,24 @@ const styles = StyleSheet.create({
 	},
 	loanTitle: {
         fontWeight: 'bold',
-        fontSize: 26,
-        paddingLeft: 23,
-        paddingTop: 34,
-        color: '#426FFE'
+		fontSize: 26,
+		paddingLeft: 23,
+		paddingTop: 34,
+		color: '#426FFE',
+		padding: 20
       },
 	title: {
 		//color: '#35CA96',
-		fontSize: 20,
+		fontSize: 25,
+		marginLeft:0,
+		fontWeight: 'bold',
+	},
+	graphTitle: {
+		//color: '#35CA96',
+		fontSize: 25,
 		marginLeft:5,
 		fontWeight: 'bold',
+		paddingTop:15
 	},
 	logout: {
 		//	position: 'absolute',
@@ -481,11 +478,66 @@ const styles = StyleSheet.create({
 		marginLeft: 5,
 		paddingRight: 18,
 		
-	}
+	},
+	/*loanTitle: {
+		fontWeight: 'bold',
+		fontSize: 26,
+		paddingLeft: 23,
+		paddingTop: 50,
+	  color: '#426FFE',
+	  padding: 20
+	}*/
 
 });
 //onDelete={removeGoalHandler.bind(this, itemData.item.id)}
 //<EditGoalInput visible={isEditMode} editGoalHandler={editGoalHandler} onCancel={cancelGoalEditHandler} />
+//<Text style={styles.title}>Loans:</Text>
+/*
+<TouchableOpacity title='Loan Calculator' onPress={onFooterLinkPress2}> 
+					<Text style={{
+						fontWeight: 'bold',
+						fontSize: 25,
+						color: 'black',
+						textAlign: 'left',
+						paddingTop: 20
+					}}>
+						Loan Home Screen Prototype
+					</Text>
+				</TouchableOpacity>
+
+
+{/*}
+				<TouchableOpacity title='Budget Page' onPress={onFooterLinkPress3}> 
+					<Text style={{
+						fontWeight: 'bold',
+						fontSize: 20,
+						color: '#32c090',
+						textAlign: 'center',
+						paddingTop: 20
+					}}>
+						Budgeting
+					</Text>
+				</TouchableOpacity>
+				*/
+
+				/*
+			
+				<TouchableOpacity title= 'Delete User' onPress={onDeleteAccountPress}>
+					<Text style={{
+						fontWeight: 'bold',
+						fontSize: 20,
+						color: '#32c090',
+						textAlign: 'center',
+						paddingTop: 20
+					}}>
+						Delete Account
+					</Text>
+				</TouchableOpacity>
+				
+				*/
+
+				
+ 
 
 export default HomeScreen;
 

@@ -1,25 +1,23 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, Component } from 'react'
 import { Text, TextInput, Button, ScrollView, View } from 'react-native'
 import styles from './IndividualLoanStyles.js'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
+import { firebase } from '../../Constants/ApiKeys';
+
+import {allLoans, updateCounter} from '../LoanScreens/GlobalLoans'
 
 export default function IndividualLoanScreen({route, navigation}) {
-	let { loan } = route.params
-	const { interestRate } = route.params
-	const { timeLeft } = route.params
-	const { paidSoFar } = route.params
-
-	let info = [loan, interestRate, timeLeft, paidSoFar];
+	const { item } = route.params
+	const loansRef = firebase.firestore().collection('goals');
 
 	const [ payment, setPayment ] = useState(0);
-	const [ totalLoan, setTotalLoan ] = useState(info[0] - info[2])
-	const [ paidOff, setPaidOff ] = useState(info[3])
-	const [ monthlyPayment, setMonthlyPayment ] = useState(getMonthlyPayement(info[2]*12, info[1], info[0]))
+	const [ totalLoan, setTotalLoan ] = useState(parseInt(item.value))
+	const [ paidOff, setPaidOff ] = useState(parseInt(item.paidOff))
+	const [ monthlyPayment, setMonthlyPayment ] = useState(getMonthlyPayement(parseInt(item.years)*12, parseInt(item.interest), parseInt(item.value)))
 
-	const onFooterLinkPress3 = (info) => {
-		navigation.navigate('Individual Loan', 
-		{loan: info[0], interestRate: info[1], timeLeft: info[2], paidSoFar: info[3] })
+	const onFooterLinkPress = () => {
+		navigation.navigate('Home')
 	}
 
 	function getMonthlyPayement(months, interestRate, loanAmount){
@@ -32,21 +30,56 @@ export default function IndividualLoanScreen({route, navigation}) {
         return monthlyPayments.toFixed(2);
 	}
 
-	function makePayment(totalLoan, payment, paidOff, interestRate, months){
+	function makePayment(totalLoan, payment, paidOff, interestRate, months, allLoans){
 		totalLoan -= payment;
-		setTotalLoan(totalLoan)
+		allLoans.totalLoan -= payment;
+		console.log(item)
 
+		//Code to update the total loans amount
+		setTotalLoan(totalLoan)
+		console.log(totalLoan)
+
+		//Code to update the amount paid off
 		paidOff = parseFloat(payment) + parseFloat(paidOff)
 		setPaidOff(paidOff)
 
+		//Code to update monthly payments
 		var payments = getMonthlyPayement(months, interestRate, totalLoan)
 		setMonthlyPayment(payments)
+
+		
+		console.log(item.id.substr(0,28))
+		editGoalHandler(item.id.substr(0,28), payment)
 		
 	}
 
+	const editGoalHandler = async (id, payment) =>{
+		let userId = id
+        const existingDoc = await loansRef.doc(userId).get();
+        const goals = existingDoc.data().goals
+        const newGoals = goals.slice()
+        //time to replace the old goal with new one
+        for(let i = 0; i < goals.length;i++){
+          if(goals[i].id == item.id){
+            console.log('doing this bro')
+            newGoals[i] = {
+              id: item.id,
+              value: totalLoan-payment,
+              interest: item.interest,
+              years: item.years,
+              paidOff: parseInt(paidOff)+parseInt(payment)
+			}
+			console.log(newGoals[i])
+          }
+        }
+        //rewrite to firestore
+        await loansRef.doc(userId).update({goals:newGoals})
+        console.log('did this')
+        //now can go back to home screen
+      }
+
     return(
-        <View style={{backgroundColor: '#060320', flex: 1}}>
-			<Text style={styles.leftText}>Loan Name</Text>
+        <View style={{backgroundColor: 'white', flex: 1}}>
 			<Text style={styles.totalLoan}>${totalLoan}</Text>
 
 			<View style={{flexDirection: 'row'}}>
@@ -56,12 +89,12 @@ export default function IndividualLoanScreen({route, navigation}) {
 
 			<View style={{flexDirection: 'row'}}>
 				<Text style={styles.leftText}>Interest Rate:</Text>
-				<Text style={styles.rightText2}>{info[1]}%</Text>
+				<Text style={styles.rightText2}>{parseInt(item.interest)}%</Text>
 			</View>
 
 			<View style={{flexDirection: 'row'}}>
 				<Text style={styles.leftText}>Months Left:</Text>
-				<Text style={styles.rightText3}>{info[2] * 12}</Text>
+				<Text style={styles.rightText3}>{parseInt(item.years) * 12}</Text>
 			</View>
 
 			<View style={{flexDirection: 'row'}}>
@@ -75,11 +108,11 @@ export default function IndividualLoanScreen({route, navigation}) {
 				onChangeText ={ payment => setPayment(payment)}/>
 			 </View>
 
-			<TouchableOpacity onPress={() => makePayment(totalLoan, payment, paidOff, info[1], info[2]*12)}>
+			<TouchableOpacity onPress={() => makePayment(totalLoan, payment, paidOff, parseInt(item.interest), parseInt(item.years)*12, allLoans)}>
 				<Text style={{
 					fontWeight: 'bold',
 					fontSize: 20,
-					color: '#32c090',
+					color: '#426FFE',
 					textAlign: 'center',
 					paddingTop: 20
 				}}>
@@ -90,23 +123,3 @@ export default function IndividualLoanScreen({route, navigation}) {
 		</View>
     )
 }
-
-/* Code that adds the functionality to make payments to the individual loan screen
-<View style={{paddingTop: 60}}>
-				<TextInput placeholder="Input Payment"
-				style={styles.input} 
-				onChangeText ={ payment => setPayment(payment)}/>
-			 </View>
-
-			<TouchableOpacity onPress={() => makePayment(totalLoan, payment, route)}>
-				<Text style={{
-					fontWeight: 'bold',
-					fontSize: 20,
-					color: '#32c090',
-					textAlign: 'center',
-					paddingTop: 20
-				}}>
-					Make Payment
-				</Text>
-			</TouchableOpacity>
-*/
