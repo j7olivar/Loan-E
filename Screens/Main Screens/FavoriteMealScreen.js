@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View , TextInput} from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import Header from '../../components/Header';
 import { Dimensions } from 'react-native';
 import {
@@ -11,67 +11,23 @@ import {
 	StackedBarChart
 } from 'react-native-chart-kit';
 import Slider from '@react-native-community/slider';
-import { firebase } from '../../Constants/ApiKeys';
 
 const FavoriteMealScreen = (props) => {
 	const [ sliderValue, setSliderValue ] = useState(10);
-	var currentDebt=0; //cant use useState b/c it doesnt update imediately
+	const [ currentDebt, setCurrentDept ] = useState(100000);
 	const [ list, setList ] = useState([ 300, 500, 300, 30, 200, 70 ]);
 	const [interest, setInterest] = useState(500);
-	const [interestRate, setInterestRate] = useState('1')
-	const [labels, setLabels] = useState([])
 
-	//import total from firebase
-	const getTotal = async()=>{
-		var total=0;
-		let user = firebase.auth().currentUser.uid
-		try{
-			const loans = await firebase.firestore().collection('goals').doc(user).get()
-			const goals = loans.data().goals
-			//time to add up all loans
-			for (let i = 0; i < goals.length; i++) {
-				//console.log(goals[i].value)
-				total += (goals[i].value*1)
-			}
-			return total
-			
-		}
-		catch(error){
-			console.log(error)
-		}
-	}
 
-	const changeGraph = async (value) => {
+	const changeGraph = (value) => {
+		const total = currentDebt;
 		setSliderValue(value);
-
-		//get total amount due
-		currentDebt = await getTotal()
+		if(value%5==0){
+		setList([interest *Math.random(), interest/1.5*Math.random(),interest/2*Math.random(), interest/3*Math.random(),interest/4*Math.random(),interest/10*Math.random()])
+		}
 		
-		//finding x-axis intervals
-		var oneStep = value/6
-		if(value >=6){
-			setLabels([oneStep.toFixed(0), (oneStep*2).toFixed(0), (oneStep*3).toFixed(0), (oneStep*4).toFixed(0), (oneStep*5).toFixed(0), value.toFixed(0)])
-		}
-		else{
-			//im not sure what to do for years less than 6 since we are using 6 dots on the graph
-			setLabels([1,2,3,4,5])
-		}
-
-		//finding y-axis intervals (tbh idk what the List is meant for)
-		var yAxisStep = total/5
-		setList([yAxisStep.toFixed(0), (yAxisStep*2).toFixed(0),(yAxisStep*3).toFixed(0),(yAxisStep*4).toFixed(0),total])
-	
-
-		if(value%5 == 0){
-			//setList([])
-		}
-
-		setInterest((((interestRate*.01)/(value*12))*currentDebt).toFixed(2))
+		setInterest(value*60)
 	};
-
-	const changeInterestRate = (enteredText) => {
-          setInterestRate(enteredText.toString())
-      }    
 
 	return (
 		<View style={styles.screen}>
@@ -88,31 +44,21 @@ const FavoriteMealScreen = (props) => {
 				}}>You currently owe {currentDebt}. In how many years would you want to pay it off?</Text>
 			*/}
 				<Slider
-					style={{ width: Dimensions.get('window').width - 60, height: 40, justifyContent:'center', marginLeft: 18, marginTop:5}}
+					style={{ width: 200, height: 40, justifyContent:'center', marginLeft: 18, marginTop:5}}
 					minimumValue={1}
-					maximumValue={35}
+					maximumValue={30}
 					step={1}
-					minimumTrackTintColor="#426FFE"
+					minimumTrackTintColor="#000000"
 					maximumTrackTintColor="#000000"
 					onValueChange={(value) => changeGraph(value)}
 				/>
 				<View style={styles.mid}>
 				<Text style={{ textAlign: 'left', marginLeft:18}}> Years = {sliderValue}</Text>
 				<Text style={{ textAlign: 'left', marginLeft:18}}> Interest = ${interest}</Text>
-				<Text style={{ textAlign: 'left', marginLeft:18}}> Interest Rate= </Text>
-				
-				<TextInput
-				placeholder= {'0%'}
-				style={styles.input }
-				onChangeText={changeInterestRate}
-				value={interestRate}
-				/>
-
 				</View>
 				<LineChart
 					data={{
-						//labels: [ '1', '5', '10', '15', '20', '25' ],
-						labels:labels,
+						labels: [ '1', '5', '10', '15', '20', '25' ],
 						datasets: [
 							{
 								data: list,
@@ -156,25 +102,7 @@ const styles = StyleSheet.create({
 	},
 	text: {
 		textAlign: 'center'
-	},
-	input: {
-		alignItems: 'center',
-		//padding: 10,
-		//marginVertical: 10,
-		width: 50,
-		height: 24,
-		borderRadius: 5,
-		overflow: 'hidden',
-		backgroundColor: '#e7e7e7',
-		//marginTop: 10,
-		marginBottom: 10,
-		//marginLeft: 30,
-		marginRight: 30,
-		//paddingLeft: 16,
-		fontSize: 10,
-		textAlign:'center',
-		color: 'black',
-	  }
+	}
 });
 
 export default FavoriteMealScreen;

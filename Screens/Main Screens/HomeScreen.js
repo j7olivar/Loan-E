@@ -183,7 +183,7 @@ const HomeScreen = (props) => {
 					if (!docSnapshot.exists) {
 						console.log('doc doesnt exist, start from scratch');
 					} else {
-						//console.log('loaded successfully ' + JSON.stringify(docSnapshot.data().goals));
+						console.log('loaded successfully ' + JSON.stringify(docSnapshot.data().goals));
 						setCourseGoals(docSnapshot.data().goals);
 						setGoalCounter(docSnapshot.data().goals.length);
 						for (let i = 0; i < courseGoals.length; i++) {
@@ -302,6 +302,7 @@ const HomeScreen = (props) => {
 		for (let i = 0; i < courseGoals.length; i++) {
 			total += parseInt(courseGoals[i].value, 10);
 		}
+		console.log(total);
 		setTotalLoan(total);
 		return;
 	}
@@ -309,7 +310,7 @@ const HomeScreen = (props) => {
 	return (
 		<ScrollView style={styles.screen}>
 			<Text style={styles.loanTitle}> Student Loan Calculator</Text>
-			<View style={{ padding: 20, marginTop: -20, paddingTop:20}}>
+			<View style={{ padding: 20, marginTop: -20}}>
 				<Text style={styles.title}> Loans</Text>
 
 
@@ -362,7 +363,21 @@ const HomeScreen = (props) => {
 				/>
 
 				{/*
-				
+				<Button
+					icon={
+						<Icon
+							name='addfile'
+							size={16}
+							color='#426FFE'
+						/>
+					}
+					type='clear'
+					iconRight
+					buttonStyle={{alignSelf:'center'}}
+					onPress={pickDocument}
+					title='Upload FAFSA Document    '
+					titleStyle={{fontSize:20, fontWeight:'bold',color:'#426FFE', alignSelf:'flex-end'}}
+				/>
 				<Button
 					icon={
 						<Icon
@@ -386,24 +401,6 @@ const HomeScreen = (props) => {
 				<Text style={styles.graphTitle}>Payment Plan</Text>
 				<Text style={styles.subHeading}> Total Due: ${totalLoan}</Text>
 				<FavoriteMealScreen />
-
-				<View style={{ paddingBottom: 25 }} />
-
-				<Button
-					icon={
-						<Icon
-							name='addfile'
-							size={16}
-							color='#426FFE'
-						/>
-					}
-					type='clear'
-					iconRight
-					buttonStyle={{alignSelf:'center'}}
-					onPress={pickDocument}
-					title='Upload FAFSA Document    '
-					titleStyle={{fontSize:20, fontWeight:'bold',color:'#426FFE', alignSelf:'flex-end'}}
-				/>
 
 				<View style={{ paddingBottom: 15 }} />
 			</View>
@@ -429,7 +426,7 @@ const styles = StyleSheet.create({
 		fontWeight: 'bold',
 		fontSize: 28,
 		paddingLeft: 23,
-		paddingTop: 65,
+		paddingTop: 55,
 		color: '#426FFE'
 	},
 	title: {
