@@ -384,7 +384,7 @@ const HomeScreen = (props) => {
 				<View style={{ borderBottomColor: '#ededed', borderBottomWidth: 3 }} />
 
 				<Text style={styles.graphTitle}>Payment Plan</Text>
-				<Text style={styles.subHeading}> Total Due: ${totalLoan}</Text>
+				<Text style={styles.subHeading}> Total Due: <Text style={{color:'#426FFE'}}>${totalLoan}</Text></Text>
 				<FavoriteMealScreen />
 
 				<View style={{ paddingBottom: 25 }} />
@@ -423,7 +423,8 @@ const styles = StyleSheet.create({
 	},
 	subHeading: {
 		fontSize: 16,
-		paddingTop: 5
+		paddingTop: 5,
+		fontWeight:'bold'
 	},
 	loanTitle: {
 		fontWeight: 'bold',

@@ -18,12 +18,13 @@ const FavoriteMealScreen = (props) => {
 	var currentDebt=0; //cant use useState b/c it doesnt update imediately
 	const [ list, setList ] = useState([ 300, 500, 300, 30, 200, 70 ]);
 	const [interest, setInterest] = useState(500);
+
 	const [monthlyValue, setMonthlyValue] = useState(100)
 	const [currentLoans, setCurrentLoans] = useState({
 		'loan1': [1000,10],
 		'loan2': [3000,5],
 		'loan3': [500,15]
-	})
+	}) //loan amnt and interest rate
 
 	//Stolen sort dictionary function hope it works
 	const sort_object = (obj) => {
@@ -50,14 +51,19 @@ const FavoriteMealScreen = (props) => {
 	const getTotal = async()=>{
 		var total=0;
 		let user = firebase.auth().currentUser.uid
+		var loansWithInt = []
 		try{
 			const loans = await firebase.firestore().collection('goals').doc(user).get()
 			const goals = loans.data().goals
+			
 			//time to add up all loans
 			for (let i = 0; i < goals.length; i++) {
 				//console.log(goals[i].value)
 				total += (goals[i].value*1)
+				loansWithInt.push({[i]:[goals[i].value*1,goals[i].interest*1]})
 			}
+			//console.log(loansWithInt)
+			setCurrentLoans(loansWithInt)
 			return total
 			
 		}
@@ -112,6 +118,15 @@ const FavoriteMealScreen = (props) => {
 					marginBottom: 10
 				}}>You currently owe {currentDebt}. In how many years would you want to pay it off?</Text>
 			*/}
+				<Text style={{
+					fontWeight: 'bold',
+					fontSize: 16,
+					color: 'black',
+					textAlign: 'left',
+					marginLeft: 24,
+					}}>
+					Monthly Payments: <Text style={{color:'#426FFE'}}>${monthlyValue}</Text>
+				</Text>
 				<Slider
 					style={{ width: Dimensions.get('window').width - 60, height: 40, justifyContent:'center', marginLeft: 18, marginTop:5}}
 					minimumValue={1}
