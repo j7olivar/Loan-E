@@ -17,7 +17,31 @@ const FavoriteMealScreen = (props) => {
 	const [ currentDebt, setCurrentDept ] = useState(100000);
 	const [ list, setList ] = useState([ 300, 500, 300, 30, 200, 70 ]);
 	const [interest, setInterest] = useState(500);
+	const [monthlyValue, setMonthlyValue] = useState(100)
+	const [currentLoans, setCurrentLoans] = useState({
+		'loan1': [1000,10],
+		'loan2': [3000,5]
+		'loan3': [500,15]
+	})
 
+	//Stolen sort dictionary function hope it works
+	const sort_object = (obj) => {
+		items = Object.keys(obj).map(function(key) {
+			return [key, obj[key]];
+		});
+		items.sort(function(first, second) {
+			return second[1][1] - first[1][1];
+		});
+		sorted_obj={}
+		$.each(items, function(k, v) {
+			use_key = v[0]
+			use_value = v[1]
+			sorted_obj[use_key] = use_value
+		})
+		return(sorted_obj)
+	} 
+
+	
 
 	const changeGraph = (value) => {
 		const total = currentDebt;
