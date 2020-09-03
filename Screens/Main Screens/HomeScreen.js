@@ -1,23 +1,21 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TextInput, Button, Modal, ScrollView, FlatList, Alert } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Modal, ScrollView, FlatList, Alert } from 'react-native';
 import GoalItem from '../../components/HomeScreen/GoalItem';
 import EditGoalInput from '../../components/HomeScreen/EditGoalInput';
 import GoalInput from '../../components/HomeScreen/GoalInput';
-import Header from '../../components/Header';
 import { firebase } from '../../Constants/ApiKeys';
 import FavoriteMealScreen from './FavoriteMealScreen'
-//import AsyncStorage from '@react-native-community/async-storage'
 import * as SecureStore from 'expo-secure-store'
 import * as DocumentPicker from 'expo-document-picker'
-import * as FileSystem from 'expo-file-system';
-import {allLoans} from '../LoanScreens/GlobalLoans'
+import * as FileSystem from 'expo-file-system'
+import {Button} from 'react-native-elements'
 
 import { createStackNavigator } from '@react-navigation/stack';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { set } from 'react-native-reanimated';
 
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import Icon from 'react-native-vector-icons/AntDesign';
 import AsyncStorage from '@react-native-community/async-storage';
 console.ignoredYellowBox = ['Warning:', '- node', 'Encountered', 'Failed'];
 console.disableYellowBox = true
@@ -167,6 +165,7 @@ const HomeScreen = (props) => {
 	useEffect(() => {
 		getPW()
 		let total = 0
+		let paid = 0
 		/*
 		async function letsDoThis(){
 			setUserOut(await FileSystem.readAsStringAsync(input.uri))
@@ -186,10 +185,11 @@ const HomeScreen = (props) => {
 						setCourseGoals(docSnapshot.data().goals)
 						setGoalCounter(docSnapshot.data().goals.length)
 						for(let i = 0; i < courseGoals.length; i++){
-							total += parseInt(courseGoals[i].value, 10)
+							total += parseFloat(courseGoals[i].value)
+							paid += parseFloat(courseGoals[i].paidOff)
 						}
-						console.log(total)
-						setTotalLoan(total);
+						console.log(total-paid)
+						setTotalLoan((total - paid).toFixed(2));
 					}
 				},
 				(error) => {
@@ -299,12 +299,14 @@ const HomeScreen = (props) => {
 
 	function getTotalLoan(){
 		let total = 0;
+		let paid = 0;
 
 		for(let i = 0; i < courseGoals.length; i++){
-			total += parseInt(courseGoals[i].value, 10)
+			total += parseFloat(courseGoals[i].value)
+			paid += parseFloat(courseGoals[i].paidOff)
 		}
 		console.log(total)
-		setTotalLoan(total);
+		setTotalLoan((total-paid).toFixed(2));
 		return
 	}
 	
@@ -312,7 +314,7 @@ const HomeScreen = (props) => {
 		<ScrollView style={styles.screen}>
 			<Text style = {styles.loanTitle}> Student Loan Calculator</Text>
 			<View style={{ padding: 20 }}>
-				<Text style={styles.title}> Total Loans: </Text>
+				<Text style={styles.title}> Loans</Text>
 
 				<FlatList
 				keyExtractor={(item, index) => item.id}
@@ -322,23 +324,33 @@ const HomeScreen = (props) => {
 				)}/>
 
 				<Text style={{
-						fontSize: 26,
+						fontSize: 24,
 						color: 'black',
-						textAlign: 'center',
+						textAlign: 'left',
+						fontWeight:'bold',
 						paddingTop: 10,
-						marginLeft: 5,
-						paddingBottom:20}}> 
+						marginLeft: 5,}}> 
 					${totalLoan} 
 				</Text>
 
-				<View style={{paddingBottom: 15}}>
+				<View style={{paddingBottom: 10}}>
 				</View>
-			
-				<Text style={styles.title}>Loans:</Text>
-
-				<View style={{paddingBottom:10}}>
-				</View>
-
+		
+				<Button
+					icon={
+						<Icon
+							name='plus'
+							size={16}
+							color='#426FFE'
+						/>
+					}
+					type='clear'
+					iconRight
+					buttonStyle={{alignSelf:'flex-end'}}
+					onPress={() => setIsAddMode(true)}
+					title='New Loan    '
+					titleStyle={{fontSize:20, fontWeight:'bold',color:'#426FFE', alignSelf:'flex-end'}}
+				/>
 				<GoalInput visible={isAddMode} addGoalHandler={addGoalHandler} onCancel={cancelGoalAdditionHandler} />
 				<FlatList
 					keyExtractor={(item, index) => item.id}
@@ -349,48 +361,62 @@ const HomeScreen = (props) => {
 							onDelete={removeGoalHandler.bind(this, itemData.item.id, itemData.item)}
 							onEdit = {editLoan.bind(this,itemData.item.id)}
 							individualLoan = {() => onFooterLinkPress4(itemData.item)}
-							title={itemData.item.value}
-							subInterest={itemData.item.interest}
-							subPaid={itemData.item.paidOff}
+							title={(parseFloat(itemData.item.value)-parseFloat(itemData.item.paidOff)).toFixed(2)}
+							subInterest={parseFloat(itemData.item.interest).toFixed(2)}
+							subPaid={parseFloat(itemData.item.paidOff).toFixed(2)}
 							subYears={itemData.item.years}
 						/>
 						</TouchableOpacity>
 					)}
 				/>
-				
-				<TouchableOpacity title= 'Add New Loan' onPress={() => setIsAddMode(true)}>
-					<Text style={{
-						fontWeight: 'bold',
-						fontSize: 20,
-						color: '#426FFE',
-						textAlign: 'center',
-						paddingTop: 20
-					}}>
-						Add New Loan
-					</Text>
-				</TouchableOpacity>
-				<TouchableOpacity title= 'Upload Doc' onPress={pickDocument}>
-					<Text style={{
-						fontWeight: 'bold',
-						fontSize: 20,
-						color: '#426FFE',
-						textAlign: 'center',
-						paddingTop: 20
-					}}>
-						Upload Document
-					</Text>
-				</TouchableOpacity>
 
-				<View style={{paddingTop: 10}}>
+				
+				<Button
+					icon={
+						<Icon
+							name='addfile'
+							size={16}
+							color='#426FFE'
+						/>
+					}
+					type='clear'
+					iconRight
+					buttonStyle={{alignSelf:'center'}}
+					onPress={pickDocument}
+					title='Upload FAFSA Document    '
+					titleStyle={{fontSize:20, fontWeight:'bold',color:'#426FFE', alignSelf:'flex-end'}}
+				/>
+				<Button
+					icon={
+						<Icon
+							name='doubleright'
+							size={14}
+							color='#426FFE'
+						/>
+					}
+					type='clear'
+					iconRight
+					buttonStyle={{alignSelf:'center'}}
+					onPress={onFooterLinkPress}
+					title='Calculate New Loan    '
+					titleStyle={{fontSize:20, fontWeight:'bold',color:'#426FFE', alignSelf:'flex-end'}}
+				/>
+
+				<View style={{paddingTop: 10, paddingBottom:10}}>
+				</View>
+				<View
+				style={{borderBottomColor:'#ededed', borderBottomWidth:3}}>
 				</View>
 
-				<Text style={styles.graphTitle}>Graph:</Text>
+				<Text style={styles.graphTitle}>Future Payments</Text>
 				<FavoriteMealScreen/>
 
 				<View style={{paddingBottom: 15}}>
 				</View>
 
-				<View style={styles.box} title='Loan Calculator' onPress={onFooterLinkPress}>
+				{//Code for another link to the loan calculator, code redundant since we already have a link higher up the page
+
+					/*<View style={styles.box} title='Loan Calculator' onPress={onFooterLinkPress}>
 					<Text 
 						style={{
 							fontWeight: 'bold',
@@ -411,7 +437,7 @@ const HomeScreen = (props) => {
 					style={{marginTop: 7}}
 					/>
 					
-				</View>
+					</View>*/}
 
 				{//Code to go to the loan home screen prototype
 					/*<TouchableOpacity title='Loan Calculator' onPress={onFooterLinkPress2}> 
@@ -482,20 +508,20 @@ const styles = StyleSheet.create({
 	},
 	loanTitle: {
         fontWeight: 'bold',
-        fontSize: 26,
+        fontSize: 28,
         paddingLeft: 23,
         paddingTop: 55,
         color: '#426FFE'
       },
 	title: {
 		//color: '#35CA96',
-		fontSize: 22,
+		fontSize: 25,
 		marginLeft:0,
 		fontWeight: 'bold',
 	},
 	graphTitle: {
 		//color: '#35CA96',
-		fontSize: 22,
+		fontSize: 25,
 		marginLeft:5,
 		fontWeight: 'bold',
 		paddingTop:15
@@ -528,6 +554,53 @@ const styles = StyleSheet.create({
 });
 //onDelete={removeGoalHandler.bind(this, itemData.item.id)}
 //<EditGoalInput visible={isEditMode} editGoalHandler={editGoalHandler} onCancel={cancelGoalEditHandler} />
+//<Text style={styles.title}>Loans:</Text>
+/*
+<TouchableOpacity title='Loan Calculator' onPress={onFooterLinkPress2}> 
+					<Text style={{
+						fontWeight: 'bold',
+						fontSize: 25,
+						color: 'black',
+						textAlign: 'left',
+						paddingTop: 20
+					}}>
+						Loan Home Screen Prototype
+					</Text>
+				</TouchableOpacity>
+
+
+{/*}
+				<TouchableOpacity title='Budget Page' onPress={onFooterLinkPress3}> 
+					<Text style={{
+						fontWeight: 'bold',
+						fontSize: 20,
+						color: '#32c090',
+						textAlign: 'center',
+						paddingTop: 20
+					}}>
+						Budgeting
+					</Text>
+				</TouchableOpacity>
+				*/
+
+				/*
+			
+				<TouchableOpacity title= 'Delete User' onPress={onDeleteAccountPress}>
+					<Text style={{
+						fontWeight: 'bold',
+						fontSize: 20,
+						color: '#32c090',
+						textAlign: 'center',
+						paddingTop: 20
+					}}>
+						Delete Account
+					</Text>
+				</TouchableOpacity>
+				
+				*/
+
+				
+ 
 
 export default HomeScreen;
 

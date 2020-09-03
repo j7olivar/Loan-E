@@ -10,34 +10,35 @@ export default StyleSheet.create({
 	},
 	leftText:{
 		paddingTop: 25,
+		paddingLeft: 10,
 		fontWeight: 'bold',
 		fontSize: 25,
 		color: '#426FFE'
 	},
 	rightText1:{
 		paddingTop: 25,
-		paddingLeft: 100,
+		paddingLeft: 47,
 		fontWeight: 'bold',
 		fontSize: 25,
 		color: 'black'
 	},
 	rightText2:{
 		paddingTop: 25,
-		paddingLeft: 185,
+		paddingLeft: 103,
 		fontWeight: 'bold',
 		fontSize: 25,
 		color: 'black'
 	},
 	rightText3:{
 		paddingTop: 25,
-		paddingLeft: 190,
+		paddingLeft: 112,
 		fontWeight: 'bold',
 		fontSize: 25,
 		color: 'black'
 	},
 	rightText4:{
 		paddingTop: 25,
-		paddingLeft: 232,
+		paddingLeft: 154,
 		fontWeight: 'bold',
 		fontSize: 25,
 		color: 'black'
