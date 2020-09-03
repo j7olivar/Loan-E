@@ -20,7 +20,7 @@ const FavoriteMealScreen = (props) => {
 	const [monthlyValue, setMonthlyValue] = useState(100)
 	const [currentLoans, setCurrentLoans] = useState({
 		'loan1': [1000,10],
-		'loan2': [3000,5]
+		'loan2': [3000,5],
 		'loan3': [500,15]
 	})
 
