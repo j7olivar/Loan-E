@@ -167,6 +167,7 @@ const HomeScreen = (props) => {
 	useEffect(() => {
 		getPW()
 		let total = 0
+		let paid = 0
 		/*
 		async function letsDoThis(){
 			setUserOut(await FileSystem.readAsStringAsync(input.uri))
@@ -186,10 +187,11 @@ const HomeScreen = (props) => {
 						setCourseGoals(docSnapshot.data().goals)
 						setGoalCounter(docSnapshot.data().goals.length)
 						for(let i = 0; i < courseGoals.length; i++){
-							total += parseInt(courseGoals[i].value, 10)
+							total += parseFloat(courseGoals[i].value)
+							paid += parseFloat(courseGoals[i].paidOff)
 						}
-						console.log(total)
-						setTotalLoan(total);
+						console.log(total-paid)
+						setTotalLoan((total - paid).toFixed(2));
 					}
 				},
 				(error) => {
@@ -299,12 +301,14 @@ const HomeScreen = (props) => {
 
 	function getTotalLoan(){
 		let total = 0;
+		let paid = 0;
 
 		for(let i = 0; i < courseGoals.length; i++){
-			total += parseInt(courseGoals[i].value, 10)
+			total += parseFloat(courseGoals[i].value)
+			paid += parseFloat(courseGoals[i].paidOff)
 		}
 		console.log(total)
-		setTotalLoan(total);
+		setTotalLoan((total-paid).toFixed(2));
 		return
 	}
 	
@@ -359,9 +363,9 @@ const HomeScreen = (props) => {
 							onDelete={removeGoalHandler.bind(this, itemData.item.id, itemData.item)}
 							onEdit = {editLoan.bind(this,itemData.item.id)}
 							individualLoan = {() => onFooterLinkPress4(itemData.item)}
-							title={itemData.item.value}
-							subInterest={itemData.item.interest}
-							subPaid={itemData.item.paidOff}
+							title={(parseFloat(itemData.item.value)-parseFloat(itemData.item.paidOff)).toFixed(2)}
+							subInterest={parseFloat(itemData.item.interest).toFixed(2)}
+							subPaid={parseFloat(itemData.item.paidOff).toFixed(2)}
 							subYears={itemData.item.years}
 						/>
 						</TouchableOpacity>
@@ -409,7 +413,40 @@ const HomeScreen = (props) => {
 				<Text style={styles.graphTitle}>Future Payments</Text>
 				<FavoriteMealScreen/>
 
+<<<<<<< HEAD
 				<TouchableOpacity title= 'Upload Doc' onPress={pickDocument}>
+=======
+				<View style={{paddingBottom: 15}}>
+				</View>
+
+				{//Code for another link to the loan calculator, code redundant since we already have a link higher up the page
+
+					/*<View style={styles.box} title='Loan Calculator' onPress={onFooterLinkPress}>
+					<Text 
+						style={{
+							fontWeight: 'bold',
+							fontSize: 20,
+							color: 'black',
+							textAlign: 'left',
+							marginTop: 10,
+							flexDirection: 'row'
+						}}>
+							Loan Calculator
+					</Text>
+
+					<Icon
+					name={'keyboard-arrow-right'}
+					size={30}
+					color="grey"
+					onPress={onFooterLinkPress}
+					style={{marginTop: 7}}
+					/>
+					
+					</View>*/}
+
+				{//Code to go to the loan home screen prototype
+					/*<TouchableOpacity title='Loan Calculator' onPress={onFooterLinkPress2}> 
+>>>>>>> 17517f1f182a8e34e1fbadbe99af62eb0964aaea
 					<Text style={{
 						fontWeight: 'bold',
 						fontSize: 20,
@@ -417,9 +454,48 @@ const HomeScreen = (props) => {
 						textAlign: 'left',
 						paddingTop: 20
 					}}>
+<<<<<<< HEAD
 						Upload Document
 					</Text>
 				</TouchableOpacity>
+=======
+						Loan Home Screen Prototype
+					</Text>
+				</TouchableOpacity>*/}
+
+				
+				{/*}
+				<TouchableOpacity title='Budget Page' onPress={onFooterLinkPress3}> 
+					<Text style={{
+						fontWeight: 'bold',
+						fontSize: 20,
+						color: '#32c090',
+						textAlign: 'center',
+						paddingTop: 20
+					}}>
+						Budgeting
+					</Text>
+				</TouchableOpacity>
+				*/}
+
+				{/*
+			
+				<TouchableOpacity title= 'Delete User' onPress={onDeleteAccountPress}>
+					<Text style={{
+						fontWeight: 'bold',
+						fontSize: 20,
+						color: '#32c090',
+						textAlign: 'center',
+						paddingTop: 20
+					}}>
+						Delete Account
+					</Text>
+				</TouchableOpacity>
+				
+				*/}
+
+				
+>>>>>>> 17517f1f182a8e34e1fbadbe99af62eb0964aaea
 
 			</View>
 

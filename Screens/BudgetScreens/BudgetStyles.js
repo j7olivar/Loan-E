@@ -12,7 +12,14 @@ export default StyleSheet.create({
         fontSize: 26,
         paddingLeft: 23,
         paddingTop: 34,
-        color: '#426FFE'
+        color: '#426FFE',
+        width: 334,
+        height: 30,
+        marginTop: 34,
+        marginLeft: 23,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'flex-start',
       },
 
       budgetBox1: {
@@ -41,6 +48,12 @@ export default StyleSheet.create({
         fontSize: 15,
         paddingLeft: 20,
         color: 'black'
+      },
+
+      budgetBold2: {
+        fontWeight: 'bold',
+        fontSize: 15,
+        color: '#32c090'
       },
 
       budgetBold2: {

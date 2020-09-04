@@ -12,13 +12,10 @@ export default function IndividualLoanScreen({route, navigation}) {
 	const loansRef = firebase.firestore().collection('goals');
 
 	const [ payment, setPayment ] = useState(0);
-	const [ totalLoan, setTotalLoan ] = useState(parseInt(item.value))
-	const [ paidOff, setPaidOff ] = useState(parseInt(item.paidOff))
-	const [ monthlyPayment, setMonthlyPayment ] = useState(getMonthlyPayement(parseInt(item.years)*12, parseInt(item.interest), parseInt(item.value)))
-
-	const onFooterLinkPress = () => {
-		navigation.navigate('Home')
-	}
+	const [ totalLoan, setTotalLoan ] = useState((parseFloat(item.value)-parseFloat(item.paidOff)).toFixed(2))
+	const [ paidOff, setPaidOff ] = useState(parseFloat(item.paidOff).toFixed(2))
+	const [ monthlyPayment, setMonthlyPayment ] = useState(getMonthlyPayement(parseFloat(item.years)*12, parseFloat(item.interest), parseFloat(item.value)-parseFloat(item.paidOff).toFixed(2)))
+	const [ monthsLeft, setMonthsLeft ] = useState((parseFloat(item.years) * 12).toFixed(0))
 
 	function getMonthlyPayement(months, interestRate, loanAmount){
 		var monthlyIR = (interestRate * .01)/12;
@@ -30,18 +27,58 @@ export default function IndividualLoanScreen({route, navigation}) {
         return monthlyPayments.toFixed(2);
 	}
 
-	function makePayment(totalLoan, payment, paidOff, interestRate, months, allLoans){
+	function getMonthsLeft(interestRate, loanAmount){
+		var monthlyIR = (interestRate * .01)/12;
+		
+		var term1 = -(Math.log10(1-monthlyIR*(loanAmount/monthlyPayment)));
+		var term2 = Math.log10(1+monthlyIR);
+		var monthsLeft = term1/term2;
+
+        return Math.round(monthsLeft);
+	}
+
+	function reduceTime(){
+		//Getting the amount of months paid and setting the amount of months left to pay 
+		var monthsPaid = payment/monthlyPayment;
+		var remainingMonths = Math.round(monthsLeft-monthsPaid)
+		setMonthsLeft(remainingMonths)
+
+		//Code to set the new total loan correctly
+		var newTotalLoan = (parseFloat(totalLoan)-payment).toFixed(2)
+		setTotalLoan(newTotalLoan)
+
+		//Getting the new monthly payment given the new months
+		var payments = getMonthlyPayement(remainingMonths, parseFloat(item.interest), newTotalLoan)
+		setMonthlyPayment(payments)
+
+		//Code to set the correct amount paid off
+		var newPaidOff = ((parseFloat(paidOff) + parseFloat(payment)).toFixed(2)).toString()
+		setPaidOff(newPaidOff)
+
+		editGoalHandler(item.id.substr(0,28), payments, remainingMonths)
+
+	}
+
+	function makeMonthlyPayment(){
+		var months = monthsLeft-1
+		setMonthsLeft(months)
+		setTotalLoan((totalLoan-monthlyPayment).toFixed(2))
+		setPaidOff(((parseFloat(paidOff)+parseFloat(monthlyPayment)).toFixed(2)).toString())
+		editGoalHandler(item.id.substr(0,28), monthlyPayment, months)
+
+	}
+
+	function makePayment(totalLoan, payment, paidOff, interestRate, months){
 		totalLoan -= payment;
-		allLoans.totalLoan -= payment;
 		console.log(item)
 
 		//Code to update the total loans amount
-		setTotalLoan(totalLoan)
+		setTotalLoan(totalLoan.toFixed(2))
 		console.log(totalLoan)
 
 		//Code to update the amount paid off
 		paidOff = parseFloat(payment) + parseFloat(paidOff)
-		setPaidOff(paidOff)
+		setPaidOff(paidOff.toFixed(2))
 
 		//Code to update monthly payments
 		var payments = getMonthlyPayement(months, interestRate, totalLoan)
@@ -49,11 +86,11 @@ export default function IndividualLoanScreen({route, navigation}) {
 
 		
 		console.log(item.id.substr(0,28))
-		editGoalHandler(item.id.substr(0,28), payment)
+		editGoalHandler(item.id.substr(0,28), payment, monthsLeft)
 		
 	}
 
-	const editGoalHandler = async (id, payment) =>{
+	const editGoalHandler = async (id, payment, months) =>{
 		let userId = id
         const existingDoc = await loansRef.doc(userId).get();
         const goals = existingDoc.data().goals
@@ -64,17 +101,16 @@ export default function IndividualLoanScreen({route, navigation}) {
             console.log('doing this bro')
             newGoals[i] = {
               id: item.id,
-              value: totalLoan-payment,
+              value: item.value,
               interest: item.interest,
-              years: item.years,
-              paidOff: parseInt(paidOff)+parseInt(payment)
+              years: (months/12).toFixed(2),
+              paidOff: (parseFloat(paidOff)+parseFloat(payment)).toString()
 			}
-			console.log(newGoals[i])
           }
         }
         //rewrite to firestore
         await loansRef.doc(userId).update({goals:newGoals})
-        console.log('did this')
+        console.log(months)
         //now can go back to home screen
       }
 
@@ -89,12 +125,12 @@ export default function IndividualLoanScreen({route, navigation}) {
 
 			<View style={{flexDirection: 'row'}}>
 				<Text style={styles.leftText}>Interest Rate:</Text>
-				<Text style={styles.rightText2}>{parseInt(item.interest)}%</Text>
+				<Text style={styles.rightText2}>{parseFloat(item.interest).toFixed(2)}%</Text>
 			</View>
 
 			<View style={{flexDirection: 'row'}}>
 				<Text style={styles.leftText}>Months Left:</Text>
-				<Text style={styles.rightText3}>{parseInt(item.years) * 12}</Text>
+				<Text style={styles.rightText3}>{monthsLeft}</Text>
 			</View>
 
 			<View style={{flexDirection: 'row'}}>
@@ -102,24 +138,88 @@ export default function IndividualLoanScreen({route, navigation}) {
 				<Text style={styles.rightText4}>${paidOff}</Text>
 			</View>
 
-			<View style={{paddingTop: 60}}>
-				<TextInput placeholder="Input Payment"
-				style={styles.input} 
-				onChangeText ={ payment => setPayment(payment)}/>
-			 </View>
+			<View
+				style={{
+					borderBottomColor: 'black',
+					borderBottomWidth: 4,
+					paddingTop: 30,
+					marginLeft:8,
+					marginRight: 8
+				}}/>
 
-			<TouchableOpacity onPress={() => makePayment(totalLoan, payment, paidOff, parseInt(item.interest), parseInt(item.years)*12, allLoans)}>
-				<Text style={{
+			<Text style={{
+					paddingTop: 25,
+					paddingLeft: 10,
 					fontWeight: 'bold',
-					fontSize: 20,
-					color: '#426FFE',
-					textAlign: 'center',
-					paddingTop: 20
-				}}>
-					Make Payment
+					fontSize: 25,
+					color: 'black',
+					textAlign: 'center'}}>
+					Payment
 				</Text>
-			</TouchableOpacity>
 
+				<View style={{paddingTop: 10}}>
+					<TextInput placeholder="Custom Payment"
+					style={styles.input} 
+					onChangeText ={ payment => setPayment(payment)}/>
+				</View>
+
+				<View style={{flexDirection: 'row'}}>
+
+					<TouchableOpacity onPress={() => makePayment(totalLoan, payment, paidOff, parseFloat(item.interest), parseFloat(item.years)*12)}>
+						<Text style={{
+							fontWeight: 'bold',
+							fontSize: 20,
+							color: '#426FFE',
+							paddingTop: 20,
+							paddingLeft: 55
+						}}>
+							Reduce Pay
+						</Text>
+					</TouchableOpacity>
+
+					<View
+						style={{
+						borderLeftWidth: 4,
+						borderLeftColor: 'black',
+						marginLeft: 33,
+						marginTop: 10,
+						paddingTop:50
+						}}
+					/>
+
+					<TouchableOpacity onPress={() => reduceTime()}>
+						<Text style={{
+							fontWeight: 'bold',
+							fontSize: 20,
+							color: '#426FFE',
+							paddingTop: 20,
+							paddingLeft: 32
+						}}>
+							Reduce Time
+						</Text>
+					</TouchableOpacity>
+				</View>
+
+				<View
+				style={{
+					borderBottomColor: 'black',
+					borderBottomWidth: 4,
+					marginLeft:25,
+					marginRight: 25
+				}}/>
+
+			<TouchableOpacity onPress={() => makeMonthlyPayment()}>
+					<Text style={{
+						fontWeight: 'bold',
+						fontSize: 20,
+						color: '#426FFE',
+						textAlign: 'center',
+						paddingTop: 15
+					}}>
+						Monthly Payment
+					</Text>
+
+				</TouchableOpacity>
 		</View>
     )
 }
