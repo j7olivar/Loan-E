@@ -31,7 +31,7 @@ export default class Faq extends Component {
            },
            { 
             title: 'How do I get the FAFSA Document?',
-            data: "1) go to studentaid.gov and login\
+            data: "1) go to studentaid.gov and login    \
             2) from your dashboard, click on 'View Details' on the My Aid rectangle\
             3) click on the 'Download My Aid Data' button on the top\
             4) upload it on LOAN•E"
