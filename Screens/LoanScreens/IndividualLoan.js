@@ -15,7 +15,7 @@ export default function IndividualLoanScreen({route, navigation}) {
 	const [ totalLoan, setTotalLoan ] = useState((parseFloat(item.value)-parseFloat(item.paidOff)).toFixed(2))
 	const [ paidOff, setPaidOff ] = useState(parseFloat(item.paidOff).toFixed(2))
 	const [ monthlyPayment, setMonthlyPayment ] = useState(getMonthlyPayement(parseFloat(item.years)*12, parseFloat(item.interest), parseFloat(item.value)-parseFloat(item.paidOff).toFixed(2)))
-	const [ monthsLeft, setMonthsLeft ] = useState(parseFloat(item.years) * 12)
+	const [ monthsLeft, setMonthsLeft ] = useState((parseFloat(item.years) * 12).toFixed(0))
 
 	function getMonthlyPayement(months, interestRate, loanAmount){
 		var monthlyIR = (interestRate * .01)/12;
@@ -55,15 +55,16 @@ export default function IndividualLoanScreen({route, navigation}) {
 		var newPaidOff = ((parseFloat(paidOff) + parseFloat(payment)).toFixed(2)).toString()
 		setPaidOff(newPaidOff)
 
-		editGoalHandler(item.id.substr(0,28), payments)
+		editGoalHandler(item.id.substr(0,28), payments, remainingMonths)
 
 	}
 
 	function makeMonthlyPayment(){
-		setMonthsLeft(monthsLeft-1)
+		var months = monthsLeft-1
+		setMonthsLeft(months)
 		setTotalLoan((totalLoan-monthlyPayment).toFixed(2))
 		setPaidOff(((parseFloat(paidOff)+parseFloat(monthlyPayment)).toFixed(2)).toString())
-		editGoalHandler(item.id.substr(0,28), monthlyPayment)
+		editGoalHandler(item.id.substr(0,28), monthlyPayment, months)
 
 	}
 
@@ -85,11 +86,11 @@ export default function IndividualLoanScreen({route, navigation}) {
 
 		
 		console.log(item.id.substr(0,28))
-		editGoalHandler(item.id.substr(0,28), payment)
+		editGoalHandler(item.id.substr(0,28), payment, monthsLeft)
 		
 	}
 
-	const editGoalHandler = async (id, payment) =>{
+	const editGoalHandler = async (id, payment, months) =>{
 		let userId = id
         const existingDoc = await loansRef.doc(userId).get();
         const goals = existingDoc.data().goals
@@ -102,15 +103,14 @@ export default function IndividualLoanScreen({route, navigation}) {
               id: item.id,
               value: item.value,
               interest: item.interest,
-              years: item.years,
+              years: (months/12).toFixed(2),
               paidOff: (parseFloat(paidOff)+parseFloat(payment)).toString()
 			}
-			console.log(newGoals[i])
           }
         }
         //rewrite to firestore
         await loansRef.doc(userId).update({goals:newGoals})
-        console.log('did this')
+        console.log(months)
         //now can go back to home screen
       }
 
