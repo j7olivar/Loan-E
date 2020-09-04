@@ -8,13 +8,11 @@ export default StyleSheet.create({
       },
 
       budgetTitle: {
-<<<<<<< HEAD
         fontWeight: 'bold',
         fontSize: 26,
         paddingLeft: 23,
         paddingTop: 34,
-        color: '#426FFE'
-=======
+        color: '#426FFE',
         width: 334,
         height: 30,
         marginTop: 34,
@@ -22,7 +20,6 @@ export default StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'flex-start',
->>>>>>> bobranch
       },
 
       budgetBox1: {
