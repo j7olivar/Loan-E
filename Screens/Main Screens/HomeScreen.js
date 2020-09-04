@@ -10,15 +10,11 @@ import * as SecureStore from 'expo-secure-store';
 import * as DocumentPicker from 'expo-document-picker';
 import * as FileSystem from 'expo-file-system';
 import { Button } from 'react-native-elements';
-
 import { createStackNavigator } from '@react-navigation/stack';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { set } from 'react-native-reanimated';
-
 import Icon from 'react-native-vector-icons/AntDesign';
-import AsyncStorage from '@react-native-community/async-storage';
-console.ignoredYellowBox = [ 'Warning:', '- node', 'Encountered', 'Failed' ];
-console.disableYellowBox = true;
+
+
 
 const Stack = createStackNavigator();
 
@@ -28,7 +24,6 @@ const HomeScreen = (props) => {
 	const [ isEditMode, setIsEditMode ] = useState(false);
 	const [ goalCounter, setGoalCounter ] = useState(0);
 	const [ pw, setPW ] = useState('');
-	//const [userOut, setUserOut] = useState("")
 	var userOut;
 
 	const [ totalLoan, setTotalLoan ] = useState(0);
@@ -431,7 +426,7 @@ const styles = StyleSheet.create({
 		fontSize: 28,
 		paddingLeft: 23,
 		paddingTop: 65,
-		color: '#426FFE'
+		color: '#426FFE',
 	},
 	title: {
 		//color: '#35CA96',
