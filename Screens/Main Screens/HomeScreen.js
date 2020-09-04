@@ -413,40 +413,7 @@ const HomeScreen = (props) => {
 				<Text style={styles.graphTitle}>Future Payments</Text>
 				<FavoriteMealScreen/>
 
-<<<<<<< HEAD
 				<TouchableOpacity title= 'Upload Doc' onPress={pickDocument}>
-=======
-				<View style={{paddingBottom: 15}}>
-				</View>
-
-				{//Code for another link to the loan calculator, code redundant since we already have a link higher up the page
-
-					/*<View style={styles.box} title='Loan Calculator' onPress={onFooterLinkPress}>
-					<Text 
-						style={{
-							fontWeight: 'bold',
-							fontSize: 20,
-							color: 'black',
-							textAlign: 'left',
-							marginTop: 10,
-							flexDirection: 'row'
-						}}>
-							Loan Calculator
-					</Text>
-
-					<Icon
-					name={'keyboard-arrow-right'}
-					size={30}
-					color="grey"
-					onPress={onFooterLinkPress}
-					style={{marginTop: 7}}
-					/>
-					
-					</View>*/}
-
-				{//Code to go to the loan home screen prototype
-					/*<TouchableOpacity title='Loan Calculator' onPress={onFooterLinkPress2}> 
->>>>>>> 17517f1f182a8e34e1fbadbe99af62eb0964aaea
 					<Text style={{
 						fontWeight: 'bold',
 						fontSize: 20,
@@ -454,48 +421,9 @@ const HomeScreen = (props) => {
 						textAlign: 'left',
 						paddingTop: 20
 					}}>
-<<<<<<< HEAD
 						Upload Document
 					</Text>
 				</TouchableOpacity>
-=======
-						Loan Home Screen Prototype
-					</Text>
-				</TouchableOpacity>*/}
-
-				
-				{/*}
-				<TouchableOpacity title='Budget Page' onPress={onFooterLinkPress3}> 
-					<Text style={{
-						fontWeight: 'bold',
-						fontSize: 20,
-						color: '#32c090',
-						textAlign: 'center',
-						paddingTop: 20
-					}}>
-						Budgeting
-					</Text>
-				</TouchableOpacity>
-				*/}
-
-				{/*
-			
-				<TouchableOpacity title= 'Delete User' onPress={onDeleteAccountPress}>
-					<Text style={{
-						fontWeight: 'bold',
-						fontSize: 20,
-						color: '#32c090',
-						textAlign: 'center',
-						paddingTop: 20
-					}}>
-						Delete Account
-					</Text>
-				</TouchableOpacity>
-				
-				*/}
-
-				
->>>>>>> 17517f1f182a8e34e1fbadbe99af62eb0964aaea
 
 			</View>
 
