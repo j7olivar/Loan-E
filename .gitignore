@@ -299,3 +299,4 @@ Temporary Items
 # End of https://www.toptal.com/developers/gitignore/api/reactnative
 package-lock.json
 package.json
+node_modules

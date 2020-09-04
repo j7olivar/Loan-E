@@ -8,11 +8,13 @@ export default StyleSheet.create({
       },
 
       budgetTitle: {
-        fontWeight: 'bold',
-        fontSize: 26,
         paddingLeft: 23,
+        paddingRight: 20,
         paddingTop: 34,
-        color: '#426FFE'
+        color: '#426FFE',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'flex-start',
       },
 
       budgetBox1: {
@@ -46,7 +48,7 @@ export default StyleSheet.create({
       budgetBold2: {
         fontWeight: 'bold',
         fontSize: 15,
-        color: '#32c090'
+        color: '#426FFE'
       },
 
       budgetNormal: {

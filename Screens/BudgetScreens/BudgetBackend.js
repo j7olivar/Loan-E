@@ -3,7 +3,6 @@ const plaid = require("plaid");
 const express = require("express");
 const bodyParser = require("body-parser");
 const path = require("path");
-const firebase = require("firebase");
 const admin = require('firebase-admin');
 
 const app = express();

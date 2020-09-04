@@ -21,6 +21,7 @@ export default function BudgetScreen({navigation}){
     const _draggedValue = new Animated.Value(180);
 
     useEffect(() => {
+        console.log('useEffect Run')
         firebase.auth().currentUser.getIdToken().then(function(idToken) {
             console.log("idToken POST started");
             fetch('http://192.168.0.136:8080/send_uid', {
@@ -36,18 +37,11 @@ export default function BudgetScreen({navigation}){
           });
         firebase.firestore().collection('transactions').doc(user).onSnapshot(
             (docSnapshot) => {
-                if (!docSnapshot.exists) {
-                    console.log('doc doesnt exist, start from scratch')
-                    fetch('http://192.168.0.136:8080/transactions')
-                        .then((response) => response.json())
-                        .then((json) => setData(json.transactions))
-                        .catch((error) => console.error(error))
-                        .finally(() => setLoading(false));
-                }
-                else {
-                    console.log('loaded successfully ' + docSnapshot.data())
-                    setData(docSnapshot.data())
-                }
+                fetch('http://192.168.0.136:8080/transactions')
+                    .then((response) => response.json())
+                    .then((json) => setData(json.transactions))
+                    .catch((error) => console.error(error))
+                    .finally(() => setLoading(false));
             },
             (error) => {
                 console.log(error);
@@ -55,52 +49,81 @@ export default function BudgetScreen({navigation}){
         );
     }, []);
 
-    console.log(data.transactions);
+    console.log(data.transactions.length)
+
+    const getTotal = (key) => {
+        var val = 0;
+        if (key == 'total') {
+            for (let i = 0; i < data.transactions.length; i++) {
+                val += data.transactions[i].amount
+            }
+        }
+        else {
+            for (let i = 0; i < data.transactions.length; i++) {
+                if (key == data.transactions[i].category[0]) {
+                    val += data.transactions[i].amount
+                }
+                else {
+                    continue;
+                }
+            }
+        }
+		return val.toFixed(2);
+    };
 
     return(
     <View style={{backgroundColor: 'white', flex: 1}}>
         
         <View style={styles.budgetTitle}>
-            <Text style={{fontWeight: 'bold', fontSize: 26, color: '#32c090'}}>Budget </Text>
+            <Text style={{fontWeight: 'bold', fontSize: 26, color: '#426FFE'}}>Budget </Text>
             <TouchableOpacity onPress={() => navigation.navigate('Plaid Link')}>
             <Image style={{width: 30, height: 30, alignSelf: 'center'}} source = {require('../../assets/linkIcon.png')}/>
             </TouchableOpacity>
         </View>
 
         <View style={styles.budgetBox1}>
-
-            <View style={{flexDirection: 'row'}}>
-                <Text style={styles.budgetBold1}>Total Income: </Text>
-                <Text style={styles.budgetNormal}>$0</Text>
-            </View>
             
-            <Text style={styles.budgetBold1}>Spendings:</Text>
+            <View style={{flexDirection: 'row'}}>
+                <Text style={styles.budgetBold1}>Total Spendings: </Text>
+                <Text style={styles.budgetNormal}>${getTotal('total')}</Text>
+            </View>
 
             <View style={{flexDirection: 'row'}}>
                 <Text style={styles.budgetBlue}>Food: </Text>
-                <Text style={styles.budgetNormal}>$0/$0</Text>
+                <Text style={styles.budgetNormal}>${getTotal('Food and Drink')}</Text>
             </View>
 
             <View style={{flexDirection: 'row'}}>
-                <Text style={styles.budgetBlue}>Textbooks: </Text>
-                <Text style={styles.budgetNormal}>$0/$0</Text>
+                <Text style={styles.budgetBlue}>Travel: </Text>
+                <Text style={styles.budgetNormal}>${getTotal('Travel')}</Text>
             </View>
 
             <View style={{flexDirection: 'row'}}>
-                <Text style={styles.budgetBlue}>Entertainment: </Text>
-                <Text style={styles.budgetNormal}>$0/$0</Text>
+                <Text style={styles.budgetBlue}>Recreation: </Text>
+                <Text style={styles.budgetNormal}>${getTotal('Recreation')}</Text>
             </View>
 
             <View style={{flexDirection: 'row'}}>
-                <Text style={styles.budgetBlue}>Subscriptions: </Text>
-                <Text style={styles.budgetNormal}>$0/$0</Text>
+                <Text style={styles.budgetBlue}>Purchases: </Text>
+                <Text style={styles.budgetNormal}>${getTotal('Shops')}</Text>
             </View>
 
             <View style={{flexDirection: 'row'}}>
-                <Text style={styles.budgetBold1}>+ </Text>
-                <Text style={styles.budgetNormal}>Add Category</Text>
+                <Text style={styles.budgetBlue}>Payments: </Text>
+                <Text style={styles.budgetNormal}>${getTotal('Payment')}</Text>
+            </View>
+
+            <View style={{flexDirection: 'row'}}>
+                <Text style={styles.budgetBlue}>Transfers: </Text>
+                <Text style={styles.budgetNormal}>${getTotal('Transfer')}</Text>
             </View>
         
+        </View>
+
+        <View style={{flexDirection: 'row', paddingTop: 25, alignSelf: 'center'}}>
+            <TouchableOpacity>
+                <Text style={{fontWeight: 'bold', fontSize: 20, color: '#426FFE'}}>Edit Budget</Text>
+            </TouchableOpacity>
         </View>
 
         <View style={{flex:1}}>
@@ -111,23 +134,21 @@ export default function BudgetScreen({navigation}){
             backdropOpacity={0}
             height={height + 20}
             friction={0.9}
-            onDragEnd={() => setAllowDragging(true)}
-            allowDragging={allowDragging}
             >
 
+                {dragHandler => (
                 <View style={{flex: 1, backgroundColor: 'white', borderRadius: 25, padding: 14}}>
-                    <View style={styles.panelHandle}></View>
+                    <View {...dragHandler}>
+                    <Image style={{width: 300, height: 25, alignSelf: 'center'}} source = {require('../../assets/slideupbar.png')}/>
+                    </View>
                     <View>
                         <Text style={{marginVertical: 16, color: 'black', fontWeight: 'bold'}}>
                             Recent Transactions
                         </Text>
                     </View>
 
-                    <ScrollView
-                    onTouchStart={() => setAllowDragging(false)}
-                    onTouchEnd={() => setAllowDragging(true)}
-                    >
                     <View style = {{height : 450, paddingBottom: 10}}>
+                    <ScrollView>
                         <FlatList
                         data={data.transactions}
                         keyExtractor={item => item.transaction_id}
@@ -147,9 +168,10 @@ export default function BudgetScreen({navigation}){
                             )
                         }}
                         />
-                    </View>
                     </ScrollView>
+                    </View>
                 </View>
+                )}
 
 
             </SlidingUpPanel>

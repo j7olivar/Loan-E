@@ -3474,7 +3474,7 @@ firebase-functions@^3.11.0:
     express "^4.17.1"
     lodash "^4.17.14"
 
-firebase@^7.19.1:
+firebase@^7.9.0:
   version "7.19.1"
   resolved "https://registry.yarnpkg.com/firebase/-/firebase-7.19.1.tgz#e77c778117c92206c4806c15a0513f33b625ad05"
   integrity sha512-kZUbxN4amrKZc2pkmAMqQtWNkb608rCZLL61NC0X/UXI1euWhIFXdCGQNBlEdOlUwDLBGwNpyTBhQtL4UYHEZw==
