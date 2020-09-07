@@ -140,8 +140,8 @@ export default function IndividualLoanScreen({route, navigation}) {
 
 			<View
 				style={{
-					borderBottomColor: 'black',
-					borderBottomWidth: 4,
+					borderBottomColor: '#ededed',
+					borderBottomWidth: 2,
 					paddingTop: 30,
 					marginLeft:8,
 					marginRight: 8
@@ -151,7 +151,7 @@ export default function IndividualLoanScreen({route, navigation}) {
 					paddingTop: 25,
 					paddingLeft: 10,
 					fontWeight: 'bold',
-					fontSize: 25,
+					fontSize: 22,
 					color: 'black',
 					textAlign: 'center'}}>
 					Payment
@@ -168,7 +168,7 @@ export default function IndividualLoanScreen({route, navigation}) {
 					<TouchableOpacity onPress={() => makePayment(totalLoan, payment, paidOff, parseFloat(item.interest), parseFloat(item.years)*12)}>
 						<Text style={{
 							fontWeight: 'bold',
-							fontSize: 20,
+							fontSize: 18,
 							color: '#426FFE',
 							paddingTop: 20,
 							paddingLeft: 55
@@ -179,8 +179,8 @@ export default function IndividualLoanScreen({route, navigation}) {
 
 					<View
 						style={{
-						borderLeftWidth: 4,
-						borderLeftColor: 'black',
+						borderLeftWidth: 2,
+						borderLeftColor: '#ededed',
 						marginLeft: 33,
 						marginTop: 10,
 						paddingTop:50
@@ -190,7 +190,7 @@ export default function IndividualLoanScreen({route, navigation}) {
 					<TouchableOpacity onPress={() => reduceTime()}>
 						<Text style={{
 							fontWeight: 'bold',
-							fontSize: 20,
+							fontSize: 18,
 							color: '#426FFE',
 							paddingTop: 20,
 							paddingLeft: 32
@@ -202,8 +202,8 @@ export default function IndividualLoanScreen({route, navigation}) {
 
 				<View
 				style={{
-					borderBottomColor: 'black',
-					borderBottomWidth: 4,
+					borderBottomColor: '#ededed',
+					borderBottomWidth: 2,
 					marginLeft:25,
 					marginRight: 25
 				}}/>
@@ -211,7 +211,7 @@ export default function IndividualLoanScreen({route, navigation}) {
 			<TouchableOpacity onPress={() => makeMonthlyPayment()}>
 					<Text style={{
 						fontWeight: 'bold',
-						fontSize: 20,
+						fontSize: 18,
 						color: '#426FFE',
 						textAlign: 'center',
 						paddingTop: 15

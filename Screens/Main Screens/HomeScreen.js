@@ -70,7 +70,7 @@ const HomeScreen = (props) => {
 	}
 	
 	
-	/*
+	
 	const onFooterLinkPress4 = (item) => {
 		props.navigation.navigate('Individual Loan', 
 		{loan: item.value, interestRate: item.interest, timeLeft: item.years, paidSoFar: item.paidOff, item: item})
@@ -94,7 +94,7 @@ const HomeScreen = (props) => {
 		})
 		clearPW()
 	}
-	*/
+	
 
 	
 
@@ -351,7 +351,7 @@ const HomeScreen = (props) => {
 					buttonStyle={{alignSelf:'flex-end'}}
 					onPress={() => setIsAddMode(true)}
 					title='New Loan    '
-					titleStyle={{fontSize:20, fontWeight:'bold',color:'#426FFE', alignSelf:'flex-end'}}
+					titleStyle={{fontSize:18, fontWeight:'bold',color:'#426FFE', alignSelf:'flex-end'}}
 				/>
 				<GoalInput visible={isAddMode} addGoalHandler={addGoalHandler} onCancel={cancelGoalAdditionHandler} />
 				<FlatList
@@ -386,7 +386,7 @@ const HomeScreen = (props) => {
 					buttonStyle={{alignSelf:'center'}}
 					onPress={pickDocument}
 					title='Upload FAFSA Document    '
-					titleStyle={{fontSize:20, fontWeight:'bold',color:'#426FFE', alignSelf:'flex-end'}}
+					titleStyle={{fontSize:18, fontWeight:'bold',color:'#426FFE', alignSelf:'flex-end'}}
 				/>
 				<Button
 					icon={
@@ -401,13 +401,13 @@ const HomeScreen = (props) => {
 					buttonStyle={{alignSelf:'center'}}
 					onPress={onFooterLinkPress}
 					title='Calculate New Loan    '
-					titleStyle={{fontSize:20, fontWeight:'bold',color:'#426FFE', alignSelf:'flex-end'}}
+					titleStyle={{fontSize:18, fontWeight:'bold',color:'#426FFE', alignSelf:'flex-end'}}
 				/>
 
 				<View style={{paddingTop: 10, paddingBottom:10}}>
 				</View>
 				<View
-				style={{borderBottomColor:'#ededed', borderBottomWidth:3}}>
+				style={{borderBottomColor:'#ededed', borderBottomWidth:2}}>
 				</View>
 
 				<Text style={styles.graphTitle}>Future Payments</Text>

@@ -3,44 +3,45 @@ import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
     totalLoan: {
 		fontWeight: 'bold',
-		fontSize: 40,
+		fontSize: 26,
 		color: 'black',
 		textAlign: 'center',
-		paddingTop: 20
+		paddingTop: 20,
+		
 	},
 	leftText:{
 		paddingTop: 25,
-		paddingLeft: 10,
+		paddingLeft: 30,
 		fontWeight: 'bold',
-		fontSize: 25,
+		fontSize: 18,
 		color: '#426FFE'
 	},
 	rightText1:{
 		paddingTop: 25,
-		paddingLeft: 47,
+		paddingLeft: 75,
 		fontWeight: 'bold',
-		fontSize: 25,
+		fontSize: 18,
 		color: 'black'
 	},
 	rightText2:{
 		paddingTop: 25,
-		paddingLeft: 103,
+		paddingLeft: 118,
 		fontWeight: 'bold',
-		fontSize: 25,
+		fontSize: 18,
 		color: 'black'
 	},
 	rightText3:{
 		paddingTop: 25,
-		paddingLeft: 112,
+		paddingLeft: 127,
 		fontWeight: 'bold',
-		fontSize: 25,
+		fontSize: 18,
 		color: 'black'
 	},
 	rightText4:{
 		paddingTop: 25,
-		paddingLeft: 154,
+		paddingLeft: 160,
 		fontWeight: 'bold',
-		fontSize: 25,
+		fontSize: 18,
 		color: 'black'
 	},
 	input: {
@@ -54,7 +55,7 @@ export default StyleSheet.create({
         marginRight: 30,
 		paddingLeft: 8,
 		paddingRight: 8,
-		fontSize: 20,
+		fontSize: 16,
         color: 'black',
     },
 })
