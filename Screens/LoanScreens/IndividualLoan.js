@@ -143,12 +143,12 @@ export default function IndividualLoanScreen({route, navigation}) {
 					borderBottomColor: '#ededed',
 					borderBottomWidth: 2,
 					paddingTop: 30,
-					marginLeft:8,
-					marginRight: 8
+					marginLeft:20,
+					marginRight: 20
 				}}/>
 
 			<Text style={{
-					paddingTop: 25,
+					paddingTop: 30,
 					paddingLeft: 10,
 					fontWeight: 'bold',
 					fontSize: 22,
@@ -157,7 +157,7 @@ export default function IndividualLoanScreen({route, navigation}) {
 					Payment
 				</Text>
 
-				<View style={{paddingTop: 10}}>
+				<View style={{paddingTop: 15}}>
 					<TextInput placeholder="Custom Payment"
 					style={styles.input} 
 					onChangeText ={ payment => setPayment(payment)}/>

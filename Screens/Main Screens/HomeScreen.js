@@ -326,7 +326,7 @@ const HomeScreen = (props) => {
 				)}/>
 
 				<Text style={{
-						fontSize: 24,
+						fontSize: 22,
 						color: 'black',
 						textAlign: 'left',
 						fontWeight:'bold',
@@ -456,16 +456,16 @@ const styles = StyleSheet.create({
       },
 	title: {
 		//color: '#35CA96',
-		fontSize: 25,
+		fontSize: 22,
 		marginLeft:0,
 		fontWeight: 'bold',
 	},
 	graphTitle: {
 		//color: '#35CA96',
-		fontSize: 25,
+		fontSize: 22,
 		marginLeft:5,
 		fontWeight: 'bold',
-		paddingTop:15
+		paddingTop:24
 	},
 	logout: {
 		//	position: 'absolute',

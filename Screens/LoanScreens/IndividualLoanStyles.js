@@ -6,7 +6,7 @@ export default StyleSheet.create({
 		fontSize: 26,
 		color: 'black',
 		textAlign: 'center',
-		paddingTop: 20,
+		paddingTop: 38,
 		
 	},
 	leftText:{

@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import {View, Text, TextInput, Button, StyleSheet, Modal} from 'react-native'
 import { firebase } from '../../Constants/ApiKeys';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const EditGoalInput = props => {
     const {theOne} = props.route.params
@@ -72,14 +73,14 @@ const EditGoalInput = props => {
       <View style={styles.inputContainer}>
 
   
-        <Text> Loan Amount </Text>
+        <Text style={styles.formatText}>Loan Amount: </Text>
         <TextInput
           placeholder= {enteredGoal}
           style={styles.input}
           onChangeText={goalInputHandler}
           value={enteredGoal}/>
 
-        <Text> Interest Rate: </Text>
+        <Text style={styles.formatText}>Interest Rate: </Text>
          <TextInput 
           placeholder={interestRate}
           style={styles.input}
@@ -87,7 +88,7 @@ const EditGoalInput = props => {
           value={interestRate}
          />  
 
-        <Text> Number of Years </Text>
+        <Text style={styles.formatText}>Number of Years: </Text>
         <TextInput 
           placeholder={years}
           style={styles.input}
@@ -95,7 +96,7 @@ const EditGoalInput = props => {
           value={years}
          />  
 
-        <Text> Paid So Far: </Text>
+        <Text style={styles.formatText}>Paid So Far: </Text>
           <TextInput 
           placeholder={paid}
           style={styles.input}
@@ -104,20 +105,21 @@ const EditGoalInput = props => {
          />
      
           <View style={styles.buttons}>
-            <View style={styles.button}>
-              <Button title="CANCEL" color="red" onPress={() => props.navigation.goBack()} />
-            </View>   
-            <View style={styles.button}>          
-              <Button title="Update" onPress={editGoalHandler} />
-            </View>
-      </View>
+            <TouchableOpacity style={styles.button} onPress={editGoalHandler}>          
+              <Text style={styles.appButtonText}>Update</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button1} onPress={() => props.navigation.goBack()}>
+              <Text style={styles.appButtonText}>Cancel</Text> 
+            </TouchableOpacity>   
+          </View>
+
     </View>
     </Modal>
 )
 }
 
 const styles = StyleSheet.create({
-inputContainer: {
+/*inputContainer: {
     flex:1,
     justifyContent: 'center',
     alignItems: 'center',
@@ -125,7 +127,7 @@ inputContainer: {
     marginBottom: 10,
     marginVertical:10
   },
-  input: {
+  /*input: {
     alignItems: 'center',
     padding: 10,
     marginVertical: 10,
@@ -141,15 +143,85 @@ inputContainer: {
     paddingLeft: 16,
     fontSize: 20,
     color: 'black',
+  },*/
+  inputContainer: {
+    flex:1,
+    justifyContent: 'center',
+    //padding: 30,
+    marginBottom: 10,
+    marginVertical:10
+  },
+  input: {
+    height: 48,
+    borderRadius: 5,
+    overflow: 'hidden',
+    backgroundColor: '#e7e7e7',
+    marginTop: 10,
+    marginBottom: 10,
+    marginLeft: 30,  
+    marginRight: 30,
+    paddingLeft: 16,
+    fontSize: 16,
   },
   buttons: {
-      flexDirection: 'row-reverse',
-      justifyContent: "space-between",
-      width: '60%',
+    flexDirection: 'row',
+    justifyContent: "space-between",
+    width: '100%',
+    alignItems: 'center',
   },
-  button:{
-    width: '40%'
-  }
+  button: {
+    height: 48,
+    borderRadius:5,
+    overflow: 'hidden',
+    backgroundColor: '#426FFE',
+    marginTop: 25,
+    marginBottom: 10,
+    marginLeft: 30,
+    marginRight: 30,
+    //paddingLeft: 50,
+    //paddingRight: 25,
+    //padding: 20,
+    paddingLeft: 35,
+    paddingRight: 35
+  },
+  button1:{
+    height: 48,
+    borderRadius:5,
+    overflow: 'hidden',
+    backgroundColor: '#ff443a',
+    marginTop: 25,
+    marginBottom: 10,
+    marginLeft: 30,
+    marginRight: 30,
+    //paddingLeft: 50,
+    //paddingRight: 25,
+    //padding: 20,
+    paddingLeft: 35,
+    paddingRight: 35
+  },  
+  appButtonText: {
+    fontSize: 16,
+    marginTop: 13,
+    color: "white",
+    fontWeight: "bold",
+    alignSelf: "center",
+  },
+  formatText: {
+    paddingTop: 25,
+    //textAlign: 'center',
+    textAlign: 'left',
+    marginLeft: 30,
+    fontWeight: 'bold',
+    fontSize: 16,
+    color: '#426FFE'
+  },
+  appButtonText: {
+    fontSize: 16,
+    marginTop: 13,
+    color: "white",
+    fontWeight: "bold",
+    alignSelf: "center",
+  },
 })
 
 export default EditGoalInput
