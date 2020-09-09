@@ -42,22 +42,12 @@ export default function BudgetScreen({navigation}){
 
         firebase.firestore().collection('transactions').doc(user).onSnapshot(
             (docSnapshot) => {
-<<<<<<< HEAD
-                if (!docSnapshot.exists) {
-                    console.log('doc doesnt exist, start from scratch')
-                    fetch('http://192.168.1.80:8080/transactions')
-                        .then((response) => response.json())
-                        .then((json) => setData(json.transactions))
-                        .catch((error) => console.error(error))
-                        .finally(() => setLoading(false));
-=======
                 if (!docSnapshot.exists || docSnapshot.data().date != moment().format('YYYY-MM-DD')) {
-                    console.log("transaction pull started: " + isLoading)
-                    fetch('http://192.168.0.136:8080/transactions')
+                    console.log("transaction pull started: ")
+                    fetch('http://192.168.1.80:8080/transactions')
                     .then((response) => response.json())
                     .then((json) => setData(json.transactions))
                     .catch((error) => console.log(error))
->>>>>>> origin/bobranch2
                 }
                 else {
                     console.log("database pull started")

@@ -12,13 +12,6 @@ export default StyleSheet.create({
         paddingRight: 20,
         paddingTop: 34,
         color: '#426FFE',
-<<<<<<< HEAD
-        width: 334,
-        height: 30,
-        marginTop: 34,
-        marginLeft: 23,
-=======
->>>>>>> origin/bobranch2
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'flex-start',

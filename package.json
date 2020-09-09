@@ -15,7 +15,7 @@
     "@react-navigation/native": "^5.7.3",
     "@react-navigation/stack": "^5.9.0",
     "base-64": "^0.1.0",
-    "expo": "^38.0.0",
+    "expo": "^38.0.10",
     "expo-constants": "~9.1.1",
     "expo-document-picker": "~8.2.1",
     "expo-file-system": "~9.0.1",
@@ -26,11 +26,7 @@
     "expo-secure-store": "~9.0.1",
     "expo-status-bar": "^1.0.0",
     "express": "^4.17.1",
-<<<<<<< HEAD
     "firebase": "^7.19.1",
-=======
-    "firebase": "^7.9.0",
->>>>>>> origin/bobranch2
     "firebase-admin": "^9.1.1",
     "firebase-functions": "^3.11.0",
     "moment": "^2.27.0",
