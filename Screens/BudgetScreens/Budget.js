@@ -23,7 +23,7 @@ export default function BudgetScreen({navigation}){
     useEffect(() => {
         firebase.auth().currentUser.getIdToken().then(function(idToken) {
             console.log("idToken POST started");
-            fetch('http://192.168.0.136:8080/send_uid', {
+            fetch('http://192.168.1.80:8080/send_uid', {
                 method: 'POST',
                 headers: {
                   'Content-type': 'application/json'
@@ -38,7 +38,7 @@ export default function BudgetScreen({navigation}){
             (docSnapshot) => {
                 if (!docSnapshot.exists) {
                     console.log('doc doesnt exist, start from scratch')
-                    fetch('http://192.168.0.136:8080/transactions')
+                    fetch('http://192.168.1.80:8080/transactions')
                         .then((response) => response.json())
                         .then((json) => setData(json.transactions))
                         .catch((error) => console.error(error))
