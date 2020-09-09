@@ -3,7 +3,6 @@ const plaid = require("plaid");
 const express = require("express");
 const bodyParser = require("body-parser");
 const path = require("path");
-const firebase = require("firebase");
 const admin = require('firebase-admin');
 
 const app = express();
@@ -165,7 +164,8 @@ app.get('/transactions', async function(request, response, next) {
       //console.log(JSON.stringify(transactionsResponse, null, 2));
       transRef.update({
         accounts: transactionsResponse.accounts,
-        transactions: transactionsResponse.transactions
+        transactions: transactionsResponse.transactions,
+        date: moment().format('YYYY-MM-DD')
       })
       console.log('Transactions pulled!');
       response.json({error: false, transactions: transactionsResponse});
