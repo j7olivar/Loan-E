@@ -23,11 +23,18 @@ export default class Faq extends Component {
           },
           { 
             title: 'How are we different?',
-            data: 'LOAN*E goes above and beyond to not only help college students budget, manage, and organize their finances, but to also educate them and empower them to be financially responsible and independent. We hope to aid in creating a generation of financially savvy young adults.'
+            data: 'LOAN•E goes above and beyond to not only help college students budget, manage, and organize their finances, but to also educate them and empower them to be financially responsible and independent. We hope to aid in creating a generation of financially savvy young adults.'
            },
            { 
-            title: 'Does it cost anything?',
-            data: 'LOAN*E does not cost a penny— it is completely free!'
+            title: 'What is the FAFSA Document from the Homescreen?',
+            data: "It is a document provided by FAFSA from studentaid.gov with all loan information. Don't worry, the document is deleted after extracting loan information"
+           },
+           { 
+            title: 'How do I get the FAFSA Document?',
+            data: "1) go to studentaid.gov and login    \
+            2) from your dashboard, click on 'View Details' on the My Aid rectangle\
+            3) click on the 'Download My Aid Data' button on the top\
+            4) upload it on LOAN•E"
            },
            { 
             title: 'How do I reset my password?',
