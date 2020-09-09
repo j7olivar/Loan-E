@@ -73,7 +73,8 @@ const FavoriteMealScreen = (props) => {
 	}
 
 	const changeGraph = async (value) => {
-		setSliderValue(value);
+		setCurrentLoans(sort_object(currentLoans))
+		setMonthlyValue(value);
 
 		//get total amount due
 		currentDebt = await getTotal()
@@ -129,8 +130,8 @@ const FavoriteMealScreen = (props) => {
 				</Text>
 				<Slider
 					style={{ width: Dimensions.get('window').width - 60, height: 40, justifyContent:'center', marginLeft: 18, marginTop:5}}
-					minimumValue={1}
-					maximumValue={35}
+					minimumValue={0}
+					maximumValue={1000}
 					step={1}
 					minimumTrackTintColor="#426FFE"
 					maximumTrackTintColor="#000000"
