@@ -25,6 +25,9 @@ const FavoriteMealScreen = (props) => {
 		'loan2': [3000,5],
 		'loan3': [500,15]
 	}) //loan amnt and interest rate
+	const [interestRate, setInterestRate] = useState('1')
+	const [labels, setLabels] = useState([])
+	
 
 	//Stolen sort dictionary function hope it works
 	const sort_object = (obj) => {
@@ -35,7 +38,7 @@ const FavoriteMealScreen = (props) => {
 			return second[1][1] - first[1][1];
 		});
 		sorted_obj={}
-		$.each(items, function(k, v) {
+		.each(items, function(k, v) {
 			use_key = v[0]
 			use_value = v[1]
 			sorted_obj[use_key] = use_value
@@ -44,8 +47,33 @@ const FavoriteMealScreen = (props) => {
 	} 
 
 	
+<<<<<<< Updated upstream
 	const [interestRate, setInterestRate] = useState('1')
 	const [labels, setLabels] = useState([])
+=======
+	
+	const calculateTotalMonths = (monthlyPayment) => {
+		var currentMonths = 0;
+		setCurrentLoans(sort_objects(currentLoans));
+		for(var key in currentLoans){
+			currentMonths = calculateSub(currentLoans[key][0], currentLoans[key][1], currentMonths, monthlyPayment)
+		}
+		return currentMonths;
+	}
+
+	const calculateSub = (loan, interest, currentMonths, monthlyPayment) => {
+		interest = (interest * .01)/12;
+		var i=0;
+		for(i=0; i<currentMonths; i++){
+			loan = loan * (1+interest)
+		}
+		while(loan>0){
+			loan = loan-monthlyPayment
+			loan = loan * (1+interest);
+		}
+		return currentMonths;
+	}
+>>>>>>> Stashed changes
 
 	//import total from firebase
 	const getTotal = async()=>{
@@ -80,23 +108,29 @@ const FavoriteMealScreen = (props) => {
 		currentDebt = await getTotal()
 		
 		//finding x-axis intervals
-		var oneStep = value/6
-		if(value >=6){
-			setLabels([oneStep.toFixed(0), (oneStep*2).toFixed(0), (oneStep*3).toFixed(0), (oneStep*4).toFixed(0), (oneStep*5).toFixed(0), value.toFixed(0)])
+		if(value%20 == 0){
+			totalNumberOfMonths = calculateTotalMonths(value);
+			// Set labels to be every year, 5 years, etc.
+			numberOfLabels = totalNumberOfMonths/12
+		if(numberOfLabels <= 12){
+			setLabels([2,4,6,8,10,12])
+			
+		}
+		else if(numberOfLabels <= 60){
+			setLabels([1,2,3,4,5,6])
+		}
+		else if(numberOfLabels <= 120){
+			setLabels([2,4,6,8,10,12])
 		}
 		else{
-			//im not sure what to do for years less than 6 since we are using 6 dots on the graph
-			setLabels([1,2,3,4,5])
+			setLabels([5,10,15,20,25,30])
+		}
+
 		}
 
 		//finding y-axis intervals (tbh idk what the List is meant for)
 		var yAxisStep = total/5
 		setList([yAxisStep.toFixed(0), (yAxisStep*2).toFixed(0),(yAxisStep*3).toFixed(0),(yAxisStep*4).toFixed(0),total])
-	
-
-		if(value%5 == 0){
-			//setList([])
-		}
 
 		setInterest((((interestRate*.01)/(value*12))*currentDebt).toFixed(2))
 	};
@@ -168,7 +202,7 @@ const FavoriteMealScreen = (props) => {
 						backgroundGradientFrom: 'white',
 						backgroundGradientTo: 'white',
 						decimalPlaces: 2,
-						color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+						color: (opacity = 1) => `rgba(0, 0, 0, {opacity})`,
 						style: {
 							borderRadius: 16,
 							justifyContent: 'center'
