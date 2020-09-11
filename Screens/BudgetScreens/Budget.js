@@ -13,9 +13,15 @@ export default function BudgetScreen({navigation}){
 
     const [modalVisible, setModalVisible] = useState(false);
 
-    const [isEnabled, setIsEnabled] = useState(false);
+    const [advDetails, setAdvDetails] = useState([]);
 
-    const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+    const [enteredAmount, setEnteredAmount] = useState('')
+
+    const [enteredCategory, setEnteredCategory] = useState('')
+
+    const [enteredProvider, setEnteredProvider] = useState('')
+    
+    const [enteredDate, setEnteredDate] = useState('')
 
     const {width,height} = Dimensions.get('window')
 
@@ -25,10 +31,38 @@ export default function BudgetScreen({navigation}){
 
     const _draggedValue = new Animated.Value(180);
 
+    const noData =
+        <View style={{justifyContent: 'center', alignItems: 'center', flex:1, marginLeft: 20, marginRight: 20}}>
+            <Text style={{fontWeight: 'bold', fontSize: 22, color: '#426FFE', textAlign: 'center'}}>Please link your banking information in the profile page!</Text>
+        </View>;
+
+    const okData =                         
+        <FlatList
+        data={data.transactions}
+        keyExtractor={item => item.transaction_id}
+        renderItem={({item}) => {
+            return(
+                <TouchableOpacity onPress = {() => {showAdvanced(item)}}>
+                <View style={styles.panelItemContainer}>
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                        <View>
+                            <Text style={styles.budgetBold2}>{readCategory(item.category)} - {item.merchant_name}</Text>
+                            <Text style={styles.budgetNormal}>{item.date}</Text>
+                        </View>
+                    </View>
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                        <Text style={styles.budgetBlue}>${item.amount}</Text>
+                    </View>
+                </View>
+                </TouchableOpacity>
+            )
+        }}
+        />;
+
     useEffect(() => {
         firebase.auth().currentUser.getIdToken().then(function(idToken) {
             console.log("idToken POST started");
-            fetch('http://192.168.1.80:8080/send_uid', {
+            fetch('http://192.168.0.136:8080/send_uid', {
                 method: 'POST',
                 headers: {
                   'Content-type': 'application/json'
@@ -44,7 +78,7 @@ export default function BudgetScreen({navigation}){
             (docSnapshot) => {
                 if (!docSnapshot.exists || docSnapshot.data().date != moment().format('YYYY-MM-DD')) {
                     console.log("transaction pull started: ")
-                    fetch('http://192.168.1.80:8080/transactions')
+                    fetch('http://192.168.0.136:8080/transactions')
                     .then((response) => response.json())
                     .then((json) => setData(json.transactions))
                     .catch((error) => console.log(error))
@@ -73,9 +107,19 @@ export default function BudgetScreen({navigation}){
                     val += data.transactions[i].amount
                 }
             }
+            if (key == 'other') {
+                for (let i = 0; i < data.transactions.length; i++) {
+                    if (data.transactions[i].category == null) {
+                        val += data.transactions[i].amount
+                    }
+                    else {
+                        continue;
+                    }
+                }
+            }
             else {
                 for (let i = 0; i < data.transactions.length; i++) {
-                    if (key == data.transactions[i].category[0]) {
+                    if (data.transactions[i].category != null && key == data.transactions[i].category[0]) {
                         val += data.transactions[i].amount
                     }
                     else {
@@ -87,14 +131,102 @@ export default function BudgetScreen({navigation}){
         }
     };
 
+    const readCategory = (category) => {
+        if (category == null) {
+            return 'N/A'
+        }
+        else {
+            return category[0]
+        }
+    }
+
+    const displayChoice = () => {
+        if (data.transactions == null) {
+            return noData
+        }
+        else {
+            return okData
+        }
+    }
+
+    const addTransactionHandler = async () => {
+        setModalVisible(!modalVisible)
+        const newTransaction = {
+            amount: enteredAmount,
+            category: enteredCategory,
+            merchant_name: enteredProvider,
+            date: enteredDate,
+        };
+        console.log("I got here!:" + JSON.stringify(newTransaction));
+        await firebase.firestore().collection('transactions').doc(user).update({
+            transactions: firebase.firestore.FieldValue.arrayUnion({
+                transaction_id: user + Math.floor(Math.random() * 900000).toString(),
+                amount: enteredAmount,
+                category: enteredCategory,
+                merchant_name: enteredProvider,
+                date: enteredDate,
+            })
+        })
+        console.log("All done!")
+    }
+
+    const showAdvanced = (item) => {
+        setModalView(true)
+        setAdvDetails(
+            <View>
+            <Text style={styles.modalText3}>Advanced Details</Text>
+            <View style={{flexDirection: 'row', paddingBottom: 15}}>
+                <Text style={styles.budgetBlue1}>Transaction Amount: </Text>
+                <Text style={styles.budgetNormal}>${item.amount}</Text>
+            </View>
+            <View style={{flexDirection: 'row', paddingBottom: 15}}>
+                <Text style={styles.budgetBlue1}>Currency: </Text>
+                <Text style={styles.budgetNormal}>{item.iso_currency_code}</Text>
+            </View>
+            <View style={{flexDirection: 'row', paddingBottom: 15}}>
+                <Text style={styles.budgetBlue1}>Category: </Text>
+                <Text style={styles.budgetNormal}>{readCategory(item.category)}</Text>
+            </View>
+            <View style={{flexDirection: 'row', paddingBottom: 15}}>
+                <Text style={styles.budgetBlue1}>Location: </Text>
+                <Text style={styles.budgetNormal}>{item.name}</Text>
+            </View>
+            <View style={{flexDirection: 'row', paddingBottom: 15}}>
+                <Text style={styles.budgetBlue1}>Provider: </Text>
+                <Text style={styles.budgetNormal}>{item.merchant_name}</Text>
+            </View>
+            <View style={{flexDirection: 'row', paddingBottom: 15}}>
+                <Text style={styles.budgetBlue1}>Payment Type: </Text>
+                <Text style={styles.budgetNormal}>{item.payment_channel}</Text>
+            </View>
+            <View style={{flexDirection: 'row', paddingBottom: 15}}>
+                <Text style={styles.budgetBlue1}>Date: </Text>
+                <Text style={styles.budgetNormal}>{item.date}</Text>
+            </View>
+            </View>
+        )
+    }
+
+    const amountHandler = (enteredText) => {
+        setEnteredAmount(enteredText)
+    }    
+
+    const categoryHandler = (enteredText) =>{
+        setEnteredCategory(enteredText)
+    }
+
+    const providerHandler = (enteredText) =>{
+        setEnteredProvider(enteredText)
+    }
+    const dateHandler = (enteredText) =>{
+        setEnteredDate(enteredText)
+    }
+
     return(
     <View style={{backgroundColor: 'white', flex: 1}}>
         
         <View style={styles.budgetTitle}>
             <Text style={{fontWeight: 'bold', fontSize: 26, color: '#426FFE'}}>Budget </Text>
-            <TouchableOpacity onPress={() => navigation.navigate('Plaid Link')}>
-            <Image style={{width: 30, height: 30, alignSelf: 'center'}} source = {require('../../assets/refresh-icon-8.jpg')}/>
-            </TouchableOpacity>
         </View>
 
         <View style={styles.budgetBox1}>
@@ -134,119 +266,10 @@ export default function BudgetScreen({navigation}){
                 <Text style={styles.budgetNormal}>${getTotal('Transfer')}</Text>
             </View>
         
-        </View>
-        
-        <Modal
-        animationType="fade"
-        transparent={true}
-        visible={modalView}
-        onRequestClose={() => {
-          Alert.alert("Modal has been closed.");
-        }}>
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text style={styles.modalText1}>Tracked Categories</Text>
-
-            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                <Text style={styles.modalText2}>
-                    Food
-                </Text>
-                <Switch
-                    
-                    trackColor={{ false: "#3e3e3e", true: "#31db5c" }}
-                    thumbColor={isEnabled ? "#f4f3f4" : "#f4f3f4"}
-                    ios_backgroundColor="#3e3e3e"
-                    onValueChange={toggleSwitch}
-                    value={isEnabled}
-                />
+            <View style={{flexDirection: 'row'}}>
+                <Text style={styles.budgetBlue}>Other: </Text>
+                <Text style={styles.budgetNormal}>${getTotal('other')}</Text>
             </View>
-
-            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                <Text style={styles.modalText2}>
-                    Travel
-                </Text>
-                <Switch
-                    
-                    trackColor={{ false: "#3e3e3e", true: "#31db5c" }}
-                    thumbColor={isEnabled ? "#f4f3f4" : "#f4f3f4"}
-                    ios_backgroundColor="#3e3e3e"
-                    onValueChange={toggleSwitch}
-                    value={isEnabled}
-                />
-            </View>
-
-            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                <Text style={styles.modalText2}>
-                    Recreation
-                </Text>
-                <Switch
-                    
-                    trackColor={{ false: "#3e3e3e", true: "#31db5c" }}
-                    thumbColor={isEnabled ? "#f4f3f4" : "#f4f3f4"}
-                    ios_backgroundColor="#3e3e3e"
-                    onValueChange={toggleSwitch}
-                    value={isEnabled}
-                />
-            </View>
-
-            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                <Text style={styles.modalText2}>
-                    Purchases
-                </Text>
-                <Switch
-                    
-                    trackColor={{ false: "#3e3e3e", true: "#31db5c" }}
-                    thumbColor={isEnabled ? "#f4f3f4" : "#f4f3f4"}
-                    ios_backgroundColor="#3e3e3e"
-                    onValueChange={toggleSwitch}
-                    value={isEnabled}
-                />
-            </View>
-
-            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                <Text style={styles.modalText2}>
-                    Payments
-                </Text>
-                <Switch
-                    
-                    trackColor={{ false: "#3e3e3e", true: "#31db5c" }}
-                    thumbColor={isEnabled ? "#f4f3f4" : "#f4f3f4"}
-                    ios_backgroundColor="#3e3e3e"
-                    onValueChange={toggleSwitch}
-                    value={isEnabled}
-                />
-            </View>
-
-            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                <Text style={styles.modalText2}>
-                    Transfers
-                </Text>
-                <Switch
-                    
-                    trackColor={{ false: "#3e3e3e", true: "#31db5c" }}
-                    thumbColor={isEnabled ? "#f4f3f4" : "#f4f3f4"}
-                    ios_backgroundColor="#3e3e3e"
-                    onValueChange={toggleSwitch}
-                    value={isEnabled}
-                />
-            </View>
-
-            <TouchableOpacity
-              style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
-              onPress={() => {
-                setModalView(!modalView);
-              }}
-            >
-              <Text style={styles.textStyle}>Done</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-        </Modal>
-
-        <View style={{flexDirection: 'row', paddingTop: 25, alignSelf: 'center'}}>
-            <TouchableOpacity onPress={() => {setModalView(true)}}>
-                <Text style={{fontWeight: 'bold', fontSize: 20, color: '#426FFE'}}>Edit Budget</Text>
-            </TouchableOpacity>
         </View>
 
         <Modal
@@ -265,28 +288,36 @@ export default function BudgetScreen({navigation}){
             <TextInput
                 placeholder="$"
                 style={styles.input}
+                onChangeText={amountHandler}
+                value={enteredAmount}
             />
 
             <Text style={styles.modalText4}>Category: </Text>
             <TextInput 
                 placeholder="Category"
                 style={styles.input}
+                onChangeText={categoryHandler}
+                value={enteredCategory}
             />  
 
             <Text style={styles.modalText4}>Provider: </Text>
             <TextInput 
-                placeholder="Company"
+                placeholder="Business Name"
                 style={styles.input}
+                onChangeText={providerHandler}
+                value={enteredProvider}
             />  
 
             <Text style={styles.modalText4}>Date: </Text>
                 <TextInput 
                 placeholder="YYYY-MM-DD"
                 style={styles.input}
+                onChangeText={dateHandler}
+                value={enteredDate}
             />
 
                 <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                <TouchableOpacity style={styles.button} onPress={() => {setModalVisible(!modalVisible)}} >
+                <TouchableOpacity style={styles.button} onPress={() => {setModalVisible(!modalVisible)}}>
                     <Text style={styles.appButtonText}>Add</Text>
                 </TouchableOpacity>   
                 <TouchableOpacity style={styles.button1} onPress={() => {setModalVisible(!modalVisible)}}>          
@@ -294,6 +325,24 @@ export default function BudgetScreen({navigation}){
                 </TouchableOpacity>
                 </View>
                 
+            </View>
+            </View>
+        </Modal>
+
+        <Modal
+        animationType="fade"
+        transparent={true}
+        visible={modalView}
+        onRequestClose={() => {
+          Alert.alert("Modal has been closed.");
+        }}>
+            <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+                {advDetails}
+
+                <TouchableOpacity style={styles.button2} onPress={() => {setModalView(!modalView)}} >
+                    <Text style={styles.appButtonText}>Done</Text>
+                </TouchableOpacity>   
             </View>
             </View>
         </Modal>
@@ -323,27 +372,7 @@ export default function BudgetScreen({navigation}){
                     </View>
 
                     <View style = {{height : 450, paddingBottom: 10}}>
-                    <ScrollView>
-                        <FlatList
-                        data={data.transactions}
-                        keyExtractor={item => item.transaction_id}
-                        renderItem={({item}) => {
-                            return(
-                                <View style={styles.panelItemContainer}>
-                                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                                        <View>
-                                            <Text style={styles.budgetBold2}>{item.category[0]} - {item.merchant_name}</Text>
-                                            <Text style={styles.budgetNormal}>{item.date}</Text>
-                                        </View>
-                                    </View>
-                                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                                        <Text style={styles.budgetBlue}>${item.amount}</Text>
-                                    </View>
-                                </View>
-                            )
-                        }}
-                        />
-                    </ScrollView>
+                    <ScrollView>{displayChoice()}</ScrollView>
                     </View>
                 </View>
                 )}

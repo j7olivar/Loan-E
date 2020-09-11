@@ -142,7 +142,7 @@ function ProfilePage({ navigation }) {
                   name={'keyboard-arrow-right'}
                   size={30}
                   color={Colors.DARKGRAY}
-                  //onPress={onFooterLinkPress2}
+                  onPress={() => navigation.navigate('Plaid Link')}
                 />
               </View>
 

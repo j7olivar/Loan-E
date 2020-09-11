@@ -138,6 +138,7 @@ app.get('/auth', function(request, response, next) {
 
 app.get('/transactions', async function(request, response, next) {
   // Pull transactions for the Item for the last 30 days
+  console.log('transaction pull started')
   const loadDoc1 = await userRef.get();
 	if(loadDoc1.data().accessToken != null){
     ACCESS_TOKEN = loadDoc1.data().accessToken;
@@ -162,11 +163,28 @@ app.get('/transactions', async function(request, response, next) {
       });
     } else {
       //console.log(JSON.stringify(transactionsResponse, null, 2));
-      transRef.update({
-        accounts: transactionsResponse.accounts,
-        transactions: transactionsResponse.transactions,
-        date: moment().format('YYYY-MM-DD')
-      })
+      console.log('transaction write started')
+      transRef.onSnapshot(
+        (docSnapshot) => {
+            if (!docSnapshot.exists) {
+              transRef.set({
+                accounts: transactionsResponse.accounts,
+                transactions: transactionsResponse.transactions,
+                date: moment().format('YYYY-MM-DD')
+              })
+            }
+            else {
+              transRef.update({
+                accounts: transactionsResponse.accounts,
+                transactions: transactionsResponse.transactions,
+                date: moment().format('YYYY-MM-DD')
+              })
+            }
+        },
+        (error) => {
+            console.log(error);
+        }
+    );
       console.log('Transactions pulled!');
       response.json({error: false, transactions: transactionsResponse});
     }

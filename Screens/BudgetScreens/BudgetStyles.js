@@ -51,12 +51,6 @@ export default StyleSheet.create({
         color: '#426FFE'
       },
 
-      budgetBold2: {
-        fontWeight: 'bold',
-        fontSize: 15,
-        color: '#32c090'
-      },
-
       budgetNormal: {
         fontSize: 15,
         color: 'black'
@@ -65,6 +59,11 @@ export default StyleSheet.create({
       budgetBlue: {
         fontSize: 15,
         paddingLeft: 20,
+        color: '#426FFE'
+      },
+
+      budgetBlue1: {
+        fontSize: 15,
         color: '#426FFE'
       },
 
@@ -109,7 +108,7 @@ export default StyleSheet.create({
         shadowRadius: 3.84,
         elevation: 5,
         width: 300,
-        height: 400,
+        height: 420,
         flexDirection: 'column'
       },
 
@@ -199,6 +198,16 @@ export default StyleSheet.create({
         overflow: 'hidden',
         backgroundColor: '#ff443a',
         marginTop: 25,
+    },
+
+    button2:{
+      height: 48,
+      width: 100,
+      borderRadius:5,
+      overflow: 'hidden',
+      backgroundColor: '#426FFE',
+      marginTop: 25,
+      alignSelf: 'center'
     },
     
       appButtonText: {
