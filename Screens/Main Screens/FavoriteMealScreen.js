@@ -46,34 +46,6 @@ const FavoriteMealScreen = (props) => {
 		return(sorted_obj)
 	} 
 
-	
-<<<<<<< Updated upstream
-	const [interestRate, setInterestRate] = useState('1')
-	const [labels, setLabels] = useState([])
-=======
-	
-	const calculateTotalMonths = (monthlyPayment) => {
-		var currentMonths = 0;
-		setCurrentLoans(sort_objects(currentLoans));
-		for(var key in currentLoans){
-			currentMonths = calculateSub(currentLoans[key][0], currentLoans[key][1], currentMonths, monthlyPayment)
-		}
-		return currentMonths;
-	}
-
-	const calculateSub = (loan, interest, currentMonths, monthlyPayment) => {
-		interest = (interest * .01)/12;
-		var i=0;
-		for(i=0; i<currentMonths; i++){
-			loan = loan * (1+interest)
-		}
-		while(loan>0){
-			loan = loan-monthlyPayment
-			loan = loan * (1+interest);
-		}
-		return currentMonths;
-	}
->>>>>>> Stashed changes
 
 	//import total from firebase
 	const getTotal = async()=>{
