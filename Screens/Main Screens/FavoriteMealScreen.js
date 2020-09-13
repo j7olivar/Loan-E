@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View , TextInput} from 'react-native';
 import Header from '../../components/Header';
 import { Dimensions } from 'react-native';
@@ -14,37 +14,21 @@ import Slider from '@react-native-community/slider';
 import { firebase } from '../../Constants/ApiKeys';
 
 const FavoriteMealScreen = (props) => {
-	const [ sliderValue, setSliderValue ] = useState(10);
-	var currentDebt=0; //cant use useState b/c it doesnt update imediately
-	const [ list, setList ] = useState([ 300, 500, 300, 30, 200, 70 ]);
-	const [interest, setInterest] = useState(500);
+	const [ sliderValue, setSliderValue ] = useState(0);
+	//var currentDebt=0; //cant use useState b/c it doesnt update imediately
+
+	const [currentDebt, setCurrentDebt] = useState(5100);
+	const [ list, setList ] = useState([ 0, 0, 0, 0, 0, 0 ]);
+	const [interest, setInterest] = useState(0);
+	const [totalMonths, setTotalMonths] = useState(0)
+
+
 
 	const [monthlyValue, setMonthlyValue] = useState(100)
 	const [currentLoans, setCurrentLoans] = useState({
-		'loan1': [1000,10],
-		'loan2': [3000,5],
-		'loan3': [500,15]
+		'loan1': [5000,5],
+		'loan2': [100,10],
 	}) //loan amnt and interest rate
-	const [interestRate, setInterestRate] = useState('1')
-	const [labels, setLabels] = useState([])
-	
-
-	//Stolen sort dictionary function hope it works
-	const sort_object = (obj) => {
-		items = Object.keys(obj).map(function(key) {
-			return [key, obj[key]];
-		});
-		items.sort(function(first, second) {
-			return second[1][1] - first[1][1];
-		});
-		sorted_obj={}
-		.each(items, function(k, v) {
-			use_key = v[0]
-			use_value = v[1]
-			sorted_obj[use_key] = use_value
-		})
-		return(sorted_obj)
-	} 
 
 
 	//import total from firebase
@@ -64,6 +48,8 @@ const FavoriteMealScreen = (props) => {
 			}
 			//console.log(loansWithInt)
 			setCurrentLoans(loansWithInt)
+			setCurrentDebt(total)
+			console.log(currentLoans)
 			return total
 			
 		}
@@ -72,7 +58,40 @@ const FavoriteMealScreen = (props) => {
 		}
 	}
 
-	const changeGraph = async (value) => {
+
+
+	const changeGraph = async(value) => {
+		setSliderValue(value);
+		setMonthlyValue(value);
+		if(value%50 == 0){
+		//setCurrentLoans(currentLoans.sort())
+		//console.lxog(value);
+		
+			console.log(value);
+			var totalNumberOfMonths = calculateTotalMonths(value);
+			console.log("Months: " + totalNumberOfMonths)
+			// Set labels to be every year, 5 years, etc.
+			numberOfLabels = totalNumberOfMonths/12
+			var total = currentDebt
+
+			//findMonthIntervals(totalNumberOfMonths, value)
+			setList([total*.86, total*.66, total*.5, total *.33, total*.16,0]);
+			setTotalMonths(totalNumberOfMonths);
+			if(totalNumberOfMonths <= 12){
+				setLabels([2,4,6,8,10,12])
+			}
+			else if(totalNumberOfMonths <= 24){
+				setLabels([4,8,12,16,20,22])
+			}
+			else if(totalNumberOfMonths <= 72){
+				setLabels([12,24,36,48,60,72])
+			}
+			else {
+				setLabels([72,144,216,288,360,432])
+			}
+	};}
+		/*
+		setSliderValue(value)
 		setCurrentLoans(sort_object(currentLoans))
 		setMonthlyValue(value);
 
@@ -84,28 +103,24 @@ const FavoriteMealScreen = (props) => {
 			totalNumberOfMonths = calculateTotalMonths(value);
 			// Set labels to be every year, 5 years, etc.
 			numberOfLabels = totalNumberOfMonths/12
-		if(numberOfLabels <= 12){
-			setLabels([2,4,6,8,10,12])
-			
-		}
-		else if(numberOfLabels <= 60){
-			setLabels([1,2,3,4,5,6])
-		}
-		else if(numberOfLabels <= 120){
-			setLabels([2,4,6,8,10,12])
+		if(value >=6){
+			setLabels([oneStep.toFixed(0), (oneStep*2).toFixed(0), (oneStep*3).toFixed(0), (oneStep*4).toFixed(0), (oneStep*5).toFixed(0), value.toFixed(0)])
 		}
 		else{
-			setLabels([5,10,15,20,25,30])
-		}
-
-		}
+			//im not sure what to do for years less than 6 since we are using 6 dots on the graph
+			setLabels([1,2,3,4,5])
+		}}
 
 		//finding y-axis intervals (tbh idk what the List is meant for)
 		var yAxisStep = total/5
 		setList([yAxisStep.toFixed(0), (yAxisStep*2).toFixed(0),(yAxisStep*3).toFixed(0),(yAxisStep*4).toFixed(0),total])
+	
+
+		
 
 		setInterest((((interestRate*.01)/(value*12))*currentDebt).toFixed(2))
-	};
+		*/
+	
 
 	const changeInterestRate = (enteredText) => {
           setInterestRate(enteredText.toString())
@@ -144,16 +159,9 @@ const FavoriteMealScreen = (props) => {
 					onValueChange={(value) => changeGraph(value)}
 				/>
 				<View style={styles.mid}>
-				<Text style={{ textAlign: 'left', marginLeft:18}}> Years = {sliderValue}</Text>
+				<Text style={{ textAlign: 'left', marginLeft:18}}> Months = {totalMonths}</Text>
 				<Text style={{ textAlign: 'left', marginLeft:18}}> Interest = ${interest}</Text>
-				<Text style={{ textAlign: 'left', marginLeft:18}}> Interest Rate= </Text>
 				
-				<TextInput
-				placeholder= {'0%'}
-				style={styles.input }
-				onChangeText={changeInterestRate}
-				value={interestRate}
-				/>
 
 				</View>
 				<LineChart
@@ -174,12 +182,14 @@ const FavoriteMealScreen = (props) => {
 						backgroundGradientFrom: 'white',
 						backgroundGradientTo: 'white',
 						decimalPlaces: 2,
-						color: (opacity = 1) => `rgba(0, 0, 0, {opacity})`,
+						color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
 						style: {
 							borderRadius: 16,
 							justifyContent: 'center'
 						}
 					}}
+					//yAxisSuffix="$"
+					xAxisLabel="m"
 					style={{
 						marginVertical: 8,
 						marginLeft:18,
@@ -190,7 +200,9 @@ const FavoriteMealScreen = (props) => {
 			</View>
 		</View>
 	);
-};
+				}
+
+
 const styles = StyleSheet.create({
 	screen: {
 		flex: 1,
@@ -225,5 +237,3 @@ const styles = StyleSheet.create({
 });
 
 export default FavoriteMealScreen;
-
-//<Header title="Student Loan Calculator" />
