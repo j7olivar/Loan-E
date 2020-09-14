@@ -30,6 +30,84 @@ const FavoriteMealScreen = (props) => {
 		'loan2': [100,10],
 	}) //loan amnt and interest rate
 
+	
+	const [interestRate, setInterestRate] = useState('1')
+	const [labels, setLabels] = useState([])
+
+	/*
+	useEffect(() => {
+		getTotal()
+	}, []);
+	*/
+
+/* 	const findMonthIntervals = (totalMonths, monthlyPayment){
+		monthIntervals = [totalMonths/6, totalMonths/3, totalMonths/2, totalMonths * 2/3, totalMonths * 5/6, totalMonths];
+		finalValues = [0,0,0,0,0,0];
+		int i;
+		int currentLoan = 0;
+		val temp = currentLoans
+		val new = False;
+	// start paying off the loans month by month. When u reach the end, figure out how much interest has been accruing for all the ones that are last in all the months
+	// and add that to the total
+
+		// For every group of months
+		for(i=0, i<monthIntervals.length; i++){
+			int j;
+			//For every 1 month calculation
+			for(j=0; i < monthIntervals[i].length; j++){
+				if(new){
+					int p =0;
+					//Add to loan all
+					for(p=0; p < monthIntervals[i]; p++){
+						loan = loan * (1+interest);
+					}
+				}
+
+				loan = loan - monthlyPayment;
+				loan = loan * (1+interest);
+
+				if(loan <= 0){
+					new = True;
+					currentLoan++;
+				}
+			}
+				int q;
+				for(q=currentLoan; q < currentLoans.length; q++){
+					int r = 0;
+					for(r=0; r < monthIntervals[i]; r++){
+					temp[q][0] *= temp[q][0] + (1*currentLoans[q][1]) 
+					}
+				}
+				var thisLoan = temp[i][0];
+				finalValues[i] = currentPaidOff
+			}
+		return finalValues;
+	} */
+
+	const calculateTotalMonths = (monthlyPayment) => {
+		var currentMonths = 0;
+		//setCurrentLoans(sort_objects(currentLoans));
+		//setCurrentLoans(currentLoans.sort())
+		for(var key in currentLoans){
+			currentMonths = calculateSub(currentLoans[key][0], currentLoans[key][1], currentMonths, monthlyPayment)
+		}
+		return currentMonths;
+	}
+
+	const calculateSub = (loan, interest, currentMonths, monthlyPayment) => {
+		interest = (interest * .01)/12;
+		var i=0;
+		console.log("Current Months: " + currentMonths)
+		for(i=0; i<currentMonths; i++){
+			loan = loan * (1+interest)
+		}
+		while(loan>0){
+			loan = loan-monthlyPayment
+			loan = loan * (1+interest);
+			currentMonths++;
+		}
+		return currentMonths;
+	}
 
 	//import total from firebase
 	const getTotal = async()=>{
@@ -237,3 +315,4 @@ const styles = StyleSheet.create({
 });
 
 export default FavoriteMealScreen;
+
