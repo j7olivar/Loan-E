@@ -155,7 +155,7 @@ function ProfilePage({ navigation }) {
                   name={'keyboard-arrow-right'}
                   size={30}
                   color={Colors.DARKGRAY}
-                  onPress={() => Linking.openURL('https://forms.gle/fRL9R4ATkCexESYz9')}
+                  onPress={() => Linking.openURL('https://forms.gle/4hQkwLSx6NWpdAMY6')}
                 />
               </View>
 

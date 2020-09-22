@@ -33,7 +33,7 @@ export default function BudgetScreen({navigation}){
 
     const noData =
         <View style={{justifyContent: 'center', alignItems: 'center', flex:1, marginLeft: 20, marginRight: 20}}>
-            <Text style={{fontWeight: 'bold', fontSize: 22, color: '#426FFE', textAlign: 'center'}}>Please link your banking information in the profile page!</Text>
+            <Text style={{fontWeight: 'bold', fontSize: 16, color: '#426FFE', textAlign: 'center', paddingTop: 25}}>Please link your banking information in the profile page.</Text>
         </View>;
 
     const okData =                         
@@ -62,7 +62,7 @@ export default function BudgetScreen({navigation}){
     useEffect(() => {
         firebase.auth().currentUser.getIdToken().then(function(idToken) {
             console.log("idToken POST started");
-            fetch('http://192.168.0.136:8080/send_uid', {
+            fetch('http://66.27.69.117:8080/send_uid', {
                 method: 'POST',
                 headers: {
                   'Content-type': 'application/json'
@@ -78,7 +78,7 @@ export default function BudgetScreen({navigation}){
             (docSnapshot) => {
                 if (!docSnapshot.exists || docSnapshot.data().date != moment().format('YYYY-MM-DD')) {
                     console.log("transaction pull started: ")
-                    fetch('http://192.168.0.136:8080/transactions')
+                    fetch('http://66.27.69.117:8080/transactions')
                     .then((response) => response.json())
                     .then((json) => setData(json.transactions))
                     .catch((error) => console.log(error))
@@ -286,7 +286,7 @@ export default function BudgetScreen({navigation}){
 
             <Text style={styles.modalText4}>Transaction Amount: </Text>
             <TextInput
-                placeholder="$"
+                placeholder="  $"
                 style={styles.input}
                 onChangeText={amountHandler}
                 value={enteredAmount}
@@ -294,7 +294,7 @@ export default function BudgetScreen({navigation}){
 
             <Text style={styles.modalText4}>Category: </Text>
             <TextInput 
-                placeholder="Category"
+                placeholder="  Category"
                 style={styles.input}
                 onChangeText={categoryHandler}
                 value={enteredCategory}
@@ -302,7 +302,7 @@ export default function BudgetScreen({navigation}){
 
             <Text style={styles.modalText4}>Provider: </Text>
             <TextInput 
-                placeholder="Business Name"
+                placeholder="  Business Name"
                 style={styles.input}
                 onChangeText={providerHandler}
                 value={enteredProvider}
@@ -310,11 +310,11 @@ export default function BudgetScreen({navigation}){
 
             <Text style={styles.modalText4}>Date: </Text>
                 <TextInput 
-                placeholder="YYYY-MM-DD"
+                placeholder="  YYYY-MM-DD"
                 style={styles.input}
                 onChangeText={dateHandler}
                 value={enteredDate}
-            />
+            /> 
 
                 <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                 <TouchableOpacity style={styles.button} onPress={() => {setModalVisible(!modalVisible)}}>
@@ -363,11 +363,11 @@ export default function BudgetScreen({navigation}){
                     <Image style={{width: 300, height: 25, alignSelf: 'center'}} source = {require('../../assets/slideupbar.png')}/>
                     </View>
                     <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                        <Text style={{marginVertical: 16, color: 'black', fontWeight: 'bold'}}>
+                        <Text style={{fontSize: 17, marginVertical: 16, color: 'black', fontWeight: 'bold'}}>
                             Recent Transactions
                         </Text>
                         <TouchableOpacity onPress = {() => {setModalVisible(true)}}>
-                            <Text style={{fontWeight: 'bold', fontSize: 35, color: '#426FFE'}}>+</Text>
+                            <Text style={{fontWeight: 'bold', fontSize: 26, color: '#426FFE', paddingTop: 10}}>+</Text>
                         </TouchableOpacity>
                     </View>
 

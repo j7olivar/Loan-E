@@ -171,7 +171,7 @@ export default function IndividualLoanScreen({route, navigation}) {
 							fontSize: 18,
 							color: '#426FFE',
 							paddingTop: 20,
-							paddingLeft: 55
+							paddingLeft: 45
 						}}>
 							Reduce Pay
 						</Text>
@@ -181,7 +181,7 @@ export default function IndividualLoanScreen({route, navigation}) {
 						style={{
 						borderLeftWidth: 2,
 						borderLeftColor: '#ededed',
-						marginLeft: 33,
+						marginLeft: 20,
 						marginTop: 10,
 						paddingTop:50
 						}}
@@ -193,7 +193,7 @@ export default function IndividualLoanScreen({route, navigation}) {
 							fontSize: 18,
 							color: '#426FFE',
 							paddingTop: 20,
-							paddingLeft: 32
+							paddingLeft: 18
 						}}>
 							Reduce Time
 						</Text>

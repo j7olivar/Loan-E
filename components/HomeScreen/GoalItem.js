@@ -76,17 +76,17 @@ const styles = StyleSheet.create({
         //width: 330,
         borderRadius:7,
         marginVertical: 3,
-        backgroundColor: '#aeb0b2',
+        backgroundColor: '#e5e5ea',
         //borderColor: 'black',
         //borderWidth:1,
         //opacity:0.8
-        shadowColor: "#000",
+        /*shadowColor: "#000",
 		    shadowOffset: {
           width: 2,
-          height:10
+          height:8
 		    },
 		    shadowOpacity: 0.15,
-            shadowRadius: 10,
+            shadowRadius: 10,*/
       },
       sub: {
         flexDirection: "row",

@@ -137,7 +137,7 @@ export default function Login({navigation}) {
                 source = {require('../../assets/tempLogo.jpg')}/>
                 */}
             
-            <Text style={{fontWeight: 'bold', fontSize: 33, marginLeft: 33, marginTop: 150}}>
+            <Text style={{fontWeight: 'bold', fontSize: 33, marginLeft: 33, marginTop: 120}}>
                 Welcome Back, 
             </Text>
 
@@ -183,21 +183,20 @@ export default function Login({navigation}) {
                     backgroundColor='transparent'>
                         Login with Biometrics
                 </Icon.Button>
-                </View>
+            </View>
 
-                <View style= {{fontSize: 16,color: 'red', paddingTop:170}}>
+                <View style= {{fontSize: 16,color: 'red', paddingTop:50}}>
               
                     <Text style = {styles.footerText}>
                         Don't have an account? 
                     <Text onPress={()=>onFooterLinkPress()} 
-                        style = {styles.signupText}>  Sign up</Text>
+                        style = {styles.signupText}> Sign up</Text>
                     </Text>
                 </View>
 
-                <View style= {{fontSize: 16,color: 'red'}}>
+                <View style= {{fontSize: 16,color: 'red', marginTop: -5}}>
                     <Text style = {styles.forgotText}
-                    onPress={()=>ForgotPWOnPress()} >
-                        Forgot Password? 
+                    onPress={()=>ForgotPWOnPress()} >Forgot your password? 
                     </Text> 
                 </View>
 
@@ -236,7 +235,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#426FFE',
         marginLeft: 30,
         marginRight: 30,
-        marginTop: 50,
+        marginTop: 47,
         height: 48,
         borderRadius: 5,
         alignItems: "center",

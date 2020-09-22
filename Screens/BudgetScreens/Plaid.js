@@ -10,7 +10,7 @@ export default function PlaidScreen({navigation}){
   useEffect(() => {
     firebase.auth().currentUser.getIdToken().then(function(idToken) {
         console.log("idToken POST started");
-        fetch('http://192.168.0.136:8080/send_uid', {
+        fetch('http://66.27.69.117:8080/send_uid', {
             method: 'POST',
             headers: {
               'Content-type': 'application/json'
@@ -24,6 +24,6 @@ export default function PlaidScreen({navigation}){
   }, []);
 
   return (
-    <WebView source={{ uri: 'http://192.168.0.136:8080' }} />
+    <WebView source={{ uri: 'http://66.27.69.117:8080' }} />
   )
 }

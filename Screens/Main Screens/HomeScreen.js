@@ -308,9 +308,9 @@ const HomeScreen = (props) => {
 
 	return (
 		<ScrollView style={styles.screen}>
-			<Text style = {styles.loanTitle}>Student Loan Calculator</Text>
+			<Text style = {styles.loanTitle}>Student Loan Tracker</Text>
 			<View style={{ padding: 20 }}>
-				<Text style={styles.title}> Loans</Text>
+				<Text style={styles.title}>Loans</Text>
 
 
 				<FlatList 
@@ -334,13 +334,13 @@ const HomeScreen = (props) => {
 				<View style={{ paddingBottom: 10 }} />
 				*/}
 				<Button
-					icon={<Icon name="plus" size={16} color="#426FFE" />}
+					icon={<Icon name="plus" size={13} color="#426FFE" />}
 					type="clear"
 					iconRight
 					buttonStyle={{ alignSelf: 'flex-end' }}
 					onPress={() => setIsAddMode(true)}
 					title="New Loan    "
-					titleStyle={{ fontSize: 20, fontWeight: 'bold', color: '#426FFE', alignSelf: 'flex-end' }}
+					titleStyle={{ fontSize: 18, fontWeight: 'bold', color: '#426FFE', alignSelf: 'flex-end' }}
 				/>
 				<GoalInput visible={isAddMode} addGoalHandler={addGoalHandler} onCancel={cancelGoalAdditionHandler} />
 				<FlatList
@@ -380,30 +380,17 @@ const HomeScreen = (props) => {
 				/>
 				*/}
 
-				<View style={{ paddingTop: 10, paddingBottom: 10 }} />
+				<View style={{ paddingTop: 15, paddingBottom: 10 }} />
 				<View style={{ borderBottomColor: '#ededed', borderBottomWidth: 3 }} />
 
 				<Text style={styles.graphTitle}>Payment Plan</Text>
+				<View style={{paddingBottom: 13}}></View>
 				<Text style={styles.subHeading}> Total Due: <Text style={{color:'#426FFE'}}>${totalLoan}</Text></Text>
 				<FavoriteMealScreen />
 
 				<View style={{ paddingBottom: 25 }} />
 
-				<Button
-					icon={
-						<Icon
-							name='addfile'
-							size={16}
-							color='#426FFE'
-						/>
-					}
-					type='clear'
-					iconRight
-					buttonStyle={{alignSelf:'center'}}
-					onPress={onFooterLinkPress}
-					title='Calculate New Loan    '
-					titleStyle={{fontSize:18, fontWeight:'bold',color:'#426FFE', alignSelf:'flex-end'}}
-				/>
+	
 
 				<View style={{paddingTop: 10, paddingBottom:10}}>
 				</View>
@@ -414,13 +401,29 @@ const HomeScreen = (props) => {
 				<Text style={styles.graphTitle}>Future Payments</Text>
 				<FavoriteMealScreen/>
 
+				<Button
+					icon={
+						<Icon
+							name='addfile'
+							size={16}
+							color='white'
+						/>
+					}
+					type='clear'
+					iconRight
+					buttonStyle={{alignSelf:'center'}}
+					onPress={onFooterLinkPress}
+					title='Calculate New Loan'
+					titleStyle={{fontSize:18, fontWeight:'bold',color:'#426FFE', alignSelf:'center', paddingLeft: 10}}
+				/>
+
 				<TouchableOpacity title= 'Upload Doc' onPress={pickDocument}>
 					<Text style={{
 						fontWeight: 'bold',
-						fontSize: 20,
-						color: 'black',
-						textAlign: 'left',
-						paddingTop: 20
+						fontSize: 18,
+						color: '#426FFE',
+						textAlign: 'center',
+						paddingTop: 10
 					}}>
 						Upload Document
 					</Text>

@@ -16,6 +16,7 @@ import * as React from 'react';
 import FavoriteMealScreen from '../Screens/Main Screens/FavoriteMealScreen';
 import FilterScreen from '../Screens/Old/FilterScreen';
 import {Ionicons} from '@expo/vector-icons'
+import { MaterialIcons } from '@expo/vector-icons'; 
 import BudgetScreen from '../Screens/BudgetScreens/Budget';
 import ResourcesPage from '../Screens/Main Screens/Rai';
 import LoanHome from '../Screens/LoanScreens/LoanHome';
@@ -43,7 +44,7 @@ const Stacker = (props) => {
 			<Tab.Screen 
 				name="Budgeting" 
 				component={() => <BudgetScreen {...props} />} 
-				options={{tabBarIcon: (props)=> <Ionicons name = 'ios-egg' size={props.size} color = {props.color}/>}}/>
+				options={{tabBarIcon: (props)=> <MaterialIcons name="attach-money" size={props.size} color = {props.color}/>}}/>
 			<Tab.Screen 
 				name="Resources" 
 				component={() => <ResourcesPage {...props} />} 

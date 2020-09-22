@@ -51,6 +51,9 @@ function ResourcesPage({ navigation }) {
 					onPress={onFooterLinkPress3}
 				/>
 			</View>
+
+			<View style={{ padding: 10}}></View>
+			<View style={{ padding: 250, backgroundColor: 'white'}}></View>
 		</View>
 	);
 }

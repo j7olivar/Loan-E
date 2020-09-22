@@ -148,14 +148,14 @@ const LoginNavigator =  () => {
 
         <Stack.Screen name = 'EditLoan'
         options= {{
-          headerStyle:{backgroundColor:'#32c090',},
+          //headerStyle:{backgroundColor:'#32c090',},
               //headerTintColor: 'black',
               headerTitleStyle: {fontWeight: 'bold',}
         }}
         component={EditGoalInputScreen}/>
         <Stack.Screen name="Pei" 
         options={{
-              headerStyle:{backgroundColor:'#32c090',},
+              //headerStyle:{backgroundColor:'#32c090',},
               //headerTintColor: 'black',
               headerTitleStyle: {fontWeight: 'bold',}
             }}
@@ -191,7 +191,7 @@ const LoginNavigator =  () => {
         <Stack.Screen name="Individual Loan" component={IndividualLoanScreen} />
         <Stack.Screen name="Plaid Link" 
         options={{
-              headerStyle:{backgroundColor:'#32c090',},
+              //headerStyle:{backgroundColor:'#32c090',},
               headerTintColor: 'black',
               headerTitleStyle: {fontWeight: 'bold',}
             }}

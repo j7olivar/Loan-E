@@ -224,11 +224,13 @@ const FavoriteMealScreen = (props) => {
 					color: 'black',
 					textAlign: 'left',
 					marginLeft: 24,
+					marginTop: 10,
+					marginBottom: 10
 					}}>
 					Monthly Payments: <Text style={{color:'#426FFE'}}>${monthlyValue}</Text>
 				</Text>
 				<Slider
-					style={{ width: Dimensions.get('window').width - 60, height: 40, justifyContent:'center', marginLeft: 18, marginTop:5}}
+					style={{ width: Dimensions.get('window').width - 60, height: 40, justifyContent:'center', marginLeft: 18, marginTop:5, marginBottom: 10}}
 					minimumValue={0}
 					maximumValue={1000}
 					step={1}

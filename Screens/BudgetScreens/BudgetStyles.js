@@ -91,7 +91,7 @@ export default StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        marginTop: 22
+        marginTop: 16
       },
 
       modalView: {
@@ -108,7 +108,7 @@ export default StyleSheet.create({
         shadowRadius: 3.84,
         elevation: 5,
         width: 300,
-        height: 420,
+        height: 400,
         flexDirection: 'column'
       },
 
@@ -167,18 +167,20 @@ export default StyleSheet.create({
       },
 
       modalText4: {
-        fontSize: 16,
+        fontSize: 15,
         marginBottom: 5,
         paddingRight: 25,
-        textAlign: 'left'
+        textAlign: 'left',
+        color: '#426FFE',
+        fontWeight: 'bold'
       },
 
       input: {
-        height: 35,
+        height: 38,
         borderRadius: 5,
         overflow: 'hidden',
         backgroundColor: '#e7e7e7',
-        fontSize: 16,
+        fontSize: 14,
         marginBottom: 20
       },
 
@@ -188,7 +190,7 @@ export default StyleSheet.create({
           borderRadius:5,
           overflow: 'hidden',
           backgroundColor: '#426FFE',
-          marginTop: 25,
+          marginTop: 15,
       },
       
       button1:{
@@ -197,7 +199,7 @@ export default StyleSheet.create({
         borderRadius:5,
         overflow: 'hidden',
         backgroundColor: '#ff443a',
-        marginTop: 25,
+        marginTop: 15,
     },
 
     button2:{

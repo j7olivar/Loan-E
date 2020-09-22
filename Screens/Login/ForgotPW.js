@@ -30,10 +30,17 @@ export default function ForgotPW({navigation}){
     const width = Dimensions.get('screen').width
 
     return (
-    <View style={{padding:15, flex:1}}>
-        <Text style={{fontWeight: 'bold', fontSize: 33, marginLeft: 33, marginTop: 150}}>
-                Reset Password 
+    <View style={{padding:15, flex:1, backgroundColor: 'white'}}>
+        <Text style={{fontWeight: 'bold', fontSize: 30, marginLeft: 20, marginTop: 160}}>
+            Forgot Password? 
         </Text>
+        <Text style={{color: '#A5A5A5', marginLeft: 21, marginTop: 22, fontWeight: 'bold'}}>
+            Enter your email and we'll send a link
+        </Text>
+        <Text style={{color: '#A5A5A5', marginLeft: 21, marginTop: 6, fontWeight: 'bold'}}>
+            to reset your password.
+        </Text>
+        <View style={{marginBottom: 10}}></View>
         <TextInput 
                 style={styles.input}
                 placeholder='Email'
@@ -74,17 +81,17 @@ const styles = StyleSheet.create({
         borderBottomColor:'white',
         marginTop: 40,
         marginBottom: 10,
-        marginLeft: 20,
+        marginLeft: 18,
         marginRight: 30,
-        paddingLeft: 16,
+        paddingLeft: 4,
         borderBottomColor: 50
         
     },
     button: {
         //backgroundColor: '#35CA96',
         backgroundColor: '#426FFE',
-        marginLeft: 30,
-        marginRight: 30,
+        marginLeft: 20,
+        marginRight: 31,
         marginTop: 30,
         height: 48,
         borderRadius: 5,

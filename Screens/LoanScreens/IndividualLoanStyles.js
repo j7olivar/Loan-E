@@ -11,7 +11,7 @@ export default StyleSheet.create({
 	},
 	leftText:{
 		paddingTop: 25,
-		paddingLeft: 30,
+		paddingLeft: 16,
 		fontWeight: 'bold',
 		fontSize: 18,
 		color: '#426FFE'
