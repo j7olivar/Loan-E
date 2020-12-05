@@ -229,6 +229,8 @@ export default function BudgetScreen({navigation}){
             <Text style={{fontWeight: 'bold', fontSize: 26, color: '#426FFE'}}>Budget </Text>
         </View>
 
+        
+
         <View style={styles.budgetBox1}>
             
             <View style={{flexDirection: 'row'}}>
@@ -271,7 +273,39 @@ export default function BudgetScreen({navigation}){
                 <Text style={styles.budgetNormal}>${getTotal('other')}</Text>
             </View>
         </View>
+        <View style={{flex:1}}>
+            <SlidingUpPanel
+            ref={ModalRef}
+            draggableRange={{top: height - 150 , bottom: 200}}
+            animatedValue={_draggedValue}
+            backdropOpacity={0.15}
+            height={height + 20}
+            friction={0.9}
+            >
 
+                {dragHandler => (
+                <View style={{flex: 1, backgroundColor: 'white', borderRadius: 25, padding: 14}}>
+                    <View {...dragHandler}>
+                    <Image style={{width: 300, height: 25, alignSelf: 'center'}} source = {require('../../assets/slideupbar.png')}/>
+                    </View>
+                    <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                        <Text style={{fontSize: 17, marginVertical: 16, color: 'black', fontWeight: 'bold'}}>
+                            Recent Transactions
+                        </Text>
+                        <TouchableOpacity onPress = {() => {setModalVisible(true)}}>
+                            <Text style={{fontWeight: 'bold', fontSize: 26, color: '#426FFE', paddingTop: 10}}>+</Text>
+                        </TouchableOpacity>
+                    </View>
+
+                    <View style = {{height : 450, paddingBottom: 10}}>
+                    <ScrollView>{displayChoice()}</ScrollView>
+                    </View>
+                </View>
+                )}
+
+
+            </SlidingUpPanel>
+        </View>
         <Modal
         animationType="fade"
         transparent={true}
@@ -347,39 +381,7 @@ export default function BudgetScreen({navigation}){
             </View>
         </Modal>
 
-        <View style={{flex:1}}>
-            <SlidingUpPanel
-            ref={ModalRef}
-            draggableRange={{top: height - 150 , bottom: 200}}
-            animatedValue={_draggedValue}
-            backdropOpacity={0}
-            height={height + 20}
-            friction={0.9}
-            >
-
-                {dragHandler => (
-                <View style={{flex: 1, backgroundColor: 'white', borderRadius: 25, padding: 14}}>
-                    <View {...dragHandler}>
-                    <Image style={{width: 300, height: 25, alignSelf: 'center'}} source = {require('../../assets/slideupbar.png')}/>
-                    </View>
-                    <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                        <Text style={{fontSize: 17, marginVertical: 16, color: 'black', fontWeight: 'bold'}}>
-                            Recent Transactions
-                        </Text>
-                        <TouchableOpacity onPress = {() => {setModalVisible(true)}}>
-                            <Text style={{fontWeight: 'bold', fontSize: 26, color: '#426FFE', paddingTop: 10}}>+</Text>
-                        </TouchableOpacity>
-                    </View>
-
-                    <View style = {{height : 450, paddingBottom: 10}}>
-                    <ScrollView>{displayChoice()}</ScrollView>
-                    </View>
-                </View>
-                )}
-
-
-            </SlidingUpPanel>
-        </View>
+        
 
     </View>
     )

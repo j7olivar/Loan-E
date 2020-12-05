@@ -308,7 +308,7 @@ const HomeScreen = (props) => {
 
 	return (
 		<ScrollView style={styles.screen}>
-			<Text style = {styles.loanTitle}>Student Loan Tracker</Text>
+			<Text style = {styles.loanTitle}>Loan·E</Text>
 			<View style={{ padding: 20 }}>
 				<Text style={styles.title}>Loans</Text>
 
@@ -392,14 +392,11 @@ const HomeScreen = (props) => {
 
 	
 
-				<View style={{paddingTop: 10, paddingBottom:10}}>
+				<View style={{paddingTop: 3, paddingBottom:3}}>
 				</View>
-				<View
-				style={{borderBottomColor:'#ededed', borderBottomWidth:2}}>
-				</View>
+				
 
-				<Text style={styles.graphTitle}>Future Payments</Text>
-				<FavoriteMealScreen/>
+				
 
 				<Button
 					icon={
@@ -453,7 +450,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
 		fontSize: 26,
 		paddingLeft: 23,
-		paddingTop: 34,
+		paddingTop: 45,
 		color: '#426FFE',
 		padding: 20
       },
